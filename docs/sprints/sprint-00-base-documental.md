@@ -1,6 +1,6 @@
 # Sprint 00 — Base y clases iniciales
 
-**Estado:** Pendiente
+**Estado:** En curso
 **Rama:** `sprint/00-base-clases`
 
 ## Objetivo
