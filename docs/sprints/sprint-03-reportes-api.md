@@ -4,7 +4,7 @@
 
 ## Objetivo
 
-Implementar los tres reportes, sus gráficos sencillos y la API solicitada.
+Implementar los tres reportes con una presentación visual funcional y la API solicitada.
 
 ## Fuentes y requerimientos
 
@@ -15,13 +15,13 @@ RE-01, RE-02, RE-03, AP-01 y pauta 1.5.
 - atrasos después de las 09:30;
 - salidas antes de las 17:30;
 - inasistencias para una fecha;
-- conteos gráficos sencillos;
+- pantallas y tablas simples para visualizar los resultados;
 - endpoint JSON con filtro Activo, Inactivo o Todos;
 - pruebas de reglas y consultas.
 
 ## Fuera de alcance
 
-Tablero analítico, exportaciones, filtros avanzados, tiempo real y API pública adicional.
+Gráficos estadísticos no confirmados, tablero analítico, exportaciones, filtros avanzados, tiempo real y API pública adicional.
 
 ## Criterios de aceptación
 

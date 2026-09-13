@@ -4,7 +4,7 @@
 
 ## Objetivo
 
-Implementar acceso, administración básica de usuarios y marcaciones.
+Implementar acceso, administración básica de usuarios y marcaciones según la especificación canónica.
 
 ## Fuentes y requerimientos
 
@@ -15,7 +15,7 @@ CA-01, GU-01, GU-02, GU-03 y pauta 1.4.
 - acceso con correo y contraseña;
 - creación, modificación y desactivación de usuarios;
 - registro de entrada y salida;
-- validaciones definidas en la Decisión 002;
+- POO sencilla y reglas funcionales canónicas;
 - pruebas unitarias e integración mínima.
 
 ## Fuera de alcance

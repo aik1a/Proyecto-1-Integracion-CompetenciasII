@@ -1,39 +1,37 @@
-# Sprint 00 — Base documental
+# Sprint 00 — Base y clases iniciales
 
-**Estado:** En curso
+**Estado:** Pendiente
 
 ## Objetivo
 
-Dejar una fuente de verdad breve que limite el MVP y permita iniciar el desarrollo sin interpretaciones libres.
+Completar el avance 1.2 con una base aprobada, el plan de pruebas y las clases iniciales mínimas del dominio.
 
 ## Incluido
 
 - alcance y requerimientos;
-- stack y reglas funcionales mínimas;
-- plan de cinco fases;
-- reglas de calidad, pruebas y evidencias;
-- plantillas reducidas para sprint y tarea.
+- plan de pruebas unitarias;
+- proyecto mínimo ejecutable;
+- clases simples para los conceptos principales del caso;
+- evidencia y ZIP solicitados por la pauta 1.2.
 
 ## Fuera de alcance
 
-- código del producto;
-- modelo físico de base de datos;
-- configuración de herramientas;
+- funcionalidades completas de usuarios y asistencia;
+- base de datos implementada;
+- reportes y API;
 - fechas calendario no confirmadas.
 
 ## Criterios de aceptación
 
-- la documentación no contradice las fuentes oficiales;
-- GitHub distingue fuentes, decisiones y ejecución;
-- las reglas prohíben ampliaciones y sobreingeniería;
-- cada fase posterior tiene un límite reconocible.
+- la especificación canónica está aprobada;
+- el proyecto inicia sin errores siguiendo instrucciones breves;
+- las clases iniciales usan POO sencilla y representan solo conceptos del caso;
+- el plan de pruebas sigue el formato docente.
 
 ## Pruebas y evidencia
 
-- revisión de enlaces y estructura;
-- revisión del diff completo;
-- confirmación de que `sources/` no cambió.
+Inicio básico del proyecto, revisión de las clases, plan de pruebas, ZIP y registro de retroalimentación.
 
 ## Resultado
 
-Pendiente de revisión y aprobación.
+Se completa al cerrar la fase.

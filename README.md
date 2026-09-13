@@ -1,34 +1,27 @@
 # Proyecto 1 — Integración de Competencias II
 
-MVP académico para controlar la asistencia de una empresa de 25 personas. GitHub es la fuente de verdad; el chat se usa para analizar, pero las decisiones solo entran en vigor cuando quedan registradas aquí.
+MVP académico de segundo año para controlar la asistencia de una empresa de 25 personas.
 
-## Alcance
+## Fuente de verdad
 
-El sistema incluye únicamente acceso con correo y contraseña, administración básica de usuarios, marcación de entrada y salida, tres reportes con gráficos sencillos, la API REST AP-01 y los entregables académicos asociados.
+La única especificación operativa canónica es:
 
-No se agregan funcionalidades que no estén respaldadas por una fuente oficial o que no sean indispensables para ejecutar y probar el MVP.
+- [`docs/project/ESPECIFICACION_CANONICA.md`](docs/project/ESPECIFICACION_CANONICA.md)
 
-## Documentación operativa
+Ese documento reúne alcance docente, requerimientos, decisiones mínimas, fases, pruebas, entregables, empleabilidad y auditoría contra la rúbrica. Los archivos de `sources/originales/` se conservan sin cambios como evidencia institucional; ante un error de transcripción, prevalece el original.
 
-- [`AGENTS.md`](AGENTS.md): límites obligatorios.
-- [`docs/project/alcance.md`](docs/project/alcance.md): alcance y exclusiones.
-- [`docs/project/requerimientos.md`](docs/project/requerimientos.md): ocho requerimientos oficiales.
-- [`docs/project/plan-de-trabajo.md`](docs/project/plan-de-trabajo.md): cinco fases.
-- [`docs/project/pruebas-evidencias-entrega.md`](docs/project/pruebas-evidencias-entrega.md): calidad y entrega.
-- [`docs/project/empleabilidad.md`](docs/project/empleabilidad.md): entrega transversal y pendientes oficiales.
-- [`docs/decisions/`](docs/decisions/): decisiones mínimas aprobadas.
-- [`docs/sprints/`](docs/sprints/): alcance de cada fase.
+## Forma de trabajo
 
-Los originales institucionales permanecen sin cambios en `sources/originales/`; `sources/markdown/` contiene copias consultables.
-
-## Flujo reducido
+- [`AGENTS.md`](AGENTS.md) contiene las reglas obligatorias para personas y agentes.
+- `docs/sprints/` contiene las instrucciones subordinadas de cada fase.
+- `docs/tasks/` se usa solo cuando una tarea paralela o riesgosa necesita una ficha propia.
 
 ```text
-planificar -> documentar la fase -> trabajar en sprint/* -> probar -> revisar -> integrar a main
+planificar -> actualizar la especificación si corresponde -> ejecutar una fase -> probar -> revisar -> integrar a main
 ```
 
-Solo se crea una rama `task/*` para trabajo paralelo o riesgoso. No se usan métricas Scrum, automatizaciones de progreso ni documentación duplicada.
+El objetivo es cumplir lo solicitado con POO sencilla y buenas prácticas básicas. Se prohíben ampliaciones de alcance, arquitectura empresarial y documentación duplicada.
 
 ## Estado
 
-La base documental está en consolidación. El desarrollo comienza al aprobar y abrir el Sprint 01.
+La especificación está en consolidación. Después de aprobarla e integrarla en `main`, comienza Sprint 00 con las clases iniciales solicitadas en la pauta 1.2.
