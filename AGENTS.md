@@ -6,8 +6,8 @@ Estas reglas aplican a todo el repositorio. El objetivo es un MVP funcional y de
 
 1. Confirmar checkout, remoto, rama, `HEAD` y árbol limpio.
 2. Leer `docs/project/ESPECIFICACION_CANONICA.md` completo.
-3. Leer el archivo de la fase activa en `docs/sprints/`.
-4. Identificar los requerimientos autorizados.
+3. Leer `docs/sprints/README.md` y el archivo de la fase activa en `docs/sprints/`.
+4. Identificar los requerimientos autorizados para esa fase.
 5. Detenerse si existe contradicción o falta una decisión necesaria.
 
 ## Autoridad
@@ -47,13 +47,61 @@ No agregar:
 
 Una mejora opcional se informa y no se implementa.
 
-## Ejecución
+## Ejecución por sprint
 
 - Solo puede existir una fase activa.
-- La rama normal es `sprint/NN-nombre`.
-- Las tareas pequeñas se trabajan directamente en esa rama.
-- `task/*` se usa solo para trabajo paralelo, riesgoso o separable.
-- No se adelantan fases ni se modifica `main` directamente.
-- Al cumplir criterios y pruebas, el agente registra resultados y se detiene.
+- Cada fase tiene una rama `sprint/NN-nombre` creada desde `main` estable.
+- El archivo del sprint es el contrato de ejecución del agente para esa rama.
+- Los bloques internos del sprint se realizan secuencialmente en la misma rama.
+- `task/*` se usa solo si el orquestador lo autoriza para trabajo paralelo, riesgoso o claramente separable.
+- No se adelantan requisitos de fases futuras.
+- No se modifica `main` directamente.
+- El agente de código no abre la fase siguiente por iniciativa propia.
 
-Nunca se debe afirmar una prueba no ejecutada. Antes de entregar se revisan el diff, las limitaciones y la ausencia de ampliaciones de alcance.
+## Ciclo obligatorio del agente de código
+
+1. Verificar estado Git y leer la documentación obligatoria.
+2. Confirmar la rama del sprint.
+3. Implementar únicamente los bloques autorizados en el orden indicado.
+4. Ejecutar las pruebas exigidas por el sprint.
+5. Revisar `git diff` y detectar cambios accidentales o ampliaciones de alcance.
+6. Actualizar en el mismo archivo del sprint la sección `Resultado` con pruebas reales, limitaciones y pendientes.
+7. Hacer commits claros y push de la rama.
+8. Detenerse y entregar el handoff al orquestador.
+
+El handoff debe indicar como mínimo:
+
+- rama y último commit;
+- archivos principales modificados;
+- qué bloques se completaron;
+- comandos de pruebas ejecutados y resultado real;
+- problemas o decisiones pendientes;
+- confirmación de que no se adelantó trabajo de otra fase.
+
+El agente no debe hacer merge a `main` salvo instrucción explícita del orquestador.
+
+## Antes de commit o handoff
+
+Obligatorio:
+
+1. Revisar `git diff`.
+2. Ejecutar las pruebas aplicables.
+3. Ejecutar build o arranque cuando corresponda.
+4. Comprobar el flujo afectado.
+5. Revisar que no haya archivos accidentales.
+6. Revisar que no haya secretos.
+
+Nunca se debe afirmar una prueba no ejecutada. Si una prueba no pudo ejecutarse, se declara expresamente.
+
+## Cierre de fase
+
+Una fase solo se considera lista para revisión cuando:
+
+- funciona todo su alcance autorizado;
+- pasan las pruebas acordadas o se documentan fallos reales;
+- existe evidencia suficiente para la pauta correspondiente;
+- el diff fue revisado;
+- no hay ampliaciones de alcance;
+- el archivo del sprint refleja el resultado real.
+
+Después del handoff, el orquestador revisa la rama. Solo tras aprobación y merge a `main` puede comenzar el sprint siguiente.
