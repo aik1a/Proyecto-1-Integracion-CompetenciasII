@@ -1,55 +1,71 @@
 # Reglas para agentes
 
-Estas instrucciones aplican a todo el repositorio.
+Estas reglas aplican a todo el repositorio. El objetivo es entregar un MVP universitario funcional, comprensible y defendible por estudiantes de segundo año. Está prohibido convertirlo en un producto empresarial o ampliar su alcance por iniciativa del agente.
 
 ## Antes de trabajar
 
-1. Confirmar la ruta absoluta del checkout.
-2. Confirmar el remoto `origin`.
-3. Confirmar la rama actual y el commit `HEAD`.
-4. Confirmar que el árbol de trabajo esté limpio.
-5. Leer este archivo, el documento del sprint y la ficha específica de la tarea.
-6. Detenerse si falta la ficha de tarea, si la rama no coincide o si existen instrucciones incompatibles.
+1. Confirmar checkout, remoto, rama, `HEAD` y estado del árbol.
+2. Leer este archivo y el documento de la fase activa en `docs/sprints/`.
+3. Identificar los requerimientos oficiales relacionados.
+4. Detenerse si la rama, el alcance o una regla funcional no están definidos.
 
 ## Autoridad documental
 
-- Los archivos de `sources/originales/` son la evidencia académica canónica.
-- Los archivos de `sources/markdown/` son copias operativas. Si difieren del original, prevalece el original.
-- `docs/project/` define las reglas y límites vigentes del proyecto.
-- `docs/sprints/<ID>/SPRINT.md` define el alcance aprobado de un sprint.
-- `docs/tasks/<ID>.md` define el trabajo autorizado para una rama de tarea.
-- Una tarea no puede ampliar el alcance oficial ni el alcance del sprint.
+1. `sources/originales/` contiene la evidencia académica canónica y no se modifica.
+2. `sources/markdown/` facilita la consulta; ante diferencias prevalece el original.
+3. `docs/project/` contiene el alcance y el plan consolidados.
+4. `docs/decisions/` resuelve únicamente ambigüedades necesarias para construir el MVP.
+5. `docs/sprints/` define qué puede ejecutarse en cada fase.
 
-## Límites de ejecución
+Una conversación o sugerencia no forma parte del proyecto hasta quedar aprobada y registrada en GitHub.
 
-- Trabajar exclusivamente en la rama indicada por la ficha de tarea.
-- No implementar requisitos que no aparezcan en la sección `Incluido`.
-- No adelantar trabajo descrito como `Fuera de alcance`.
-- No modificar `sources/originales/` ni `sources/markdown/` durante una tarea de código.
-- No modificar documentación de otros sprints o tareas sin autorización explícita.
-- No realizar push directo a `main` ni a una rama `sprint/*`.
-- Entregar la tarea mediante Pull Request hacia la rama indicada.
-- Si aparece trabajo necesario pero no autorizado, registrarlo como observación; no implementarlo.
+## Regla contra la sobreingeniería
 
-## Calidad y evidencia
+Una actividad solo está autorizada si satisface un requerimiento oficial, una pauta, la rúbrica o una necesidad mínima para ejecutar y probar el MVP.
 
-- Ejecutar las validaciones especificadas en la ficha de tarea.
-- Registrar los comandos ejecutados y sus resultados reales.
-- No afirmar que una prueba fue realizada si no existe evidencia de su ejecución.
-- Mantener los cambios mínimos, trazables y relacionados con la tarea.
-- Revisar el diff completo antes de entregar.
-- No incluir secretos, credenciales, archivos `.env` ni datos personales innecesarios.
+El agente no debe agregar:
 
-## Entrega
+- funcionalidades no solicitadas;
+- capas, patrones o abstracciones para necesidades hipotéticas;
+- microservicios, infraestructura productiva o automatización compleja;
+- paneles, exportaciones, notificaciones o integraciones adicionales;
+- documentación que repita otra fuente;
+- refactorizaciones amplias no requeridas por la fase;
+- story points, burndown, velocidad o porcentajes automáticos.
 
-El Pull Request debe indicar:
+Una mejora opcional se informa como observación y no se implementa.
 
-- tarea y requerimientos relacionados;
-- resumen de cambios;
-- archivos principales modificados;
-- pruebas ejecutadas y resultados;
-- pruebas no ejecutadas y motivo;
-- riesgos, limitaciones o pendientes;
-- confirmación de que no se amplió el alcance.
+## Calidad esperada
 
-Una tarea se considera terminada solamente cuando cumple su ficha, pasa las validaciones exigidas y su Pull Request ha sido revisado.
+La calidad corresponde a un buen proyecto de segundo año:
+
+- funciona de extremo a extremo en los casos evaluados;
+- el código es sencillo, legible y coherente;
+- valida las entradas previsibles y muestra errores comprensibles;
+- usa consultas SQL parametrizadas y no guarda contraseñas en texto plano;
+- no contiene secretos, credenciales reales ni datos personales innecesarios;
+- prueba las reglas de negocio importantes;
+- puede ser explicado por el equipo;
+- puede ejecutarse desde cero siguiendo instrucciones breves.
+
+No se exige perfección empresarial, cobertura total, optimización prematura, compatibilidad masiva ni diseño visual avanzado.
+
+## Forma de trabajo
+
+- Solo puede existir una fase activa.
+- La rama normal es `sprint/NN-nombre`.
+- Las tareas pequeñas se trabajan directamente en esa rama.
+- Se crea `task/*` únicamente para trabajo paralelo, riesgoso o claramente separable.
+- No se adelanta trabajo de fases posteriores.
+- No se modifica `main` directamente.
+- Los cambios deben ser pequeños y relacionados con el objetivo de la fase.
+
+## Pruebas y entrega
+
+1. Ejecutar las validaciones definidas para la fase.
+2. Registrar resultados reales; nunca afirmar una prueba no ejecutada.
+3. Revisar el diff y confirmar que no existe ampliación de alcance.
+4. Informar brevemente cambios, pruebas, limitaciones y pendientes.
+5. Detenerse cuando se cumplen los criterios de aceptación.
+
+Una fase termina cuando sus requerimientos funcionan, pasan las pruebas acordadas, existe evidencia suficiente y no quedan fallos relevantes para la siguiente fase.

@@ -1,14 +1,8 @@
-# Decisiones de arquitectura
+# Decisiones mínimas
 
-Las decisiones técnicas relevantes se registrarán como Architecture Decision Records.
+Aquí se registran únicamente decisiones humanas necesarias para implementar requisitos que las fuentes no detallan.
 
-Cada archivo seguirá el nombre `ADR-NNN-descripcion.md` y contendrá:
+- [`001-stack-minimo.md`](001-stack-minimo.md)
+- [`002-reglas-funcionales.md`](002-reglas-funcionales.md)
 
-- estado;
-- contexto;
-- decisión;
-- alternativas consideradas;
-- consecuencias;
-- fecha de aprobación.
-
-La fase base no adopta todavía decisiones de lenguaje, framework, base de datos ni despliegue.
+No se crean registros para decisiones triviales, hipótesis futuras o alternativas que no serán implementadas.

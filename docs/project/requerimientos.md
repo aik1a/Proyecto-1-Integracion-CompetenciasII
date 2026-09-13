@@ -1,28 +1,29 @@
-# Registro de requerimientos
+# Requerimientos del MVP
 
-Este documento funciona como índice trazable. No reemplaza el detalle contenido en la fuente canónica.
+Este registro resume el alcance operativo. Ante diferencias prevalece la fuente oficial.
 
-## Requerimientos funcionales
+| ID | Resultado mínimo verificable | Fase |
+| --- | --- | --- |
+| CA-01 | Una persona ingresa con correo y contraseña, registra entrada o salida y el sistema guarda usuario, acción, fecha y hora. | Sprint 02 |
+| GU-01 | El administrador crea un usuario con los datos mínimos requeridos. | Sprint 02 |
+| GU-02 | El administrador modifica los datos permitidos de un usuario. | Sprint 02 |
+| GU-03 | El administrador desactiva un usuario sin perder la información necesaria para AP-01. | Sprint 02 |
+| RE-01 | Se listan las entradas posteriores a las 09:30 para la fecha consultada. | Sprint 03 |
+| RE-02 | Se listan las salidas anteriores a las 17:30 para la fecha consultada. | Sprint 03 |
+| RE-03 | Se listan usuarios activos sin entrada ni salida en la fecha consultada. | Sprint 03 |
+| AP-01 | Un endpoint de solo lectura responde JSON con empleados filtrados por Activo, Inactivo o Todos. | Sprint 03 |
 
-| ID | Nombre | Resumen confirmado | Estado de planificación |
-| --- | --- | --- | --- |
-| CA-01 | Control de asistencia | Acceso con correo y contraseña, marcación de entrada y salida y almacenamiento de usuario, acción, fecha y hora. | No asignado |
-| RE-01 | Reporte de atrasos | Reportar entradas posteriores a las 09:30. | No asignado |
-| RE-02 | Reporte de salidas anticipadas | Reportar salidas anteriores a las 17:30. | No asignado |
-| RE-03 | Reporte de inasistencias | Reportar días sin registro de entrada ni salida. | No asignado |
-| GU-01 | Crear usuarios | Permitir al administrador crear usuarios. | No asignado |
-| GU-02 | Modificar usuarios | Permitir al administrador modificar usuarios. | No asignado |
-| GU-03 | Eliminar usuarios | Permitir al administrador eliminar usuarios. | No asignado |
-| AP-01 | Listar empleados | Entregar mediante API REST un objeto JSON con empleados filtrados por estado Activo, Inactivo o todos. | No asignado |
+## Aceptación común
 
-## Fuentes relacionadas
+- Las operaciones válidas persisten en MySQL.
+- Las entradas inválidas previsibles reciben una respuesta comprensible.
+- Las reglas horarias se comprueban mediante pruebas.
+- Las pantallas son funcionales y suficientes para la demostración.
+- No se agregan variantes ni funciones no descritas.
 
-- Caso y detalle: [`sources/originales/01_caso_y_listado_de_requerimientos.docx`](../../sources/originales/01_caso_y_listado_de_requerimientos.docx)
-- Copia consultable: [`sources/markdown/01_caso_y_listado_de_requerimientos.md`](../../sources/markdown/01_caso_y_listado_de_requerimientos.md)
-- Pautas de avances: `sources/originales/03_...` a `sources/originales/06_...`
-- Evaluación de semana 6: [`sources/originales/07_evaluacion_practica_semana_6.docx`](../../sources/originales/07_evaluacion_practica_semana_6.docx)
-- Rúbrica: [`sources/originales/02_rubrica_etapa_1.docx`](../../sources/originales/02_rubrica_etapa_1.docx)
+## Fuentes
 
-## Regla de trazabilidad
-
-Toda tarea futura deberá indicar al menos un identificador de requerimiento o declarar expresamente que es una tarea transversal de documentación, infraestructura o calidad.
+- [`sources/originales/01_caso_y_listado_de_requerimientos.docx`](../../sources/originales/01_caso_y_listado_de_requerimientos.docx)
+- [`sources/originales/02_rubrica_etapa_1.docx`](../../sources/originales/02_rubrica_etapa_1.docx)
+- Pautas 1.2 a 1.5 en `sources/originales/03_...` a `06_...`.
+- [`sources/originales/07_evaluacion_practica_semana_6.docx`](../../sources/originales/07_evaluacion_practica_semana_6.docx)

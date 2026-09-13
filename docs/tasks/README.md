@@ -1,20 +1,5 @@
-# Tareas
+# Tareas opcionales
 
-Cada tarea aprobada tendrá un único archivo Markdown con el mismo identificador utilizado por su Issue, rama y Pull Request.
+Las tareas pequeñas se describen dentro del sprint y se trabajan en su rama. Solo se crea una ficha desde [`PLANTILLA.md`](PLANTILLA.md) cuando el trabajo sea paralelo, riesgoso o claramente separable.
 
-Una ficha deberá contener, como mínimo:
-
-- estado;
-- rama y rama base;
-- objetivo;
-- fuentes y requerimientos aplicables;
-- alcance incluido;
-- fuera de alcance;
-- archivos o módulos autorizados;
-- dependencias;
-- criterios de aceptación;
-- pruebas obligatorias;
-- evidencia esperada;
-- definición de terminado.
-
-Las fichas concretas se crearán después de aprobar el documento del sprint correspondiente.
+No se requiere una Issue, rama o documento adicional para cada modificación menor.
