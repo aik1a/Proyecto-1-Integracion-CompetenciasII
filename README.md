@@ -22,6 +22,23 @@ planificar -> actualizar la especificación si corresponde -> ejecutar una fase 
 
 El objetivo es cumplir lo solicitado con POO sencilla y buenas prácticas básicas. Se prohíben ampliaciones de alcance, arquitectura empresarial y documentación duplicada.
 
+## Ejecución de la base técnica
+
+Requisitos: Node.js 20 o superior.
+
+```bash
+npm install
+npm start
+```
+
+La comprobación mínima queda disponible en `http://localhost:3000/salud`. Para usar otro puerto, defina `PORT` en el entorno antes del arranque; `.env.example` documenta el valor predeterminado.
+
+Para ejecutar las pruebas:
+
+```bash
+npm test
+```
+
 ## Estado
 
-La especificación está en consolidación. Después de aprobarla e integrarla en `main`, comienza Sprint 00 con las clases iniciales solicitadas en la pauta 1.2.
+Sprint 00 completado y listo para integración. Sprint 01 todavía no ha sido iniciado. La base técnica y las clases iniciales están preparadas para revisión; ningún requerimiento funcional está implementado de forma completa.

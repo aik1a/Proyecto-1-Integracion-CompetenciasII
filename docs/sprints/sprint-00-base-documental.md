@@ -1,6 +1,6 @@
 # Sprint 00 — Base y clases iniciales
 
-**Estado:** Pendiente
+**Estado:** Listo para revisión
 **Rama:** `sprint/00-base-clases`
 
 ## Objetivo
@@ -105,4 +105,11 @@ Informar rama, último commit, archivos creados, comandos ejecutados, resultados
 
 ## Resultado
 
-Pendiente. Se completa al cerrar la fase con hechos y pruebas reales.
+- Bloques 1 a 4 completados: proyecto Node.js + Express, ruta `GET /salud`, clases `Usuario` y `Marcacion`, documento de ocho requerimientos y plan de pruebas institucional.
+- `npm install`: correcto; se instalaron 68 paquetes y se generó `package-lock.json`.
+- `node --test`: correcto; 5 pruebas ejecutadas, 5 correctas y 0 fallos.
+- `PORT=3100 node src/server.js`: correcto; el proceso informó `Servidor disponible en http://localhost:3100` y se detuvo manualmente después de comprobar el arranque.
+- Revisión manual: las dos clases, los ocho requerimientos, las secciones del plan y los archivos nuevos fueron revisados contra el alcance de Sprint 00.
+- Limitación del entorno: `npm test` no pudo iniciarse mediante el ejecutor remoto por una desconexión durante su control de aprobación; se ejecutó directamente su comando equivalente declarado en `package.json`, `node --test`, con resultado correcto.
+- Pendientes: revisión del orquestador y retroalimentación docente. Los casos de fases posteriores permanecen marcados como planificados.
+- Alcance confirmado: no se implementaron login, base de datos, CRUD, persistencia de marcaciones, reportes, AP-01 ni trabajo de Sprint 01 o posteriores.
