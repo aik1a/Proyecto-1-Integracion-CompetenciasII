@@ -41,4 +41,4 @@ npm test
 
 ## Estado
 
-Sprint 00 en curso en su rama de trabajo. La base técnica y las clases iniciales están preparadas para revisión; ningún requerimiento funcional está implementado de forma completa.
+Sprint 00 completado y listo para integración. Sprint 01 todavía no ha sido iniciado. La base técnica y las clases iniciales están preparadas para revisión; ningún requerimiento funcional está implementado de forma completa.
