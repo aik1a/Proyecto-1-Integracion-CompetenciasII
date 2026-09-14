@@ -22,23 +22,49 @@ planificar -> actualizar la especificación si corresponde -> ejecutar una fase 
 
 El objetivo es cumplir lo solicitado con POO sencilla y buenas prácticas básicas. Se prohíben ampliaciones de alcance, arquitectura empresarial y documentación duplicada.
 
-## Ejecución de la base técnica
+## Modelo de datos
 
-Requisitos: Node.js 20 o superior.
+- `usuarios`: identificador único, nombre, correo único, hash de contraseña, perfil y estado.
+- `marcaciones`: usuario asociado, acción, fecha y hora.
+- La clave foránea conserva la relación con el usuario. La restricción única `(usuario_id, fecha, accion)` admite como máximo una entrada y una salida por usuario y fecha.
+- Los valores permitidos son `administrador`/`empleado`, `Activo`/`Inactivo` y `entrada`/`salida`.
+
+## Ejecución con Node.js y MySQL
+
+Requisitos: Node.js 20 o superior y MySQL 8.4.
 
 ```bash
+cp .env.example .env
 npm install
+mysql -u root -p < database/schema.sql
 npm start
 ```
 
-La comprobación mínima queda disponible en `http://localhost:3000/salud`. Para usar otro puerto, defina `PORT` en el entorno antes del arranque; `.env.example` documenta el valor predeterminado.
+Antes de iniciar, ajusta en `.env` el usuario y la contraseña de una cuenta MySQL local. La aplicación comprueba la conexión y luego queda disponible en `http://localhost:3000/salud`.
+
+## Ejecución con Docker Compose
+
+Requisitos: Docker con el complemento Compose.
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+El servicio MySQL crea el esquema automáticamente desde `database/schema.sql`. Para recrearlo desde cero junto con su volumen:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
 
 Para ejecutar las pruebas:
 
 ```bash
 npm test
+docker compose exec app npm run test:db
 ```
 
 ## Estado
 
-Sprint 00 completado y listo para integración. Sprint 01 todavía no ha sido iniciado. La base técnica y las clases iniciales están preparadas para revisión; ningún requerimiento funcional está implementado de forma completa.
+Sprint 00 integrado. Sprint 01 implementado en `sprint/01-base-datos` y listo para revisión, pero todavía no integrado. Sprint 02 no ha sido iniciado.

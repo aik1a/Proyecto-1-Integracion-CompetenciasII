@@ -1,6 +1,6 @@
 # Sprint 01 — Base de datos
 
-**Estado:** Pendiente
+**Estado:** Listo para revisión
 **Rama:** `sprint/01-base-datos`
 
 ## Objetivo
@@ -110,4 +110,18 @@ Informar rama, último commit, modelo creado, scripts ejecutados, pruebas reales
 
 ## Resultado
 
-Pendiente. Se completa al cerrar la fase con hechos y pruebas reales.
+- Bloque 1 completado: modelo relacional mínimo con `usuarios` y `marcaciones`; no se agregaron entidades ajenas al caso.
+- Bloque 2 completado: `database/schema.sql` crea la base y ambas tablas desde cero. No se agregó `seed.sql` porque una lectura `SELECT 1` permite comprobar la conexión sin conservar datos ficticios.
+- Restricciones implementadas: claves primarias, identificador y correo únicos, clave foránea de marcaciones a usuarios, valores permitidos para perfil/estado/acción y máximo una marcación de cada acción por usuario y fecha.
+- Bloque 3 completado: conexión Node.js mediante `mysql2`, variables de entorno y consulta directa `SELECT 1 AS conectado`. La prueba de integración usa consultas parametrizadas para toda entrada variable.
+- Bloque 4 completado: `compose.yml` contiene únicamente aplicación y MySQL; `Dockerfile` instala y arranca la aplicación.
+- Bloque 5 implementado y parcialmente verificado: existe prueba de estructura del schema y prueba de integración para conexión, tablas, claves, valores permitidos, correo único, clave foránea y marcación duplicada.
+- `npm install`: primer intento falló porque npm no pudo crear `/root/.npm`; segundo intento con `NPM_CONFIG_CACHE=/tmp/sprint01-npm-cache` fue correcto, con 79 paquetes instalados. La repetición final indicó dependencias al día.
+- `npm test`: correcto; 6 pruebas ejecutadas, 6 correctas y 0 fallos. Se conservaron las 5 pruebas anteriores y se añadió una comprobación estructural del schema.
+- `docker compose config`: ejecutado; no pudo iniciarse porque el entorno no contiene el binario `docker` (`docker: command not found`, código 127).
+- Validación auxiliar de `compose.yml` con `python3` y PyYAML: correcta; YAML válido con exactamente los servicios `app` y `mysql`. Esta comprobación no sustituye `docker compose config`.
+- `docker compose up --build`: ejecutado; no pudo iniciarse por la misma ausencia de Docker (código 127).
+- `npm run test:db`: ejecutado; 1 prueba, 0 correctas y 1 fallo por `ECONNREFUSED 127.0.0.1:3306`, ya que no existe servidor MySQL ni Docker en el entorno.
+- `npm start`: ejecutado; la aplicación rechazó correctamente el arranque al no poder conectar con MySQL (`ECONNREFUSED 127.0.0.1:3306`).
+- Limitación exacta: no fue posible ejecutar MySQL desde cero, inspeccionar sus tablas y restricciones en un motor real, comprobar la conexión exitosa ni validar el arranque de Compose. Esas comprobaciones quedan pendientes para un entorno con Docker.
+- Alcance confirmado: no se implementaron login, CRUD, reglas funcionales de marcación, reportes, AP-01, pantallas ni trabajo de Sprint 02 o posteriores.
