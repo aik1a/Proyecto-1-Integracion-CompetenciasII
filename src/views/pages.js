@@ -1,0 +1,62 @@
+function escapar(valor) {
+  return String(valor ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+
+function pagina(titulo, contenido, usuario) {
+  const navegacion = usuario ? `<nav><span>${escapar(usuario.nombre)} (${escapar(usuario.perfil)})</span>
+    ${usuario.perfil === 'administrador' ? '<a href="/usuarios">Usuarios</a>' : '<a href="/asistencia">Asistencia</a>'}
+    <form action="/logout" method="post"><button type="submit">Cerrar sesión</button></form></nav>` : '';
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapar(titulo)}</title>
+    <link rel="stylesheet" href="/styles.css"></head><body><main>${navegacion}<h1>${escapar(titulo)}</h1>${contenido}</main></body></html>`;
+}
+
+function mensaje(texto, tipo = 'ok') {
+  return texto ? `<p class="mensaje ${tipo}">${escapar(texto)}</p>` : '';
+}
+
+function login(error = '') {
+  return pagina('Control de asistencia', `${mensaje(error, 'error')}
+    <form action="/login" method="post" class="tarjeta">
+      <label>Correo<input name="correo" type="email" required autocomplete="username"></label>
+      <label>Contraseña<input name="password" type="password" required autocomplete="current-password"></label>
+      <button type="submit">Ingresar</button></form>`);
+}
+
+function asistencia(usuario, marcaciones, exito = '', error = '') {
+  const filas = marcaciones.length
+    ? marcaciones.map((m) => `<li><strong>${escapar(m.accion)}</strong> — ${escapar(new Date(m.fecha_hora).toLocaleString('es-CL'))}</li>`).join('')
+    : '<li>No hay marcaciones registradas hoy.</li>';
+  return pagina('Registrar asistencia', `${mensaje(exito)}${mensaje(error, 'error')}
+    <section class="tarjeta"><div class="acciones">
+      <form action="/asistencia/marcar" method="post"><input type="hidden" name="accion" value="entrada"><button>Registrar entrada</button></form>
+      <form action="/asistencia/marcar" method="post"><input type="hidden" name="accion" value="salida"><button>Registrar salida</button></form>
+    </div><h2>Marcaciones de hoy</h2><ul>${filas}</ul></section>`, usuario);
+}
+
+function listaUsuarios(usuario, usuarios, exito = '', error = '') {
+  const filas = usuarios.map((item) => `<tr><td>${escapar(item.identificador)}</td><td>${escapar(item.nombre)}</td>
+    <td>${escapar(item.correo)}</td><td>${escapar(item.perfil)}</td><td>${escapar(item.estado)}</td>
+    <td><a href="/usuarios/${item.id}/editar">Editar</a>
+    ${item.estado === 'Activo' ? `<form class="en-linea" action="/usuarios/${item.id}/desactivar" method="post"><button class="secundario">Desactivar</button></form>` : ''}</td></tr>`).join('');
+  return pagina('Gestión de usuarios', `${mensaje(exito)}${mensaje(error, 'error')}
+    <p><a class="boton" href="/usuarios/nuevo">Crear usuario</a></p><div class="tabla"><table>
+    <thead><tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Perfil</th><th>Estado</th><th>Acciones</th></tr></thead>
+    <tbody>${filas}</tbody></table></div>`, usuario);
+}
+
+function formularioUsuario(usuarioSesion, usuario = {}, error = '') {
+  const editando = Boolean(usuario.id);
+  return pagina(editando ? 'Modificar usuario' : 'Crear usuario', `${mensaje(error, 'error')}
+    <form action="${editando ? `/usuarios/${usuario.id}` : '/usuarios'}" method="post" class="tarjeta">
+      <label>Identificador<input name="identificador" required value="${escapar(usuario.identificador)}"></label>
+      <label>Nombre<input name="nombre" required value="${escapar(usuario.nombre)}"></label>
+      <label>Correo<input name="correo" type="email" required value="${escapar(usuario.correo)}"></label>
+      <label>Perfil<select name="perfil"><option value="empleado" ${usuario.perfil === 'empleado' ? 'selected' : ''}>Empleado</option><option value="administrador" ${usuario.perfil === 'administrador' ? 'selected' : ''}>Administrador</option></select></label>
+      <label>Estado<select name="estado"><option value="Activo" ${usuario.estado !== 'Inactivo' ? 'selected' : ''}>Activo</option><option value="Inactivo" ${usuario.estado === 'Inactivo' ? 'selected' : ''}>Inactivo</option></select></label>
+      <label>Contraseña ${editando ? '(dejar vacía para conservar)' : ''}<input name="password" type="password" ${editando ? '' : 'required'} minlength="8"></label>
+      <button type="submit">${editando ? 'Guardar cambios' : 'Crear usuario'}</button></form>`, usuarioSesion);
+}
+
+module.exports = { login, asistencia, listaUsuarios, formularioUsuario };

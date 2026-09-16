@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test tests/app.test.js tests/modelos.test.js tests/schema.test.js",
-    "test:db": "node --test tests/database.integration.test.js"
+    "test": "node --test tests/app.test.js tests/modelos.test.js tests/schema.test.js tests/sprint02.unit.test.js",
+    "test:db": "node --test tests/database.integration.test.js tests/sprint02.integration.test.js"
   },
   "engines": {
     "node": ">=20"
@@ -16,6 +16,6 @@
   "dependencies": {
     "dotenv": "17.2.2",
     "express": "5.1.0",
-    "mysql2": "3.14.5"
+    "mysql2": "3.24.4"
   }
 }
