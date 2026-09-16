@@ -37,8 +37,8 @@ Los cuatro casos de las clases iniciales se ejecutaron en Sprint 00. Los casos c
 | PU-002 | Rechazar perfil inválido | `Usuario` | Perfil distinto de administrador o empleado | Se rechaza la creación | Se rechazó el perfil `supervisor` | Correcto |
 | PU-003 | Crear marcación válida | `Marcacion` | Usuario, acción entrada y fecha válida | Se construye una marcación | Se construyó una entrada con objeto `Date` | Correcto |
 | PU-004 | Rechazar acción inválida | `Marcacion` | Acción distinta de entrada o salida | Se rechaza la marcación | Se rechazó la acción `pausa` | Correcto |
-| PU-005 | Validar credenciales | Acceso | Correo y contraseña de usuario activo | Se autoriza el acceso | Pendiente de ejecución | Planificado |
-| PU-006 | Rechazar salida sin entrada | Regla de marcación | Salida sin entrada previa en la fecha | Se rechaza la salida | Pendiente de ejecución | Planificado |
+| PU-005 | Validar credenciales | Acceso | Contraseña correcta e incorrecta frente a un hash `scrypt` | Se autoriza solo la contraseña correcta | Se validó la contraseña correcta y se rechazó la incorrecta | Correcto |
+| PU-006 | Rechazar salida sin entrada | Regla de marcación | Salida sin entrada previa en la fecha | Se rechaza la salida | Se rechazó con mensaje controlado | Correcto |
 | PU-007 | Detectar atraso | Regla de horario | Entrada posterior a las 09:30 | Se clasifica como atraso | Pendiente de ejecución | Planificado |
 | PU-008 | Detectar salida anticipada | Regla de horario | Salida anterior a las 17:30 | Se clasifica como salida anticipada | Pendiente de ejecución | Planificado |
 | PU-009 | Filtrar usuarios activos | Filtro de estado | Estado Activo | Se retornan solo usuarios activos | Pendiente de ejecución | Planificado |
@@ -70,6 +70,8 @@ Evidencia local de Sprint 01: `npm test` ejecutó las cinco pruebas anteriores m
 
 Evidencia reproducible de Sprint 01: el workflow `Sprint 01 - Validacion MySQL` se ejecutó en GitHub Actions run `35058288461` con MySQL 8.4 y Node 20.20.2. `database/schema.sql` se aplicó desde cero; `npm test` obtuvo 6/6 pruebas correctas; `npm run test:db` obtuvo 1/1 prueba correcta y verificó conexión, tablas, claves y restricciones principales; la aplicación inició, respondió en `/salud`, confirmó la conexión con MySQL y se cerró de forma controlada. GitHub Actions se usa únicamente como entorno de pruebas de este sprint, no como infraestructura productiva ni pipeline de despliegue.
 
+Evidencia reproducible de Sprint 02: el workflow `Sprint 02 - Validacion funcional MySQL` run `35119143529` se ejecutó con MySQL 8.4 y Node 20.20.2. `npm test` obtuvo 11/11 pruebas correctas. `npm run test:db` obtuvo 2/2 pruebas correctas y comprobó schema, acceso correcto e incorrecto, creación, modificación y desactivación de usuarios, restricción de rol, entrada, salida, secuencias inválidas y persistencia MySQL. La aplicación inició y la pantalla `/login` respondió correctamente. `npm audit --audit-level=high` se ejecutó localmente después de actualizar `mysql2` y reportó 0 vulnerabilidades.
+
 ## Conclusión y observaciones
 
-Las clases iniciales, la ruta de comprobación, el schema y la integración básica con MySQL funcionaron sin fallos en la ejecución reproducible del Sprint 01. Los casos funcionales de fases posteriores continúan planificados.
+Las clases iniciales, el schema y el núcleo funcional de Sprint 02 funcionaron sin fallos en las ejecuciones registradas. Las reglas de horario y filtros correspondientes a Sprint 03 continúan planificadas.

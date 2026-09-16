@@ -37,10 +37,16 @@ Requisitos: Node.js 20 o superior y MySQL 8.4.
 cp .env.example .env
 npm install
 mysql -u root -p < database/schema.sql
+mysql -u root -p < database/seed.sql
 npm start
 ```
 
-Antes de iniciar, ajusta en `.env` el usuario y la contraseña de una cuenta MySQL local. La aplicación comprueba la conexión y luego queda disponible en `http://localhost:3000/salud`.
+Antes de iniciar, ajusta en `.env` el usuario y la contraseña de una cuenta MySQL local. La aplicación comprueba la conexión y queda disponible en `http://localhost:3000/login`.
+
+Usuarios ficticios para la demostración:
+
+- administrador: `admin@empresa.test` / `Admin1234`;
+- empleado: `empleado@empresa.test` / `Empleado1234`.
 
 ## Ejecución con Docker Compose
 
@@ -67,4 +73,4 @@ docker compose exec app npm run test:db
 
 ## Estado
 
-Sprint 00 integrado. Sprint 01 implementado en `sprint/01-base-datos` y listo para revisión, pero todavía no integrado. Sprint 02 no ha sido iniciado.
+Sprint 00 y Sprint 01 integrados en `main`. Sprint 02 implementado en `sprint/02-nucleo-funcional` y listo para revisión; todavía no se ha integrado.

@@ -48,6 +48,9 @@ test('Sprint 02 integra acceso, usuarios, roles y marcaciones con MySQL', async 
   const loginAdmin = await solicitud(baseUrl, '/login', { method: 'POST', body: new URLSearchParams({ correo: correoAdmin, password: 'AdminTest123' }) });
   assert.equal(loginAdmin.status, 302);
   const cookieAdmin = loginAdmin.headers.get('set-cookie').split(';')[0];
+  const pantallaUsuarios = await solicitud(baseUrl, '/usuarios', { method: 'GET' }, cookieAdmin);
+  assert.equal(pantallaUsuarios.status, 200);
+  assert.match(await pantallaUsuarios.text(), /Gestión de usuarios/);
 
   const crear = await solicitud(baseUrl, '/usuarios', { method: 'POST', body: new URLSearchParams({
     identificador: `EMP-${marca}`, nombre: 'Empleado integración', correo: correoEmpleado,
@@ -67,6 +70,11 @@ test('Sprint 02 integra acceso, usuarios, roles y marcaciones con MySQL', async 
   assert.equal(loginEmpleado.status, 302);
   const cookieEmpleado = loginEmpleado.headers.get('set-cookie').split(';')[0];
   assert.equal((await solicitud(baseUrl, '/usuarios', { method: 'GET' }, cookieEmpleado)).status, 403);
+  const pantallaAsistencia = await solicitud(baseUrl, '/asistencia', { method: 'GET' }, cookieEmpleado);
+  assert.equal(pantallaAsistencia.status, 200);
+  const htmlAsistencia = await pantallaAsistencia.text();
+  assert.match(htmlAsistencia, /Registrar entrada/);
+  assert.match(htmlAsistencia, /Registrar salida/);
 
   const salidaSinEntrada = await solicitud(baseUrl, '/asistencia/marcar', { method: 'POST', body: new URLSearchParams({ accion: 'salida' }) }, cookieEmpleado);
   assert.match(salidaSinEntrada.headers.get('location'), /sin%20entrada%20previa/);
