@@ -68,6 +68,8 @@ Evidencia de Sprint 00: `node --test` ejecutó cinco pruebas, incluidas PU-001 a
 
 Evidencia de Sprint 01: `npm test` ejecutó las cinco pruebas anteriores más una comprobación estructural de `database/schema.sql`; resultado: seis correctas y cero fallos. `npm run test:db` también fue ejecutado, pero su única prueba falló antes de consultar el schema con `ECONNREFUSED 127.0.0.1:3306`, porque el entorno no dispone de MySQL ni Docker. Por tanto, la creación real de la base, sus restricciones y la conexión exitosa siguen pendientes de ejecución en un entorno con Docker; no se declaran correctas.
 
+Se agregó una validación reproducible en GitHub Actions para ejecutar el Sprint 01 con MySQL 8.4 real. Se usa únicamente como entorno de pruebas, no como infraestructura productiva ni pipeline de despliegue. Su resultado permanece pendiente hasta que el workflow se ejecute y sea revisado en GitHub.
+
 ## Conclusión y observaciones
 
 Las clases iniciales, la ruta de comprobación y la estructura esperada del schema funcionaron sin fallos en las pruebas disponibles. La prueba de integración con MySQL quedó bloqueada por la ausencia del motor y debe repetirse antes de integrar Sprint 01. Los casos funcionales de fases posteriores continúan planificados.

@@ -124,4 +124,5 @@ Informar rama, último commit, modelo creado, scripts ejecutados, pruebas reales
 - `npm run test:db`: ejecutado; 1 prueba, 0 correctas y 1 fallo por `ECONNREFUSED 127.0.0.1:3306`, ya que no existe servidor MySQL ni Docker en el entorno.
 - `npm start`: ejecutado; la aplicación rechazó correctamente el arranque al no poder conectar con MySQL (`ECONNREFUSED 127.0.0.1:3306`).
 - Limitación exacta: no fue posible ejecutar MySQL desde cero, inspeccionar sus tablas y restricciones en un motor real, comprobar la conexión exitosa ni validar el arranque de Compose. Esas comprobaciones quedan pendientes para un entorno con Docker.
+- Se agregó el workflow `Sprint 01 - Validacion MySQL` como entorno reproducible de pruebas exclusivo de este sprint. No es infraestructura productiva ni un pipeline de despliegue. Su primera ejecución en GitHub Actions queda pendiente; no se declara validada hasta revisar el resultado real.
 - Alcance confirmado: no se implementaron login, CRUD, reglas funcionales de marcación, reportes, AP-01, pantallas ni trabajo de Sprint 02 o posteriores.
