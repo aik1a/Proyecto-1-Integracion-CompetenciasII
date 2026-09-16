@@ -1,1 +1,80 @@
-bmFtZTogU3ByaW50IDAxIC0gVmFsaWRhY2lvbiBNeVNRTAoKb246CiAgcHVzaDoKICAgIGJyYW5jaGVzOgogICAgICAtIHNwcmludC8wMS1iYXNlLWRhdG9zCiAgd29ya2Zsb3dfZGlzcGF0Y2g6Cgpqb2JzOgogIHZhbGlkYXItc3ByaW50LTAxOgogICAgcnVucy1vbjogdWJ1bnR1LWxhdGVzdAogICAgZW52OgogICAgICBQT1JUOiAzMDAwCiAgICAgIERCX0hPU1Q6IDEyNy4wLjAuMQogICAgICBEQl9QT1JUOiAzMzA2CiAgICAgIERCX05BTUU6IGNvbnRyb2xfYXNpc3RlbmNpYQogICAgICBEQl9VU0VSOiBhcHAKICAgICAgREJfUEFTU1dPUkQ6IGFwcF9sb2NhbF9wYXNzd29yZAogICAgICBNWVNRTF9ST09UX1BBU1NXT1JEOiByb290X2xvY2FsX3Bhc3N3b3JkCgogICAgc2VydmljZXM6CiAgICAgIG15c3FsOgogICAgICAgIGltYWdlOiBteXNxbDo4LjQKICAgICAgICBlbnY6CiAgICAgICAgICBNWVNRTF9EQVRBQkFTRTogY29udHJvbF9hc2lzdGVuY2lhCiAgICAgICAgICBNWVNRTF9VU0VSOiBhcHAKICAgICAgICAgIE1ZU1FMX1BBU1NXT1JEOiBhcHBfbG9jYWxfcGFzc3dvcmQKICAgICAgICAgIE1ZU1FMX1JPT1RfUEFTU1dPUkQ6IHJvb3RfbG9jYWxfcGFzc3dvcmQKICAgICAgICBwb3J0czoKICAgICAgICAgIC0gMzMwNjozMzA2CiAgICAgICAgb3B0aW9uczogPi0KICAgICAgICAgIC0taGVhbHRoLWNtZD0ibXlzcWxhZG1pbiBwaW5nIC1oIGxvY2FsaG9zdCAtdSByb290IC1wcm9vdF9sb2NhbF9wYXNzd29yZCIKICAgICAgICAgIC0taGVhbHRoLWludGVydmFsPTVzCiAgICAgICAgICAtLWhlYWx0aC10aW1lb3V0PTVzCiAgICAgICAgICAtLWhlYWx0aC1yZXRyaWVzPTIwCgogICAgc3RlcHM6CiAgICAgIC0gbmFtZTogRGVzY2FyZ2FyIHJlcG9zaXRvcmlvCiAgICAgICAgdXNlczogYWN0aW9ucy9jaGVja291dEB2NAoKICAgICAgLSBuYW1lOiBDb25maWd1cmFyIE5vZGUuanMgMjAKICAgICAgICB1c2VzOiBhY3Rpb25zL3NldHVwLW5vZGVAdjQKICAgICAgICB3aXRoOgogICAgICAgICAgbm9kZS12ZXJzaW9uOiAyMAoKICAgICAgLSBuYW1lOiBJbnN0YWxhciBkZXBlbmRlbmNpYXMKICAgICAgICBydW46IG5wbSBjaQoKICAgICAgLSBuYW1lOiBFamVjdXRhciBwcnVlYmFzIHNpbiBiYXNlIGRlIGRhdG9zCiAgICAgICAgcnVuOiBucG0gdGVzdAoKICAgICAgLSBuYW1lOiBDcmVhciBlc3F1ZW1hIE15U1FMIGRlc2RlIGNlcm8KICAgICAgICBydW46IGRvY2tlciBleGVjIC1pICIke3sgam9iLnNlcnZpY2VzLm15c3FsLmlkIH19IiBteXNxbCAtdXJvb3QgLXAiJE1ZU1FMX1JPT1RfUEFTU1dPUkQiIDwgZGF0YWJhc2Uvc2NoZW1hLnNxbAoKICAgICAgLSBuYW1lOiBFamVjdXRhciBwcnVlYmFzIGRlIGludGVncmFjaW9uIE15U1FMCiAgICAgICAgcnVuOiBucG0gcnVuIHRlc3Q6ZGIKCiAgICAgIC0gbmFtZTogQ29tcHJvYmFyIGFycmFucXVlIHkgY29uZXhpb24gZGUgbGEgYXBsaWNhY2lvbgogICAgICAgIHNoZWxsOiBiYXNoCiAgICAgICAgcnVuOiB8CiAgICAgICAgICBub2RlIHNyYy9zZXJ2ZXIuanMgPiBhcHAtc3RhcnQubG9nIDI+JjEgJgogICAgICAgICAgYXBwX3BpZD0kIQogICAgICAgICAgdHJhcCAna2lsbCAiJGFwcF9waWQiIDI+L2Rldi9udWxsIHx8IHRydWU7IHdhaXQgIiRhcHBfcGlkIiAyPi9kZXYvbnVsbCB8fCB0cnVlJyBFWElUCgogICAgICAgICAgZm9yIGludGVudG8gaW4gezEuLjIwfTsgZG8KICAgICAgICAgICAgaWYgY3VybCAtLWZhaWwgLS1zaWxlbnQgaHR0cDovLzEyNy4wLjAuMTozMDAwL3NhbHVkID4gL2Rldi9udWxsOyB0aGVuCiAgICAgICAgICAgICAgZ3JlcCAtRiAiQ29uZXhpw7NuIGNvbiBNeVNRTCBjb21wcm9iYWRhIiBhcHAtc3RhcnQubG9nCiAgICAgICAgICAgICAgZXhpdCAwCiAgICAgICAgICAgIGZpCgogICAgICAgICAgICBpZiAhIGtpbGwgLTAgIiRhcHBfcGlkIiAyPi9kZXYvbnVsbDsgdGhlbgogICAgICAgICAgICAgIGNhdCBhcHAtc3RhcnQubG9nCiAgICAgICAgICAgICAgZXhpdCAxCiAgICAgICAgICAgIGZpCgogICAgICAgICAgICBzbGVlcCAxCiAgICAgICAgICBkb25lCgogICAgICAgICAgY2F0IGFwcC1zdGFydC5sb2cKICAgICAgICAgIGV4aXQgMQo=
+name: Sprint 01 - Validacion MySQL
+
+on:
+  push:
+    branches:
+      - sprint/01-base-datos
+  workflow_dispatch:
+
+jobs:
+  validar-sprint-01:
+    runs-on: ubuntu-latest
+    env:
+      PORT: 3000
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_NAME: control_asistencia
+      DB_USER: app
+      DB_PASSWORD: app_local_password
+      MYSQL_ROOT_PASSWORD: root_local_password
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: control_asistencia
+          MYSQL_USER: app
+          MYSQL_PASSWORD: app_local_password
+          MYSQL_ROOT_PASSWORD: root_local_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -proot_local_password"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar pruebas sin base de datos
+        run: npm test
+
+      - name: Crear esquema MySQL desde cero
+        run: docker exec -i "${{ job.services.mysql.id }}" mysql -uroot -p"$MYSQL_ROOT_PASSWORD" < database/schema.sql
+
+      - name: Ejecutar pruebas de integracion MySQL
+        run: npm run test:db
+
+      - name: Comprobar arranque y conexion de la aplicacion
+        shell: bash
+        run: |
+          node src/server.js > app-start.log 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true; wait "$app_pid" 2>/dev/null || true' EXIT
+
+          for intento in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:3000/salud > /dev/null; then
+              grep -F "Conexión con MySQL comprobada" app-start.log
+              exit 0
+            fi
+
+            if ! kill -0 "$app_pid" 2>/dev/null; then
+              cat app-start.log
+              exit 1
+            fi
+
+            sleep 1
+          done
+
+          cat app-start.log
+          exit 1
