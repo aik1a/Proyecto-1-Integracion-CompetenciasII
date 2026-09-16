@@ -134,7 +134,7 @@ Validaciones realizadas:
 
 - `npm test`: 11 pruebas correctas y 0 fallos, tanto localmente como en GitHub Actions;
 - `npm run test:db`: 2 pruebas correctas y 0 fallos en MySQL 8.4 mediante GitHub Actions;
-- workflow `Sprint 02 - Validacion funcional MySQL`, run `35119143529`: exitoso con Node 20.20.2;
+- workflow `Sprint 02 - Validacion funcional MySQL`, run `35119442513`: exitoso con Node 20.20.2;
 - arranque del servidor, conexión MySQL y respuesta de `/login`: correctos en el workflow;
 - `npm audit --audit-level=high`: 0 vulnerabilidades después de actualizar `mysql2` a `3.24.4`.
 
