@@ -134,13 +134,13 @@ Validaciones realizadas:
 
 - `npm test`: 11 pruebas correctas y 0 fallos, tanto localmente como en GitHub Actions;
 - `npm run test:db`: 2 pruebas correctas y 0 fallos en MySQL 8.4 mediante GitHub Actions;
-- workflow `Sprint 02 - Validacion funcional MySQL`, run `35119442513`: exitoso con Node 20.20.2;
+- workflow `Sprint 02 - Validacion funcional MySQL`, run `35119603201`: exitoso con Node 20.20.2;
 - arranque del servidor, conexión MySQL y respuesta de `/login`: correctos en el workflow;
 - `npm audit --audit-level=high`: 0 vulnerabilidades después de actualizar `mysql2` a `3.24.4`.
 
 Limitaciones reales:
 
 - las sesiones se almacenan en memoria y se pierden al reiniciar el proceso, suficiente para este MVP académico;
-- no se realizó un recorrido visual manual con navegador en el entorno local porque no dispone de Docker/MySQL; el flujo equivalente se comprobó por HTTP contra MySQL real en la prueba de integración.
+- el recorrido visual manual con navegador continúa pendiente: el navegador remoto no puede acceder al servidor local del checkout y el entorno local no dispone de Docker/MySQL. El flujo equivalente sí se comprobó por HTTP contra MySQL real en la prueba de integración.
 
 No se implementaron reportes, API ni requisitos de Sprint 03.
