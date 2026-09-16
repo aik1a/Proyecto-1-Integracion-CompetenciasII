@@ -66,6 +66,10 @@ Para cada ejecución se incorporará evidencia verificable, según corresponda:
 
 Evidencia de Sprint 00: `node --test` ejecutó cinco pruebas, incluidas PU-001 a PU-004 y la respuesta HTTP de `/salud`; resultado: cinco correctas y cero fallos.
 
+Evidencia local de Sprint 01: `npm test` ejecutó las cinco pruebas anteriores más una comprobación estructural de `database/schema.sql`; resultado: seis correctas y cero fallos. La integración no pudo comprobarse localmente por ausencia de MySQL y Docker.
+
+Evidencia reproducible de Sprint 01: el workflow `Sprint 01 - Validacion MySQL` se ejecutó en GitHub Actions run `35058288461` con MySQL 8.4 y Node 20.20.2. `database/schema.sql` se aplicó desde cero; `npm test` obtuvo 6/6 pruebas correctas; `npm run test:db` obtuvo 1/1 prueba correcta y verificó conexión, tablas, claves y restricciones principales; la aplicación inició, respondió en `/salud`, confirmó la conexión con MySQL y se cerró de forma controlada. GitHub Actions se usa únicamente como entorno de pruebas de este sprint, no como infraestructura productiva ni pipeline de despliegue.
+
 ## Conclusión y observaciones
 
-Las clases iniciales y la ruta de comprobación funcionaron sin fallos en Sprint 00. Los casos restantes continúan planificados y se actualizarán únicamente al ejecutar las fases correspondientes.
+Las clases iniciales, la ruta de comprobación, el schema y la integración básica con MySQL funcionaron sin fallos en la ejecución reproducible del Sprint 01. Los casos funcionales de fases posteriores continúan planificados.
