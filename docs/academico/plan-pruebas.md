@@ -74,6 +74,8 @@ Evidencia reproducible de Sprint 02: el workflow `Sprint 02 - Validacion funcion
 
 Evidencia reproducible de Sprint 03: el workflow `Sprint 03 - Reportes y API MySQL` run `35300816939` se ejecutó con MySQL 8.4 y Node 20.20.2. `npm test` obtuvo 15/15 pruebas correctas. `npm run test:db` obtuvo 3/3 pruebas correctas y mantuvo aprobadas las integraciones anteriores. La prueba de Sprint 03 verificó los límites 09:30/09:31 y 17:29/17:30, usuarios activos con y sin marcaciones, exclusión de inactivos en RE-03, acceso administrativo a reportes, filtros activo/inactivo/todos, filtro inválido, contrato JSON y ausencia de modificaciones por AP-01. La aplicación inició y confirmó la conexión con MySQL. La revisión local con `npm audit --audit-level=high` reportó 0 vulnerabilidades.
 
+Validación final de Sprint 03: GitHub Actions run `35303900433`, ejecutado sobre el commit `f390f3d4b73211dbfd16bd7338d62b37dc30a350`, terminó con resultado `success`. `npm test` mantuvo 15/15 pruebas correctas y `npm run test:db` mantuvo 3/3 pruebas de integración correctas con MySQL 8.4. AP-01 con `estado=todos` comprobó explícitamente la presencia de usuarios activos e inactivos, además de conservar las validaciones de `activo`, `inactivo`, filtro inválido, contrato JSON y ausencia de modificación de datos.
+
 El 16 de septiembre de 2026 se intentó el recorrido visual manual con navegador. No pudo ejecutarse porque el navegador remoto no admite acceso al servidor local del checkout y el entorno local no dispone de MySQL ni Docker. Esta limitación no reemplaza el recorrido manual pendiente; la cobertura disponible corresponde a la integración HTTP automatizada del workflow indicado.
 
 ## Conclusión y observaciones

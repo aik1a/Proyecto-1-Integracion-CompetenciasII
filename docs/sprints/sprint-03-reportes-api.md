@@ -1,6 +1,6 @@
 # Sprint 03 — Reportes y API
 
-**Estado:** Listo para revisión
+**Estado:** Cerrado e integrado en `main`
 **Rama:** `sprint/03-reportes-api`
 
 ## Objetivo
@@ -144,6 +144,12 @@ Pruebas ejecutadas:
 - `npm run test:db`: 3 pruebas de integración correctas, 0 fallos, ejecutadas con MySQL 8.4 en GitHub Actions run `35300816939`. Incluye schema y Sprint 02, además de reportes con usuario activo con marcaciones, activo sin marcaciones, filtros activo/inactivo/todos, filtro inválido, respuesta JSON y restricciones de acceso.
 - El mismo run comprobó el arranque de la aplicación, la conexión MySQL y la respuesta de la pantalla de login.
 - `npm audit --audit-level=high`: 0 vulnerabilidades.
+
+Cierre e integración:
+
+- Commit final integrado: `f390f3d4b73211dbfd16bd7338d62b37dc30a350`.
+- Validación final: GitHub Actions run `35303900433`, commit `f390f3d4b73211dbfd16bd7338d62b37dc30a350`, resultado `success`.
+- Commit de merge en `main`: `6f54c5dfbccf41902472d786102b7893bfb693fb`.
 
 Limitaciones y pendientes reales:
 
