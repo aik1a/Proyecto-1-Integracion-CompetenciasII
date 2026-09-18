@@ -98,6 +98,9 @@ test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
     assert.match(respuesta.headers.get('content-type'), /^application\/json/);
     const empleados = await respuesta.json();
     assert.ok(empleados.some((item) => item.nombre === nombreEsperado));
+    if (filtro === 'todos') {
+      assert.ok(empleados.some((item) => item.nombre === `Inactivo S03 ${marca}`));
+    }
     if (nombreExcluido) assert.ok(!empleados.some((item) => item.nombre === nombreExcluido));
     assert.deepEqual(Object.keys(empleados[0]).sort(), ['correo', 'estado', 'id', 'nombre']);
   }
