@@ -1,6 +1,6 @@
 # Sprint 03 — Reportes y API
 
-**Estado:** Pendiente
+**Estado:** Listo para revisión
 **Rama:** `sprint/03-reportes-api`
 
 ## Objetivo
@@ -130,4 +130,23 @@ Informar rama, último commit, cuatro requerimientos completados, contrato real 
 
 ## Resultado
 
-Pendiente. Se completa al cerrar la fase con hechos y pruebas reales.
+Implementación terminada en `sprint/03-reportes-api`:
+
+- RE-01 consulta en MySQL las entradas posteriores a las 09:30 para una fecha; 09:30 no se incluye y 09:31 sí.
+- RE-02 consulta las salidas anteriores a las 17:30; 17:29 se incluye y 17:30 no.
+- RE-03 lista usuarios activos sin ninguna entrada ni salida en la fecha consultada.
+- `/reportes` presenta al administrador las tres consultas en tablas simples y rechaza el acceso de empleados.
+- AP-01 quedó disponible mediante `GET /api/empleados?estado=activo|inactivo|todos`. Devuelve un arreglo JSON con `id`, `nombre`, `correo` y `estado`; un filtro inválido responde `400` con un error JSON y el endpoint no modifica datos.
+
+Pruebas ejecutadas:
+
+- `npm test`: 15 pruebas correctas, 0 fallos. Incluye todas las pruebas anteriores y los límites 09:30/09:31, 17:29/17:30, validación de fecha y filtros de AP-01.
+- `npm run test:db`: 3 pruebas de integración correctas, 0 fallos, ejecutadas con MySQL 8.4 en GitHub Actions run `35300816939`. Incluye schema y Sprint 02, además de reportes con usuario activo con marcaciones, activo sin marcaciones, filtros activo/inactivo/todos, filtro inválido, respuesta JSON y restricciones de acceso.
+- El mismo run comprobó el arranque de la aplicación, la conexión MySQL y la respuesta de la pantalla de login.
+- `npm audit --audit-level=high`: 0 vulnerabilidades.
+
+Limitaciones y pendientes reales:
+
+- El entorno de trabajo no dispone de Docker, MySQL ni navegador, por lo que la integración MySQL se ejecutó en GitHub Actions y no localmente.
+- La integración HTTP automatizada comprobó las tres tablas HTML, pero las capturas visuales manuales de los reportes quedan pendientes para un equipo con navegador y MySQL accesible.
+- No se implementó ningún requisito del Sprint 04.

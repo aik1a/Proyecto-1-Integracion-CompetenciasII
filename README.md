@@ -73,4 +73,4 @@ docker compose exec app npm run test:db
 
 ## Estado
 
-Sprint 00, Sprint 01 y Sprint 02 están integrados en `main`. Sprint 03 todavía no ha sido iniciado.
+Sprint 00, Sprint 01 y Sprint 02 están integrados en `main`. Sprint 03 está implementado en `sprint/03-reportes-api` y listo para revisión; todavía no está integrado. Sprint 04 no ha sido iniciado.

@@ -2,6 +2,7 @@ const express = require('express');
 const { obtenerPool } = require('./db/connection');
 const { UsuarioService } = require('./services/usuarioService');
 const { AsistenciaService } = require('./services/asistenciaService');
+const { ReporteService, validarFecha } = require('./services/reporteService');
 const SessionStore = require('./services/sessionStore');
 const pages = require('./views/pages');
 
@@ -16,6 +17,7 @@ function crearApp({ pool = obtenerPool(), sesiones = new SessionStore() } = {}) 
   const app = express();
   const usuarios = new UsuarioService(pool);
   const asistencia = new AsistenciaService(pool);
+  const reportes = new ReporteService(pool);
   app.use(express.urlencoded({ extended: false }));
   app.use(express.static('src/public'));
   app.use((req, res, next) => {
@@ -76,6 +78,32 @@ function crearApp({ pool = obtenerPool(), sesiones = new SessionStore() } = {}) 
     try {
       res.send(pages.listaUsuarios(req.usuario, await usuarios.listar(), req.query.exito, req.query.error));
     } catch (error) { next(error); }
+  });
+
+  app.get('/reportes', requiereAdministrador, async (req, res, next) => {
+    const fecha = req.query.fecha || '';
+    if (!fecha) return res.send(pages.reportes(req.usuario));
+    try {
+      validarFecha(fecha);
+      const [atrasos, salidasAnticipadas, inasistencias] = await Promise.all([
+        reportes.listarAtrasos(fecha),
+        reportes.listarSalidasAnticipadas(fecha),
+        reportes.listarInasistencias(fecha)
+      ]);
+      res.send(pages.reportes(req.usuario, fecha, { atrasos, salidasAnticipadas, inasistencias }));
+    } catch (error) {
+      if (/fecha/.test(error.message)) return res.status(400).send(pages.reportes(req.usuario, fecha, {}, error.message));
+      next(error);
+    }
+  });
+
+  app.get('/api/empleados', async (req, res) => {
+    try {
+      res.json(await usuarios.listarEmpleadosPorEstado(req.query.estado));
+    } catch (error) {
+      if (/estado/.test(error.message)) return res.status(400).json({ error: error.message });
+      throw error;
+    }
   });
   app.get('/usuarios/nuevo', requiereAdministrador, (req, res) => res.send(pages.formularioUsuario(req.usuario)));
   app.post('/usuarios', requiereAdministrador, async (req, res) => {
