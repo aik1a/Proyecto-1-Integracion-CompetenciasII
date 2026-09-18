@@ -19,7 +19,7 @@ async function solicitud(baseUrl, ruta, opciones = {}, cookie = '') {
 
 test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
   const pool = mysql.createPool(configuracionDb());
-  const marca = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  const marca = `${Date.now().toString(36)}${Math.floor(Math.random() * 1000)}`;
   const fecha = '2026-09-18';
   const passwordHash = await crearHash('Sprint03Test123');
   const ids = [];
