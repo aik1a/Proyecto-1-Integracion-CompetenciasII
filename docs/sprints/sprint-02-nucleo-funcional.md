@@ -1,6 +1,6 @@
 # Sprint 02 — Núcleo funcional
 
-**Estado:** Completado y listo para revisión
+**Estado:** Cerrado e integrado en `main`
 **Rama:** `sprint/02-nucleo-funcional`
 
 ## Objetivo
@@ -144,3 +144,9 @@ Limitaciones reales:
 - el recorrido visual manual con navegador continúa pendiente: el navegador remoto no puede acceder al servidor local del checkout y el entorno local no dispone de Docker/MySQL. El flujo equivalente sí se comprobó por HTTP contra MySQL real en la prueba de integración.
 
 No se implementaron reportes, API ni requisitos de Sprint 03.
+
+## Cierre e integración
+
+- Commit final integrado de Sprint 02: `a19be2348da0b8832c99c6d5dd8ff49eb49b5d32`.
+- Validación final previa al merge: workflow `Sprint 02 - Validacion funcional MySQL`, run `35125177534`, commit `a19be2348da0b8832c99c6d5dd8ff49eb49b5d32`, resultado `success`.
+- Commit de merge en `main`: `25b12881be7f53e72abaaf7a867ab2c76fff77c2`.
