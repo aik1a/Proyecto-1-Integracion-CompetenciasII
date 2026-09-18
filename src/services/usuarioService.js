@@ -17,6 +17,14 @@ function validarCorreo(correo) {
   }
 }
 
+function normalizarFiltroEstado(estado) {
+  const filtro = String(estado || '').trim().toLowerCase();
+  if (!['activo', 'inactivo', 'todos'].includes(filtro)) {
+    throw new Error('El estado debe ser activo, inactivo o todos');
+  }
+  return filtro;
+}
+
 class UsuarioService {
   constructor(pool) {
     this.pool = pool;
@@ -41,6 +49,21 @@ class UsuarioService {
     const [filas] = await this.pool.execute(
       `SELECT id, identificador, nombre, correo, perfil, estado
          FROM usuarios ORDER BY nombre, identificador`
+    );
+    return filas;
+  }
+
+  async listarEmpleadosPorEstado(estado) {
+    const filtro = normalizarFiltroEstado(estado);
+    const parametros = [];
+    let condicion = '';
+    if (filtro !== 'todos') {
+      condicion = 'WHERE estado = ?';
+      parametros.push(filtro === 'activo' ? 'Activo' : 'Inactivo');
+    }
+    const [filas] = await this.pool.execute(
+      `SELECT id, nombre, correo, estado FROM usuarios ${condicion} ORDER BY nombre, id`,
+      parametros
     );
     return filas;
   }
@@ -102,4 +125,4 @@ class UsuarioService {
   }
 }
 
-module.exports = { UsuarioService, normalizarDatos, validarCorreo };
+module.exports = { UsuarioService, normalizarDatos, validarCorreo, normalizarFiltroEstado };

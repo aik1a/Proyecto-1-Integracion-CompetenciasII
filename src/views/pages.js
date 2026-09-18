@@ -5,7 +5,7 @@ function escapar(valor) {
 
 function pagina(titulo, contenido, usuario) {
   const navegacion = usuario ? `<nav><span>${escapar(usuario.nombre)} (${escapar(usuario.perfil)})</span>
-    ${usuario.perfil === 'administrador' ? '<a href="/usuarios">Usuarios</a>' : '<a href="/asistencia">Asistencia</a>'}
+    ${usuario.perfil === 'administrador' ? '<a href="/usuarios">Usuarios</a><a href="/reportes">Reportes</a>' : '<a href="/asistencia">Asistencia</a>'}
     <form action="/logout" method="post"><button type="submit">Cerrar sesión</button></form></nav>` : '';
   return `<!doctype html><html lang="es"><head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapar(titulo)}</title>
@@ -59,4 +59,26 @@ function formularioUsuario(usuarioSesion, usuario = {}, error = '') {
       <button type="submit">${editando ? 'Guardar cambios' : 'Crear usuario'}</button></form>`, usuarioSesion);
 }
 
-module.exports = { login, asistencia, listaUsuarios, formularioUsuario };
+function tablaReporte(filas, incluirHora) {
+  const encabezadoHora = incluirHora ? '<th>Hora</th>' : '';
+  const cuerpo = filas.length
+    ? filas.map((fila) => `<tr><td>${escapar(fila.identificador)}</td><td>${escapar(fila.nombre)}</td>
+      <td>${escapar(fila.fecha)}</td>${incluirHora ? `<td>${escapar(fila.hora)}</td>` : ''}</tr>`).join('')
+    : `<tr><td colspan="${incluirHora ? 4 : 3}">Sin resultados para la fecha consultada.</td></tr>`;
+  return `<div class="tabla"><table><thead><tr><th>Identificador</th><th>Nombre</th><th>Fecha</th>${encabezadoHora}</tr></thead>
+    <tbody>${cuerpo}</tbody></table></div>`;
+}
+
+function reportes(usuario, fecha = '', resultados = {}, error = '') {
+  const consultado = Boolean(fecha && !error);
+  return pagina('Reportes de asistencia', `${mensaje(error, 'error')}
+    <form action="/reportes" method="get" class="tarjeta formulario-reporte">
+      <label>Fecha<input name="fecha" type="date" required value="${escapar(fecha)}"></label>
+      <button type="submit">Consultar reportes</button>
+    </form>
+    ${consultado ? `<section><h2>RE-01 Atrasos posteriores a las 09:30</h2>${tablaReporte(resultados.atrasos || [], true)}</section>
+    <section><h2>RE-02 Salidas anteriores a las 17:30</h2>${tablaReporte(resultados.salidasAnticipadas || [], true)}</section>
+    <section><h2>RE-03 Inasistencias</h2>${tablaReporte(resultados.inasistencias || [], false)}</section>` : ''}`, usuario);
+}
+
+module.exports = { login, asistencia, listaUsuarios, formularioUsuario, reportes };
