@@ -1,6 +1,6 @@
 # Sprint 04 — Entrega
 
-**Estado:** Pendiente
+**Estado:** Listo para revisión
 **Rama:** `sprint/04-entrega`
 
 ## Objetivo
@@ -141,4 +141,42 @@ Informar rama, último commit, fallos corregidos, pruebas ejecutadas, entregable
 
 ## Resultado
 
-Pendiente. Se completa al cerrar la fase con hechos y pruebas reales.
+### Bloques completados
+
+1. QA documental de CA-01, GU-01, GU-02, GU-03, RE-01, RE-02, RE-03 y AP-01; no se detectaron defectos inequívocos que justificaran modificar código.
+2. Plan de pruebas completado con casos de integración, evidencia histórica separada y estado real de las verificaciones de esta fase.
+3. Trazabilidad requisito → código → ruta → prueba creada en `docs/academico/trazabilidad-entrega.md`.
+4. README completado con requisitos previos, variables, ejecución local, Docker Compose, pruebas y recorrido de demostración.
+5. Evidencias 1.2 a 1.5 organizadas; contenido de PPT e informe de empleabilidad preparados como material reconstruible.
+6. Árbol remoto revisado para detectar secretos y archivos accidentales.
+
+### Pruebas y estado real
+
+- Pruebas unitarias de Sprint 04: no ejecutadas; el entorno disponible solo permitió operar mediante la API remota de GitHub.
+- Integración MySQL de Sprint 04: no ejecutada.
+- Docker Compose local: no ejecutado.
+- Recorrido manual completo: no ejecutado; continúa pendiente junto con capturas reales.
+- Evidencia histórica verificada en GitHub: runs `35058288461`, `35119603201`, `35300816939` y `35303900433`, todos con conclusión `success`. No se presentan como ejecuciones nuevas.
+
+### Defectos y correcciones
+
+No se identificó mediante revisión estática un defecto inequívoco que afectara un requisito oficial. No se modificaron código, arquitectura, pruebas, Docker ni base de datos.
+
+### Entregables preparados
+
+- plan final de pruebas;
+- trazabilidad de ocho requisitos;
+- README de ejecución y demostración;
+- índice de evidencias 1.2 a 1.5;
+- contenido para presentación;
+- borrador verificable del informe de empleabilidad;
+- referencia al script definitivo `database/schema.sql`.
+
+### Limitaciones y pendientes
+
+- Ejecutar desde un entorno limpio `npm test`, `npm run test:db` y `docker compose up --build`.
+- Completar demostración manual y capturas.
+- Completar datos personales/institucionales y validar experiencias reales del informe de empleabilidad.
+- Generar ZIP, PPT y formatos finales exigidos por Aula Virtual.
+
+No se agregó funcionalidad, no se inició una fase posterior y no se hizo merge a `main`.

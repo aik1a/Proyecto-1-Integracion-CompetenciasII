@@ -78,6 +78,31 @@ Validación final de Sprint 03: GitHub Actions run `35303900433`, ejecutado sobr
 
 El 16 de septiembre de 2026 se intentó el recorrido visual manual con navegador. No pudo ejecutarse porque el navegador remoto no admitía acceso al servidor local del checkout y, en ese momento, el entorno local no disponía de MySQL ni Docker. Posteriormente, Docker fue estabilizado e integrado en `main`. Esta mejora no constituye evidencia de que el recorrido visual manual completo se haya ejecutado; dicha evidencia continúa pendiente. La cobertura registrada corresponde a la integración HTTP automatizada del workflow indicado.
 
+## Casos de integración y requisitos
+
+Los resultados siguientes corresponden a ejecuciones históricas verificadas en GitHub Actions. No constituyen una nueva ejecución de Sprint 04.
+
+| Caso N° | Nombre del caso | Módulo/Función | Datos de entrada | Resultado esperado | Resultado obtenido | Estado | Evidencia |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| IT-001 | Acceso y asistencia | CA-01 | Credenciales válidas e inválidas; entrada, repetición y salida | Autenticar solo al activo, persistir secuencia válida y rechazar secuencias inválidas | Flujo HTTP y persistencia MySQL aprobados | Correcto | Run `35119603201` |
+| IT-002 | Crear usuario | GU-01 | Datos válidos de empleado | Validar, proteger contraseña, guardar y confirmar | Creación y hash comprobados | Correcto | Run `35119603201` |
+| IT-003 | Modificar usuario | GU-02 | Cambio de nombre conservando contraseña | Validar, guardar y permitir acceso posterior | Modificación y acceso aprobados | Correcto | Run `35119603201` |
+| IT-004 | Desactivar usuario | GU-03 | Usuario activo | Cambiar a Inactivo e impedir ingreso | Desactivación e ingreso rechazado comprobados | Correcto | Run `35119603201` |
+| IT-005 | Reporte de atrasos | RE-01 | Entradas 09:30 y 09:31 | Excluir 09:30 e incluir 09:31 | Límites y tabla HTML comprobados | Correcto | Run `35303900433` |
+| IT-006 | Reporte de salidas anticipadas | RE-02 | Salidas 17:29 y 17:30 | Incluir 17:29 y excluir 17:30 | Límites y tabla HTML comprobados | Correcto | Run `35303900433` |
+| IT-007 | Reporte de inasistencias | RE-03 | Activo sin marcas e inactivo sin marcas | Incluir solo al activo sin marcaciones | Inclusión y exclusión comprobadas | Correcto | Run `35303900433` |
+| IT-008 | API de empleados por estado | AP-01 | `activo`, `inactivo`, `todos` e inválido | Retornar JSON filtrado, responder 400 al inválido y no modificar datos | Contrato, filtros y ausencia de modificación comprobados | Correcto | Run `35303900433` |
+
+## Verificación de entrega de Sprint 04
+
+| Verificación | Resultado real de esta fase | Estado |
+| --- | --- | --- |
+| Revisión estática de los ocho requisitos | Rutas, servicios y pruebas asociados quedaron localizados en la trazabilidad final | Completada |
+| Revisión de secretos y archivos accidentales | Árbol remoto revisado; `.env` está ignorado y solo existe `.env.example` con valores ficticios | Completada |
+| Suite `npm test` | No ejecutada en esta fase: el entorno disponible opera mediante API remota de GitHub y no ofrece ejecución de comandos | Pendiente |
+| Integración `npm run test:db` | No ejecutada en esta fase por la misma limitación; se conservan separadamente los runs históricos | Pendiente |
+| Docker Compose local | No ejecutado en esta fase; requiere Docker en un equipo local | Pendiente |
+| Recorrido manual completo y capturas | No ejecutado; una prueba HTTP no equivale a demostración manual | Pendiente |
 ## Conclusión y observaciones
 
-Las clases iniciales, el schema, el núcleo funcional de Sprint 02 y los reportes y API de Sprint 03 funcionaron sin fallos en las ejecuciones finales registradas. Las capturas visuales manuales de los tres reportes continúan como evidencia manual pendiente.
+Las ejecuciones históricas registradas cubren las clases, el schema, el núcleo funcional y los ocho requisitos. En Sprint 04 se completó la revisión documental y de trazabilidad, pero no se ejecutaron nuevamente las suites, Docker Compose ni la demostración manual debido a las capacidades del entorno remoto. Antes de la entrega docente siguen pendientes una ejecución limpia local, el recorrido manual completo y sus capturas.
