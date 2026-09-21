@@ -70,4 +70,4 @@ docker compose down --remove-orphans
 
 ## Estado
 
-Sprint 00, Sprint 01 y Sprint 02 están integrados en `main`. Sprint 03 está implementado en `sprint/03-reportes-api` y listo para revisión; todavía no está integrado. Sprint 04 no ha sido iniciado.
+Sprint 00, Sprint 01, Sprint 02 y Sprint 03 están integrados en `main`. Sprint 04 todavía no ha sido iniciado.
