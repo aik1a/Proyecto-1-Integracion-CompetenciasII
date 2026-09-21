@@ -48,27 +48,24 @@ Usuarios ficticios para la demostración:
 - administrador: `admin@empresa.test` / `Admin1234`;
 - empleado: `empleado@empresa.test` / `Empleado1234`.
 
-## Ejecución con Docker Compose
+## Ejecutar con Docker
 
-Requisitos: Docker con el complemento Compose.
+Prerequisito: Docker Desktop instalado y abierto.
+
+Arranque:
 
 ```bash
-cp .env.example .env
 docker compose up --build
 ```
 
-El servicio MySQL crea el esquema automáticamente desde `database/schema.sql`. Para recrearlo desde cero junto con su volumen:
+Acceso: <http://localhost:3000>
+
+Detener: `Ctrl+C` o `docker compose down`.
+
+Solo si Docker informa contenedores huérfanos de una ejecución anterior:
 
 ```bash
-docker compose down -v
-docker compose up --build
-```
-
-Para ejecutar las pruebas:
-
-```bash
-npm test
-docker compose exec app npm run test:db
+docker compose down --remove-orphans
 ```
 
 ## Estado
