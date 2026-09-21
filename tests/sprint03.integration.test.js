@@ -79,9 +79,9 @@ test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
   const pantalla = await solicitud(baseUrl, `/reportes?fecha=${fecha}`, {}, cookieAdmin);
   assert.equal(pantalla.status, 200);
   const html = await pantalla.text();
-  assert.match(html, /RE-01 Atrasos/);
-  assert.match(html, /RE-02 Salidas/);
-  assert.match(html, /RE-03 Inasistencias/);
+  assert.match(html, /Reporte de atrasos/);
+  assert.match(html, /Reporte de salidas anticipadas/);
+  assert.match(html, /Reporte de inasistencias/);
   assert.match(html, new RegExp(`Incidencia S03 ${marca}`));
   assert.doesNotMatch(html, new RegExp(`Puntual S03 ${marca}.*09:31`, 's'));
   assert.match(html, new RegExp(`Ausente S03 ${marca}`));

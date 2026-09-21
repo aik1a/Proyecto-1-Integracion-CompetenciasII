@@ -1,6 +1,6 @@
 # Sprint 04 — Entrega
 
-**Estado:** Listo para revisión
+**Estado:** En curso — validaciones pendientes
 **Rama:** `sprint/04-entrega`
 
 ## Objetivo
@@ -143,24 +143,29 @@ Informar rama, último commit, fallos corregidos, pruebas ejecutadas, entregable
 
 ### Bloques completados
 
-1. QA documental de CA-01, GU-01, GU-02, GU-03, RE-01, RE-02, RE-03 y AP-01; no se detectaron defectos inequívocos que justificaran modificar código.
+1. QA documental de CA-01, GU-01, GU-02, GU-03, RE-01, RE-02, RE-03 y AP-01. Se corrigió el defecto de presentación descrito abajo sin cambiar funcionalidad.
 2. Plan de pruebas completado con casos de integración, evidencia histórica separada y estado real de las verificaciones de esta fase.
 3. Trazabilidad requisito → código → ruta → prueba creada en `docs/academico/trazabilidad-entrega.md`.
 4. README completado con requisitos previos, variables, ejecución local, Docker Compose, pruebas y recorrido de demostración.
 5. Evidencias 1.2 a 1.5 organizadas; contenido de PPT e informe de empleabilidad preparados como material reconstruible.
-6. Árbol remoto revisado para detectar secretos y archivos accidentales.
+
+### Bloque pendiente
+
+6. Prueba de entrega limpia: pendiente. La revisión remota del árbol para detectar secretos y archivos accidentales fue realizada, pero no se ejecutaron sobre este HEAD las pruebas automáticas, Docker Compose ni el recorrido manual completo.
 
 ### Pruebas y estado real
 
-- Pruebas unitarias de Sprint 04: no ejecutadas; el entorno disponible solo permitió operar mediante la API remota de GitHub.
-- Integración MySQL de Sprint 04: no ejecutada.
-- Docker Compose local: no ejecutado.
-- Recorrido manual completo: no ejecutado; continúa pendiente junto con capturas reales.
-- Evidencia histórica verificada en GitHub: runs `35058288461`, `35119603201`, `35300816939` y `35303900433`, todos con conclusión `success`. No se presentan como ejecuciones nuevas.
+- Validación remota de Sprint 03 mediante `workflow_dispatch`: no ejecutada; el conector remoto disponible no permite iniciar manualmente el workflow existente.
+- Pruebas unitarias sobre este HEAD: no ejecutadas.
+- Integración MySQL sobre este HEAD: no ejecutada.
+- Arranque de la aplicación sobre este HEAD: no ejecutado.
+- Docker Compose local: no ejecutado; continúa pendiente.
+- Recorrido manual completo: no ejecutado; continúa pendiente junto con las capturas reales.
+- Evidencia histórica verificada en GitHub: runs `35058288461`, `35119603201`, `35300816939` y `35303900433`, todos con conclusión `success`. No se presentan como ejecuciones nuevas ni como validación de este HEAD.
 
 ### Defectos y correcciones
 
-No se identificó mediante revisión estática un defecto inequívoco que afectara un requisito oficial. No se modificaron código, arquitectura, pruebas, Docker ni base de datos.
+Se corrigieron los tres títulos visibles de reportes para usar nombres orientados al usuario y eliminar de la interfaz los identificadores técnicos RE-01, RE-02 y RE-03. Solo se actualizaron las aserciones directamente afectadas en la prueba de integración; no se cambió funcionalidad, arquitectura, Docker ni base de datos.
 
 ### Entregables preparados
 
@@ -174,6 +179,7 @@ No se identificó mediante revisión estática un defecto inequívoco que afecta
 
 ### Limitaciones y pendientes
 
+- Ejecutar mediante GitHub Actions el workflow existente de validación de Sprint 03 sobre este HEAD.
 - Ejecutar desde un entorno limpio `npm test`, `npm run test:db` y `docker compose up --build`.
 - Completar demostración manual y capturas.
 - Completar datos personales/institucionales y validar experiencias reales del informe de empleabilidad.

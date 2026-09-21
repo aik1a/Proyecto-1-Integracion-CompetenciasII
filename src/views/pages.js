@@ -76,9 +76,9 @@ function reportes(usuario, fecha = '', resultados = {}, error = '') {
       <label>Fecha<input name="fecha" type="date" required value="${escapar(fecha)}"></label>
       <button type="submit">Consultar reportes</button>
     </form>
-    ${consultado ? `<section><h2>RE-01 Atrasos posteriores a las 09:30</h2>${tablaReporte(resultados.atrasos || [], true)}</section>
-    <section><h2>RE-02 Salidas anteriores a las 17:30</h2>${tablaReporte(resultados.salidasAnticipadas || [], true)}</section>
-    <section><h2>RE-03 Inasistencias</h2>${tablaReporte(resultados.inasistencias || [], false)}</section>` : ''}`, usuario);
+    ${consultado ? `<section><h2>Reporte de atrasos</h2>${tablaReporte(resultados.atrasos || [], true)}</section>
+    <section><h2>Reporte de salidas anticipadas</h2>${tablaReporte(resultados.salidasAnticipadas || [], true)}</section>
+    <section><h2>Reporte de inasistencias</h2>${tablaReporte(resultados.inasistencias || [], false)}</section>` : ''}`, usuario);
 }
 
 module.exports = { login, asistencia, listaUsuarios, formularioUsuario, reportes };
