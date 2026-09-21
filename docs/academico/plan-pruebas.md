@@ -76,8 +76,8 @@ Evidencia reproducible de Sprint 03: el workflow `Sprint 03 - Reportes y API MyS
 
 Validación final de Sprint 03: GitHub Actions run `35303900433`, ejecutado sobre el commit `f390f3d4b73211dbfd16bd7338d62b37dc30a350`, terminó con resultado `success`. `npm test` mantuvo 15/15 pruebas correctas y `npm run test:db` mantuvo 3/3 pruebas de integración correctas con MySQL 8.4. AP-01 con `estado=todos` comprobó explícitamente la presencia de usuarios activos e inactivos, además de conservar las validaciones de `activo`, `inactivo`, filtro inválido, contrato JSON y ausencia de modificación de datos.
 
-El 16 de septiembre de 2026 se intentó el recorrido visual manual con navegador. No pudo ejecutarse porque el navegador remoto no admite acceso al servidor local del checkout y el entorno local no dispone de MySQL ni Docker. Esta limitación no reemplaza el recorrido manual pendiente; la cobertura disponible corresponde a la integración HTTP automatizada del workflow indicado.
+El 16 de septiembre de 2026 se intentó el recorrido visual manual con navegador. No pudo ejecutarse porque el navegador remoto no admitía acceso al servidor local del checkout y, en ese momento, el entorno local no disponía de MySQL ni Docker. Posteriormente, Docker fue estabilizado e integrado en `main`. Esta mejora no constituye evidencia de que el recorrido visual manual completo se haya ejecutado; dicha evidencia continúa pendiente. La cobertura registrada corresponde a la integración HTTP automatizada del workflow indicado.
 
 ## Conclusión y observaciones
 
-Las clases iniciales, el schema, el núcleo funcional de Sprint 02 y los reportes y API de Sprint 03 funcionaron sin fallos en las ejecuciones finales registradas. Las capturas visuales manuales de los tres reportes siguen pendientes por falta de un navegador conectado al entorno MySQL de prueba.
+Las clases iniciales, el schema, el núcleo funcional de Sprint 02 y los reportes y API de Sprint 03 funcionaron sin fallos en las ejecuciones finales registradas. Las capturas visuales manuales de los tres reportes continúan como evidencia manual pendiente.

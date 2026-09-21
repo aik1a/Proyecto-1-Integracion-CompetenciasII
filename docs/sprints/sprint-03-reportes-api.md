@@ -153,6 +153,6 @@ Cierre e integración:
 
 Limitaciones y pendientes reales:
 
-- El entorno de trabajo no dispone de Docker, MySQL ni navegador, por lo que la integración MySQL se ejecutó en GitHub Actions y no localmente.
-- La integración HTTP automatizada comprobó las tres tablas HTML, pero las capturas visuales manuales de los reportes quedan pendientes para un equipo con navegador y MySQL accesible.
+- El 16 de septiembre de 2026 la validación visual local no pudo ejecutarse porque el navegador remoto no admitía acceso al servidor local del checkout y, en ese momento, el entorno local no disponía de MySQL ni Docker. Posteriormente, Docker fue estabilizado e integrado en `main`.
+- La integración HTTP automatizada comprobó las tres tablas HTML, pero el recorrido visual manual completo y sus capturas continúan como evidencia manual pendiente.
 - No se implementó ningún requisito del Sprint 04.
