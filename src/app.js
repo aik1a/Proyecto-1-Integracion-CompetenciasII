@@ -135,6 +135,14 @@ function crearApp({ pool = obtenerPool(), sesiones = new SessionStore() } = {}) 
       res.redirect(`/usuarios?error=${encodeURIComponent(error.message)}`);
     }
   });
+  app.post('/usuarios/:id/eliminar', requiereAdministrador, async (req, res) => {
+    try {
+      await usuarios.eliminar(req.params.id);
+      res.redirect('/usuarios?exito=Usuario%20eliminado%20correctamente');
+    } catch (error) {
+      res.redirect(`/usuarios?error=${encodeURIComponent(error.message)}`);
+    }
+  });
 
   app.use((error, req, res, next) => {
     console.error(error);

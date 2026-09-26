@@ -172,21 +172,21 @@ Informar rama, último commit, fallos corregidos, pruebas ejecutadas, entregable
 
 ### Bloque pendiente
 
-6. Prueba de entrega limpia: pendiente. La revisión remota del árbol para detectar secretos y archivos accidentales fue realizada, pero no se ejecutaron sobre este HEAD las pruebas automáticas, Docker Compose ni el recorrido manual completo.
+6. Prueba de entrega limpia: parcial. La revisión de archivos accidentales y secretos y la suite unitaria se completaron en un checkout temporal. MySQL, Docker Compose y recorrido manual completo siguen pendientes por falta de entorno.
 
 ### Pruebas y estado real
 
-- Validación remota de Sprint 03 mediante `workflow_dispatch`: no ejecutada; el conector remoto disponible no permite iniciar manualmente el workflow existente.
-- Pruebas unitarias sobre este HEAD: no ejecutadas.
-- Integración MySQL sobre este HEAD: no ejecutada.
+- Validación remota histórica de Sprint 03 mediante `workflow_dispatch`: run `35686264057`, rama `sprint/04-entrega`, SHA `fb6d3965c5acddd94d461218bfa0c42bb6a0c127`, conclusión `success`. Ese run no valida el nuevo HEAD de estas correcciones.
+- `npm test` en el checkout temporal de estas correcciones: 18/18 correctas en la primera ejecución; 19/19 tras añadir la comprobación de fecha y hora visible.
+- `npm run test:db`: ejecutado; 0/4. Los cuatro casos fallaron al conectar por `ECONNREFUSED 127.0.0.1:3306` porque no hay servidor MySQL en este entorno. No son fallos funcionales acreditados.
 - Arranque de la aplicación sobre este HEAD: no ejecutado.
-- Docker Compose local: no ejecutado; continúa pendiente.
+- `docker compose config` y `docker compose up --build`: intentados; ambos devolvieron `docker: command not found`.
 - Recorrido manual completo: no ejecutado; continúa pendiente junto con las capturas reales.
 - Evidencia histórica verificada en GitHub: runs `35058288461`, `35119603201`, `35300816939` y `35303900433`, todos con conclusión `success`. No se presentan como ejecuciones nuevas ni como validación de este HEAD.
 
 ### Defectos y correcciones
 
-Se corrigieron los tres títulos visibles de reportes para usar nombres orientados al usuario y eliminar de la interfaz los identificadores técnicos RE-01, RE-02 y RE-03. Solo se actualizaron las aserciones directamente afectadas en la prueba de integración; no se cambió funcionalidad, arquitectura, Docker ni base de datos.
+Se corrigieron previamente los tres títulos visibles de reportes. En este cierre se fijó `TZ=America/Santiago` para app y MySQL en Compose; la conexión de la app obtiene cadenas de fecha/hora sin conversión implícita del driver, mientras `NOW()`, `CURDATE()` y la fecha generada operan sobre el día del servidor MySQL en Chile. Los reportes entregan fecha técnica `AAAA-MM-DD` y la vista la presenta como `dd-mm-aaaa`. Se agregó borrado físico protegido por la clave foránea existente, con confirmación separada de Desactivar. Se añadieron pruebas unitarias y una integración para los ocho casos QA.
 
 ### Entregables preparados
 
@@ -200,11 +200,9 @@ Se corrigieron los tres títulos visibles de reportes para usar nombres orientad
 
 ### Limitaciones y pendientes
 
-- Corregir y verificar el manejo coherente de `America/Santiago` en Docker, Node.js y MySQL; el hallazgo es bloqueante para CA-01 y RE-01/RE-02/RE-03.
-- Formatear las fechas visibles de Reportes como `dd-mm-aaaa`.
-- Implementar y verificar **Eliminar** para GU-03, manteniendo **Desactivar**, las confirmaciones y la protección de usuarios con marcaciones históricas.
-- Ejecutar mediante GitHub Actions el workflow existente de validación de Sprint 03 sobre este HEAD.
-- Ejecutar desde un entorno limpio `npm test`, `npm run test:db` y `docker compose up --build`.
+- Verificar `America/Santiago`, la fecha generada, el cambio de día y RE-01/RE-02/RE-03 con MySQL y Docker reales. Los registros históricos que se hubieran guardado antes con hora UTC requieren evaluación antes de interpretar sus fechas; este cambio no los migra.
+- Ejecutar `npm run test:db`, `docker compose config` y `docker compose up --build` en un entorno con MySQL y Docker. La integración QA-001/QA-002 comprueba Docker solo cuando `TZ=America/Santiago`; fuera de él informa que falta esa evidencia.
+- Ejecutar una validación remota sobre el nuevo HEAD; el run `35686264057` validó exclusivamente `fb6d3965c5acddd94d461218bfa0c42bb6a0c127`.
 - Completar demostración manual y capturas.
 - Completar datos personales/institucionales y validar experiencias reales del informe de empleabilidad.
 - Generar ZIP, PPT y formatos finales exigidos por Aula Virtual.

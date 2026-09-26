@@ -95,18 +95,18 @@ Los resultados siguientes corresponden a ejecuciones históricas verificadas en 
 
 ## Casos QA pendientes para las correcciones autorizadas
 
-Estos casos deben ejecutarse después de implementar las correcciones. No tienen resultado aprobado en este documento.
+Las pruebas unitarias de este cierre se ejecutaron en el checkout temporal; la integración real con MySQL/Docker y el recorrido manual siguen pendientes. Una comprobación de código o HTML no equivale a una acción manual del navegador.
 
 | Caso N° | Nombre del caso | Requisito | Datos de entrada | Resultado esperado | Resultado obtenido | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
-| QA-001 | Registrar marcación en hora de Chile | CA-01 | Contenedores Node.js y MySQL ejecutándose; registrar una marca en un instante verificable de `America/Santiago` | `fecha_hora`, fecha generada, `CURDATE()` y “Marcaciones de hoy” representan el mismo día y hora de Chile | No ejecutado | Pendiente |
-| QA-002 | Mantener el día en el límite UTC/Chile | CA-01, RE-01, RE-02, RE-03 | Registrar cerca del cambio de día de `America/Santiago` | La marca pertenece al día chileno correcto y aparece solo en los reportes de esa fecha | No ejecutado | Pendiente |
-| QA-003 | Clasificar límites horarios en Docker | RE-01, RE-02 | Entradas 09:30 y 09:31; salidas 17:29 y 17:30 interpretadas en `America/Santiago` | 09:31 es atraso, 09:30 no; 17:29 es salida anticipada, 17:30 no | No ejecutado | Pendiente |
-| QA-004 | Mostrar fecha humana en Reportes | RE-01, RE-02, RE-03 | Consultar una fecha con resultados | Todas las fechas visibles usan `dd-mm-aaaa` y no muestran un objeto `Date` ni texto GMT crudo | No ejecutado | Pendiente |
-| QA-005 | Confirmar desactivación | Operación complementaria de GU-03 | Seleccionar **Desactivar** para un usuario activo | Se solicita confirmación indicando que no podrá ingresar y que se conservará su historial; solo al confirmar queda Inactivo | No ejecutado | Pendiente |
-| QA-006 | Eliminar usuario sin historial | GU-03 | Usuario sin marcaciones históricas | Se solicita confirmación con advertencia de irreversibilidad; al confirmar se borra físicamente | No ejecutado | Pendiente |
-| QA-007 | Proteger usuario con historial | GU-03 | Usuario con una o más marcaciones | La eliminación física se rechaza y el mensaje indica que puede desactivarse para conservar el historial | No ejecutado | Pendiente |
-| QA-008 | Cancelar acciones destructivas | GU-03 | Abrir la confirmación de **Desactivar** o **Eliminar** y cancelarla | No cambia el estado ni se borra el usuario | No ejecutado | Pendiente |
+| QA-001 | Registrar marcación en hora de Chile | CA-01 | Contenedores Node.js y MySQL ejecutándose; registrar una marca en un instante verificable de `America/Santiago` | `fecha_hora`, fecha generada, `CURDATE()` y “Marcaciones de hoy” representan el mismo día y hora de Chile | Vista unitaria correcta; prueba MySQL preparada, no ejecutada por `ECONNREFUSED` | Pendiente en Docker |
+| QA-002 | Mantener el día en el límite UTC/Chile | CA-01, RE-01, RE-02, RE-03 | Registrar cerca del cambio de día de `America/Santiago` | La marca pertenece al día chileno correcto y aparece solo en los reportes de esa fecha | Integración con hora simulada preparada; no ejecutada por falta de MySQL | Pendiente |
+| QA-003 | Clasificar límites horarios en Docker | RE-01, RE-02 | Entradas 09:30 y 09:31; salidas 17:29 y 17:30 interpretadas en `America/Santiago` | 09:31 es atraso, 09:30 no; 17:29 es salida anticipada, 17:30 no | Límites unitarios correctos; nueva integración preparada, sin ejecución MySQL | Pendiente en Docker |
+| QA-004 | Mostrar fecha humana en Reportes | RE-01, RE-02, RE-03 | Consultar una fecha con resultados | Todas las fechas visibles usan `dd-mm-aaaa` y no muestran un objeto `Date` ni texto GMT crudo | Vista unitaria correcta en tres tablas; HTTP con MySQL no ejecutado | Parcial |
+| QA-005 | Confirmar desactivación | Operación complementaria de GU-03 | Seleccionar **Desactivar** para un usuario activo | Se solicita confirmación indicando que no podrá ingresar y que se conservará su historial; solo al confirmar queda Inactivo | HTML con confirmación probado; efecto HTTP y navegador no ejecutados | Parcial |
+| QA-006 | Eliminar usuario sin historial | GU-03 | Usuario sin marcaciones históricas | Se solicita confirmación con advertencia de irreversibilidad; al confirmar se borra físicamente | SQL `DELETE` y confirmación probados unitariamente; MySQL no ejecutado | Parcial |
+| QA-007 | Proteger usuario con historial | GU-03 | Usuario con una o más marcaciones | La eliminación física se rechaza y el mensaje indica que puede desactivarse para conservar el historial | Error de FK simulado y mensaje probados; FK real no ejecutada | Parcial |
+| QA-008 | Cancelar acciones destructivas | GU-03 | Abrir la confirmación de **Desactivar** o **Eliminar** y cancelarla | No cambia el estado ni se borra el usuario | Ambos formularios usan `return confirm(...)`; cancelación manual no ejecutada | Pendiente manual |
 
 La posible inclusión de `Administrador demo` en RE-03 no genera todavía un caso de corrección: es una decisión de dominio pendiente y no un bug confirmado.
 
@@ -118,10 +118,10 @@ Como comprobación opcional posterior a Sprint 04, la mejora UX de Reportes debe
 | --- | --- | --- |
 | Revisión estática de los ocho requisitos | Rutas, servicios y pruebas asociados quedaron localizados en la trazabilidad final | Completada |
 | Revisión de secretos y archivos accidentales | Árbol remoto revisado; `.env` está ignorado y solo existe `.env.example` con valores ficticios | Completada |
-| Suite `npm test` | No ejecutada en esta fase: el entorno disponible opera mediante API remota de GitHub y no ofrece ejecución de comandos | Pendiente |
-| Integración `npm run test:db` | No ejecutada en esta fase por la misma limitación; se conservan separadamente los runs históricos | Pendiente |
-| Docker Compose local | No ejecutado en esta fase; requiere Docker en un equipo local | Pendiente |
+| Suite `npm test` | Ejecutada en checkout temporal de las correcciones: 19/19 correctas | Correcto |
+| Integración `npm run test:db` | Ejecutada: 0/4, todas fallan con `ECONNREFUSED 127.0.0.1:3306` por ausencia de MySQL | Pendiente |
+| Docker Compose local | `docker compose config` y `docker compose up --build` intentados; `docker: command not found` | Pendiente |
 | Recorrido manual completo y capturas | No ejecutado; una prueba HTTP no equivale a demostración manual | Pendiente |
 ## Conclusión y observaciones
 
-Las ejecuciones históricas registradas cubren las clases, el schema y los flujos implementados del núcleo funcional. Para GU-03 solo acreditan desactivación, no la eliminación literal exigida por el docente. En Sprint 04 se completó la revisión documental y de trazabilidad, pero no se ejecutaron nuevamente las suites, Docker Compose ni la demostración manual debido a las capacidades del entorno remoto. Antes de la entrega docente siguen pendientes implementar y ejecutar los casos QA autorizados, una ejecución limpia local, el recorrido manual completo y sus capturas.
+Las ejecuciones históricas cubren clases, schema y flujos anteriores, pero no validan este nuevo HEAD. El run remoto `35686264057` terminó `success` sobre `fb6d3965c5acddd94d461218bfa0c42bb6a0c127`, antes de estas correcciones. La suite unitaria local pasó; la integración con MySQL y la demostración manual todavía no acreditan las correcciones QA. No se declara Sprint 04 cerrado para entrega docente.

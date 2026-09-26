@@ -10,6 +10,7 @@ function obtenerPool() {
       database: process.env.DB_NAME || 'control_asistencia',
       user: process.env.DB_USER || 'app',
       password: process.env.DB_PASSWORD || '',
+      dateStrings: true,
       waitForConnections: true,
       connectionLimit: 5
     });

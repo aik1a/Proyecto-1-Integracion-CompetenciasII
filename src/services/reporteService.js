@@ -39,7 +39,7 @@ class ReporteService {
   async listarAtrasos(fecha) {
     const fechaValida = validarFecha(fecha);
     const [filas] = await this.pool.execute(
-      `SELECT u.id, u.identificador, u.nombre, m.fecha, TIME(m.fecha_hora) AS hora
+      `SELECT u.id, u.identificador, u.nombre, DATE_FORMAT(m.fecha, '%Y-%m-%d') AS fecha, TIME(m.fecha_hora) AS hora
          FROM marcaciones m
          JOIN usuarios u ON u.id = m.usuario_id
         WHERE m.accion = 'entrada' AND m.fecha = ?
@@ -53,7 +53,7 @@ class ReporteService {
   async listarSalidasAnticipadas(fecha) {
     const fechaValida = validarFecha(fecha);
     const [filas] = await this.pool.execute(
-      `SELECT u.id, u.identificador, u.nombre, m.fecha, TIME(m.fecha_hora) AS hora
+      `SELECT u.id, u.identificador, u.nombre, DATE_FORMAT(m.fecha, '%Y-%m-%d') AS fecha, TIME(m.fecha_hora) AS hora
          FROM marcaciones m
          JOIN usuarios u ON u.id = m.usuario_id
         WHERE m.accion = 'salida' AND m.fecha = ?

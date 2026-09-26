@@ -123,6 +123,18 @@ class UsuarioService {
     );
     if (resultado.affectedRows === 0) throw new Error('Usuario no encontrado o ya inactivo');
   }
+
+  async eliminar(id) {
+    try {
+      const [resultado] = await this.pool.execute('DELETE FROM usuarios WHERE id = ?', [id]);
+      if (resultado.affectedRows === 0) throw new Error('Usuario no encontrado');
+    } catch (error) {
+      if (error.code === 'ER_ROW_IS_REFERENCED_2' || error.code === 'ER_ROW_IS_REFERENCED') {
+        throw new Error('No se puede eliminar: el usuario tiene marcaciones históricas. Puede Desactivar para conservar el historial.');
+      }
+      throw error;
+    }
+  }
 }
 
 module.exports = { UsuarioService, normalizarDatos, validarCorreo, normalizarFiltroEstado };
