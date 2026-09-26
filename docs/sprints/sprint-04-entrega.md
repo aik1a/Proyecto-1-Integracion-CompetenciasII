@@ -19,7 +19,7 @@ Congelar funcionalidad, corregir defectos relevantes y preparar exclusivamente l
 ## Precondiciones
 
 - Sprint 03 aprobado e integrado a `main`.
-- Los ocho requerimientos implementados.
+- Existe una implementación previa declarada para los ocho requerimientos, sujeta a la verificación final de QA de este sprint.
 - No existen nuevas funciones autorizadas para esta etapa.
 
 ## Regla de feature freeze
@@ -31,6 +31,27 @@ Desde el inicio de este sprint:
 - no se rediseña la arquitectura;
 - no se hace refactorización estética amplia;
 - solo se corrigen defectos, se completan pruebas, evidencias y documentación obligatoria.
+
+La incorporación de **Eliminar** como operación distinta de **Desactivar** se considera una corrección de cumplimiento de GU-03, no una ampliación funcional: el documento docente exige literalmente eliminar usuarios y la implementación actual solo realiza baja lógica.
+
+## Decisiones de QA autorizadas
+
+### Correcciones obligatorias antes del cierre
+
+1. **Zona horaria bloqueante:** las marcaciones en Docker se están guardando o interpretando en UTC. La aplicación y MySQL deben trabajar coherentemente con `America/Santiago`, incluyendo `NOW()`, `CURDATE()`, el día generado de la marcación y las comparaciones horarias. El defecto afecta CA-01 y puede alterar RE-01, RE-02 y RE-03.
+2. **Presentación de fechas:** las fechas de los resultados de Reportes se muestran como objeto `Date` o texto GMT crudo. Deben mostrarse en formato humano `dd-mm-aaaa`, sin cambiar el formato técnico `AAAA-MM-DD` del control de búsqueda ni de las consultas internas.
+3. **GU-03:** mantener **Desactivar** como baja lógica y agregar **Eliminar** como borrado físico real. Ambas acciones deben solicitar confirmación. **Eliminar** debe advertir que es irreversible y, si existen marcaciones históricas, debe rechazarse con un mensaje que indique que el usuario puede desactivarse para conservar el historial. La protección debe respetar la relación actual `marcaciones.usuario_id` con `ON DELETE RESTRICT`.
+
+Estas correcciones están documentadas y autorizadas, pero todavía no están implementadas ni verificadas en este commit documental.
+
+### Mejora UX posterior / parche menor
+
+- Precargar en Reportes la fecha actual calculada con `America/Santiago`, sin ejecutar la consulta automáticamente.
+- Es una mejora de bajo riesgo y no un requisito docente obligatorio; no forma parte de las correcciones bloqueantes del cierre.
+
+### Decisión de dominio pendiente
+
+- La aparición de `Administrador demo` en el reporte de inasistencias queda pendiente de revisión. No se modifica ni se registra como bug confirmado hasta decidir si el perfil administrador pertenece al universo de RE-03.
 
 ## Bloques de trabajo
 
@@ -143,7 +164,7 @@ Informar rama, último commit, fallos corregidos, pruebas ejecutadas, entregable
 
 ### Bloques completados
 
-1. QA documental de CA-01, GU-01, GU-02, GU-03, RE-01, RE-02, RE-03 y AP-01. Se corrigió el defecto de presentación descrito abajo sin cambiar funcionalidad.
+1. QA documental de CA-01, GU-01, GU-02, GU-03, RE-01, RE-02, RE-03 y AP-01. Se corrigió el defecto de títulos descrito abajo sin cambiar funcionalidad y se registraron como pendientes los hallazgos posteriores de zona horaria, formato visible de fecha y cumplimiento literal de GU-03.
 2. Plan de pruebas completado con casos de integración, evidencia histórica separada y estado real de las verificaciones de esta fase.
 3. Trazabilidad requisito → código → ruta → prueba creada en `docs/academico/trazabilidad-entrega.md`.
 4. README completado con requisitos previos, variables, ejecución local, Docker Compose, pruebas y recorrido de demostración.
@@ -179,10 +200,15 @@ Se corrigieron los tres títulos visibles de reportes para usar nombres orientad
 
 ### Limitaciones y pendientes
 
+- Corregir y verificar el manejo coherente de `America/Santiago` en Docker, Node.js y MySQL; el hallazgo es bloqueante para CA-01 y RE-01/RE-02/RE-03.
+- Formatear las fechas visibles de Reportes como `dd-mm-aaaa`.
+- Implementar y verificar **Eliminar** para GU-03, manteniendo **Desactivar**, las confirmaciones y la protección de usuarios con marcaciones históricas.
 - Ejecutar mediante GitHub Actions el workflow existente de validación de Sprint 03 sobre este HEAD.
 - Ejecutar desde un entorno limpio `npm test`, `npm run test:db` y `docker compose up --build`.
 - Completar demostración manual y capturas.
 - Completar datos personales/institucionales y validar experiencias reales del informe de empleabilidad.
 - Generar ZIP, PPT y formatos finales exigidos por Aula Virtual.
+- Revisar como decisión de dominio si `Administrador demo` debe incluirse en RE-03; no tratarlo como bug hasta resolverlo.
+- Evaluar después de Sprint 04 el parche UX que precarga la fecha actual de Reportes sin consultar automáticamente.
 
 No se agregó funcionalidad, no se inició una fase posterior y no se hizo merge a `main`.

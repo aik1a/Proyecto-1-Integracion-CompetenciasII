@@ -14,7 +14,7 @@ Se planifican pruebas para:
 
 - clases iniciales `Usuario` y `Marcacion`;
 - acceso con correo y contraseña;
-- creación, modificación y desactivación de usuarios;
+- creación, modificación, desactivación y eliminación protegida de usuarios;
 - reglas de entrada, salida, atraso, salida anticipada e inasistencia;
 - filtro de empleados por estado.
 
@@ -87,11 +87,30 @@ Los resultados siguientes corresponden a ejecuciones históricas verificadas en 
 | IT-001 | Acceso y asistencia | CA-01 | Credenciales válidas e inválidas; entrada, repetición y salida | Autenticar solo al activo, persistir secuencia válida y rechazar secuencias inválidas | Flujo HTTP y persistencia MySQL aprobados | Correcto | Run `35119603201` |
 | IT-002 | Crear usuario | GU-01 | Datos válidos de empleado | Validar, proteger contraseña, guardar y confirmar | Creación y hash comprobados | Correcto | Run `35119603201` |
 | IT-003 | Modificar usuario | GU-02 | Cambio de nombre conservando contraseña | Validar, guardar y permitir acceso posterior | Modificación y acceso aprobados | Correcto | Run `35119603201` |
-| IT-004 | Desactivar usuario | GU-03 | Usuario activo | Cambiar a Inactivo e impedir ingreso | Desactivación e ingreso rechazado comprobados | Correcto | Run `35119603201` |
+| IT-004 | Desactivar usuario | Operación complementaria de GU-03 | Usuario activo | Cambiar a Inactivo e impedir ingreso | Desactivación e ingreso rechazado comprobados | Correcto | Run `35119603201` |
 | IT-005 | Reporte de atrasos | RE-01 | Entradas 09:30 y 09:31 | Excluir 09:30 e incluir 09:31 | Límites y tabla HTML comprobados | Correcto | Run `35303900433` |
 | IT-006 | Reporte de salidas anticipadas | RE-02 | Salidas 17:29 y 17:30 | Incluir 17:29 y excluir 17:30 | Límites y tabla HTML comprobados | Correcto | Run `35303900433` |
 | IT-007 | Reporte de inasistencias | RE-03 | Activo sin marcas e inactivo sin marcas | Incluir solo al activo sin marcaciones | Inclusión y exclusión comprobadas | Correcto | Run `35303900433` |
 | IT-008 | API de empleados por estado | AP-01 | `activo`, `inactivo`, `todos` e inválido | Retornar JSON filtrado, responder 400 al inválido y no modificar datos | Contrato, filtros y ausencia de modificación comprobados | Correcto | Run `35303900433` |
+
+## Casos QA pendientes para las correcciones autorizadas
+
+Estos casos deben ejecutarse después de implementar las correcciones. No tienen resultado aprobado en este documento.
+
+| Caso N° | Nombre del caso | Requisito | Datos de entrada | Resultado esperado | Resultado obtenido | Estado |
+| --- | --- | --- | --- | --- | --- | --- |
+| QA-001 | Registrar marcación en hora de Chile | CA-01 | Contenedores Node.js y MySQL ejecutándose; registrar una marca en un instante verificable de `America/Santiago` | `fecha_hora`, fecha generada, `CURDATE()` y “Marcaciones de hoy” representan el mismo día y hora de Chile | No ejecutado | Pendiente |
+| QA-002 | Mantener el día en el límite UTC/Chile | CA-01, RE-01, RE-02, RE-03 | Registrar cerca del cambio de día de `America/Santiago` | La marca pertenece al día chileno correcto y aparece solo en los reportes de esa fecha | No ejecutado | Pendiente |
+| QA-003 | Clasificar límites horarios en Docker | RE-01, RE-02 | Entradas 09:30 y 09:31; salidas 17:29 y 17:30 interpretadas en `America/Santiago` | 09:31 es atraso, 09:30 no; 17:29 es salida anticipada, 17:30 no | No ejecutado | Pendiente |
+| QA-004 | Mostrar fecha humana en Reportes | RE-01, RE-02, RE-03 | Consultar una fecha con resultados | Todas las fechas visibles usan `dd-mm-aaaa` y no muestran un objeto `Date` ni texto GMT crudo | No ejecutado | Pendiente |
+| QA-005 | Confirmar desactivación | Operación complementaria de GU-03 | Seleccionar **Desactivar** para un usuario activo | Se solicita confirmación indicando que no podrá ingresar y que se conservará su historial; solo al confirmar queda Inactivo | No ejecutado | Pendiente |
+| QA-006 | Eliminar usuario sin historial | GU-03 | Usuario sin marcaciones históricas | Se solicita confirmación con advertencia de irreversibilidad; al confirmar se borra físicamente | No ejecutado | Pendiente |
+| QA-007 | Proteger usuario con historial | GU-03 | Usuario con una o más marcaciones | La eliminación física se rechaza y el mensaje indica que puede desactivarse para conservar el historial | No ejecutado | Pendiente |
+| QA-008 | Cancelar acciones destructivas | GU-03 | Abrir la confirmación de **Desactivar** o **Eliminar** y cancelarla | No cambia el estado ni se borra el usuario | No ejecutado | Pendiente |
+
+La posible inclusión de `Administrador demo` en RE-03 no genera todavía un caso de corrección: es una decisión de dominio pendiente y no un bug confirmado.
+
+Como comprobación opcional posterior a Sprint 04, la mejora UX de Reportes deberá verificar que la fecha actual se precargue según `America/Santiago` y que no se ejecute ninguna consulta hasta que el administrador presione **Consultar reportes**.
 
 ## Verificación de entrega de Sprint 04
 
@@ -105,4 +124,4 @@ Los resultados siguientes corresponden a ejecuciones históricas verificadas en 
 | Recorrido manual completo y capturas | No ejecutado; una prueba HTTP no equivale a demostración manual | Pendiente |
 ## Conclusión y observaciones
 
-Las ejecuciones históricas registradas cubren las clases, el schema, el núcleo funcional y los ocho requisitos. En Sprint 04 se completó la revisión documental y de trazabilidad, pero no se ejecutaron nuevamente las suites, Docker Compose ni la demostración manual debido a las capacidades del entorno remoto. Antes de la entrega docente siguen pendientes una ejecución limpia local, el recorrido manual completo y sus capturas.
+Las ejecuciones históricas registradas cubren las clases, el schema y los flujos implementados del núcleo funcional. Para GU-03 solo acreditan desactivación, no la eliminación literal exigida por el docente. En Sprint 04 se completó la revisión documental y de trazabilidad, pero no se ejecutaron nuevamente las suites, Docker Compose ni la demostración manual debido a las capacidades del entorno remoto. Antes de la entrega docente siguen pendientes implementar y ejecutar los casos QA autorizados, una ejecución limpia local, el recorrido manual completo y sus capturas.
