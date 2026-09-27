@@ -42,7 +42,7 @@ La incorporación de **Eliminar** como operación distinta de **Desactivar** se 
 2. **Presentación de fechas:** las fechas de los resultados de Reportes se muestran como objeto `Date` o texto GMT crudo. Deben mostrarse en formato humano `dd-mm-aaaa`, sin cambiar el formato técnico `AAAA-MM-DD` del control de búsqueda ni de las consultas internas.
 3. **GU-03:** mantener **Desactivar** como baja lógica y agregar **Eliminar** como borrado físico real. Ambas acciones deben solicitar confirmación. **Eliminar** debe advertir que es irreversible y, si existen marcaciones históricas, debe rechazarse con un mensaje que indique que el usuario puede desactivarse para conservar el historial. La protección debe respetar la relación actual `marcaciones.usuario_id` con `ON DELETE RESTRICT`.
 
-Estas correcciones están documentadas y autorizadas, pero todavía no están implementadas ni verificadas en este commit documental.
+Los tres defectos ya están corregidos en la rama: zona horaria, fechas visibles y eliminación GU-03. La suite unitaria local pasó 19/19; la integración MySQL y Docker aún no se ha validado sobre estas correcciones. El workflow remoto ajustado para `America/Santiago` debe ejecutarse sobre el nuevo HEAD y su resultado real registrarse después.
 
 ### Mejora UX posterior / parche menor
 
