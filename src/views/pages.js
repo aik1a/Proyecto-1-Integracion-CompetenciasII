@@ -89,8 +89,7 @@ function tablaReporte(filas, incluirHora) {
     <tbody>${cuerpo}</tbody></table></div>`;
 }
 
-function reportes(usuario, fecha = '', resultados = {}, error = '') {
-  const consultado = Boolean(fecha && !error);
+function reportes(usuario, fecha = '', resultados = {}, error = '', consultado = Boolean(fecha && !error)) {
   return pagina('Reportes de asistencia', `${mensaje(error, 'error')}
     <form action="/reportes" method="get" class="tarjeta formulario-reporte">
       <label>Fecha<input name="fecha" type="date" required value="${escapar(fecha)}"></label>

@@ -44,9 +44,9 @@ La incorporación de **Eliminar** como operación distinta de **Desactivar** se 
 
 Los tres defectos ya están corregidos en la rama: zona horaria, fechas visibles y eliminación GU-03. La suite unitaria local pasó 19/19; la integración MySQL y Docker aún no se ha validado sobre estas correcciones. El workflow remoto ajustado para `America/Santiago` debe ejecutarse sobre el nuevo HEAD y su resultado real registrarse después.
 
-### Mejora UX posterior / parche menor
+### Parche UX final antes del CODE FREEZE
 
-- Precargar en Reportes la fecha actual calculada con `America/Santiago`, sin ejecutar la consulta automáticamente.
+- Se precarga en Reportes la fecha actual calculada con `America/Santiago`, sin ejecutar la consulta automáticamente. La consulta se realiza solo al pulsar «Consultar reportes».
 - Es una mejora de bajo riesgo y no un requisito docente obligatorio; no forma parte de las correcciones bloqueantes del cierre.
 
 ### Decisión de dominio pendiente
@@ -207,6 +207,6 @@ Se corrigieron previamente los tres títulos visibles de reportes. En este cierr
 - Completar datos personales/institucionales y validar experiencias reales del informe de empleabilidad.
 - Generar ZIP, PPT y formatos finales exigidos por Aula Virtual.
 - Revisar como decisión de dominio si `Administrador demo` debe incluirse en RE-03; no tratarlo como bug hasta resolverlo.
-- Evaluar después de Sprint 04 el parche UX que precarga la fecha actual de Reportes sin consultar automáticamente.
+- Validar el parche UX de precarga de fecha de Reportes en la próxima ejecución de la integración MySQL; no cierra por sí mismo Sprint 04.
 
 No se agregó funcionalidad, no se inició una fase posterior y no se hizo merge a `main`.

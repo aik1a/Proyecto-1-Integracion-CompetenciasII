@@ -59,6 +59,15 @@ test('QA-001 a QA-008 en MySQL y HTTP', async (t) => {
   const puntual = await crear('puntual');
   const cookieAdmin = await login(admin.correo);
   const cookieEmpleado = await login(empleado.correo);
+  const partesFecha = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(new Date());
+  const valoresFecha = Object.fromEntries(partesFecha.map(({ type, value }) => [type, value]));
+  const fechaChile = `${valoresFecha.year}-${valoresFecha.month}-${valoresFecha.day}`;
+  const sinConsulta = await (await solicitar('/reportes', cookieAdmin)).text();
+  assert.match(sinConsulta, new RegExp(`name="fecha" type="date" required value="${fechaChile}"`));
+  assert.doesNotMatch(sinConsulta, /<table|Reporte de atrasos|Reporte de salidas anticipadas|Reporte de inasistencias/);
+
   const lista = await (await solicitar('/usuarios', cookieAdmin)).text();
   assert.match(lista, /Desactivar.*Eliminar/s);
   assert.match(lista, /onsubmit="return confirm\('[^']*historial se conservará/);
@@ -107,6 +116,7 @@ test('QA-001 a QA-008 en MySQL y HTTP', async (t) => {
   await db.execute(`INSERT INTO marcaciones (usuario_id, accion, fecha_hora) VALUES
     (?, 'entrada', '2026-09-18 09:30:00'), (?, 'salida', '2026-09-18 17:30:00')`, [puntual.id, puntual.id]);
   const html = await (await solicitar('/reportes?fecha=2026-09-18', cookieAdmin)).text();
+  assert.match(html, /name="fecha" type="date" required value="2026-09-18"/);
   assert.match(html, /Reporte de atrasos/);
   assert.match(html, /Reporte de salidas anticipadas/);
   assert.match(html, /Reporte de inasistencias/);
