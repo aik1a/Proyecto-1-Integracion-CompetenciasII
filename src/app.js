@@ -13,6 +13,14 @@ function leerCookies(req) {
   }));
 }
 
+function fechaActualChile() {
+  const partes = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(new Date());
+  const valores = Object.fromEntries(partes.map(({ type, value }) => [type, value]));
+  return `${valores.year}-${valores.month}-${valores.day}`;
+}
+
 function crearApp({ pool = obtenerPool(), sesiones = new SessionStore() } = {}) {
   const app = express();
   const usuarios = new UsuarioService(pool);
@@ -82,7 +90,7 @@ function crearApp({ pool = obtenerPool(), sesiones = new SessionStore() } = {}) 
 
   app.get('/reportes', requiereAdministrador, async (req, res, next) => {
     const fecha = req.query.fecha || '';
-    if (!fecha) return res.send(pages.reportes(req.usuario));
+    if (!fecha) return res.send(pages.reportes(req.usuario, fechaActualChile(), {}, '', false));
     try {
       validarFecha(fecha);
       const [atrasos, salidasAnticipadas, inasistencias] = await Promise.all([
@@ -131,6 +139,14 @@ function crearApp({ pool = obtenerPool(), sesiones = new SessionStore() } = {}) 
     try {
       await usuarios.desactivar(req.params.id);
       res.redirect('/usuarios?exito=Usuario%20desactivado%20correctamente');
+    } catch (error) {
+      res.redirect(`/usuarios?error=${encodeURIComponent(error.message)}`);
+    }
+  });
+  app.post('/usuarios/:id/eliminar', requiereAdministrador, async (req, res) => {
+    try {
+      await usuarios.eliminar(req.params.id);
+      res.redirect('/usuarios?exito=Usuario%20eliminado%20correctamente');
     } catch (error) {
       res.redirect(`/usuarios?error=${encodeURIComponent(error.message)}`);
     }

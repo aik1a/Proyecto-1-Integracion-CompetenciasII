@@ -14,7 +14,7 @@ El proyecto corresponde a una aplicación web mínima para controlar la asistenc
 | RE-03 | Reporte de inasistencias | El administrador visualiza los usuarios y días en que no se registró entrada ni salida. | Sprint 03 |
 | GU-01 | Crear usuarios | El administrador crea usuarios y el sistema valida, guarda y confirma la información. | Sprint 02 |
 | GU-02 | Modificar usuarios | El administrador selecciona un usuario, modifica sus datos y el sistema valida, guarda y confirma los cambios. | Sprint 02 |
-| GU-03 | Eliminar usuarios | El administrador selecciona un usuario, confirma la acción y el sistema lo elimina de forma operativa mediante desactivación lógica. | Sprint 02 |
+| GU-03 | Eliminar usuarios | El administrador selecciona un usuario y confirma la eliminación definitiva. Si existen marcaciones históricas, el borrado físico se rechaza y se indica que puede desactivarlo para conservar el historial. **Desactivar** se mantiene como una operación distinta de baja lógica. | Sprint 02, corrección Sprint 04 |
 | AP-01 | Listar empleados | Una API REST de solo lectura retorna un objeto JSON con los empleados filtrados por estado Activo, Inactivo o Todos. | Sprint 03 |
 
 ## Alcance de Sprint 00

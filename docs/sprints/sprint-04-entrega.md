@@ -1,6 +1,6 @@
 # Sprint 04 — Entrega
 
-**Estado:** Pendiente
+**Estado:** Cierre técnico aprobado — entrega académica externa pendiente
 **Rama:** `sprint/04-entrega`
 
 ## Objetivo
@@ -19,7 +19,7 @@ Congelar funcionalidad, corregir defectos relevantes y preparar exclusivamente l
 ## Precondiciones
 
 - Sprint 03 aprobado e integrado a `main`.
-- Los ocho requerimientos implementados.
+- Los ocho requerimientos fueron validados en la rama mediante el run final indicado en Resultado.
 - No existen nuevas funciones autorizadas para esta etapa.
 
 ## Regla de feature freeze
@@ -31,6 +31,27 @@ Desde el inicio de este sprint:
 - no se rediseña la arquitectura;
 - no se hace refactorización estética amplia;
 - solo se corrigen defectos, se completan pruebas, evidencias y documentación obligatoria.
+
+La incorporación de **Eliminar** como operación distinta de **Desactivar** fue una corrección de cumplimiento de GU-03, no una ampliación funcional: el documento docente exige literalmente eliminar usuarios y la implementación anterior solo realizaba baja lógica.
+
+## Decisiones de QA autorizadas
+
+### Correcciones obligatorias antes del cierre
+
+1. **Zona horaria bloqueante:** se detectó que las marcaciones en Docker se guardaban o interpretaban en UTC. La aplicación y MySQL deben trabajar coherentemente con `America/Santiago`, incluyendo `NOW()`, `CURDATE()`, el día generado de la marcación y las comparaciones horarias. El defecto afecta CA-01 y puede alterar RE-01, RE-02 y RE-03.
+2. **Presentación de fechas:** las fechas de los resultados de Reportes se mostraban como objeto `Date` o texto GMT crudo. Deben mostrarse en formato humano `dd-mm-aaaa`, sin cambiar el formato técnico `AAAA-MM-DD` del control de búsqueda ni de las consultas internas.
+3. **GU-03:** mantener **Desactivar** como baja lógica y agregar **Eliminar** como borrado físico real. Ambas acciones deben solicitar confirmación. **Eliminar** debe advertir que es irreversible y, si existen marcaciones históricas, debe rechazarse con un mensaje que indique que el usuario puede desactivarse para conservar el historial. La protección debe respetar la relación actual `marcaciones.usuario_id` con `ON DELETE RESTRICT`.
+
+Los tres defectos quedaron corregidos y validados en la rama. El CODE FREEZE técnico corresponde a `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`; GitHub Actions run `36467694142` terminó `success` sobre ese SHA con `TZ=America/Santiago`, `npm test` 19/19 y `npm run test:db` 4/4, sin fallos ni omisiones.
+
+### Parche UX final antes del CODE FREEZE
+
+- Se precarga en Reportes la fecha actual calculada con `America/Santiago`, sin ejecutar la consulta automáticamente. La consulta se realiza solo al pulsar «Consultar reportes».
+- Es una mejora de bajo riesgo y no un requisito docente obligatorio; no forma parte de las correcciones bloqueantes del cierre.
+
+### Decisión de dominio pendiente
+
+- La aparición de `Administrador demo` en el reporte de inasistencias queda pendiente de revisión. No se modifica ni se registra como bug confirmado hasta decidir si el perfil administrador pertenece al universo de RE-03.
 
 ## Bloques de trabajo
 
@@ -141,4 +162,45 @@ Informar rama, último commit, fallos corregidos, pruebas ejecutadas, entregable
 
 ## Resultado
 
-Pendiente. Se completa al cerrar la fase con hechos y pruebas reales.
+### Bloques completados
+
+1. QA de CA-01, GU-01, GU-02, GU-03, RE-01, RE-02, RE-03 y AP-01; los defectos de títulos, zona horaria, fecha visible y GU-03 quedaron corregidos y cubiertos por las pruebas finales.
+2. Plan de pruebas completado con casos de integración, evidencia histórica separada y estado real de las verificaciones de esta fase.
+3. Trazabilidad requisito → código → ruta → prueba creada en `docs/academico/trazabilidad-entrega.md`.
+4. README completado con requisitos previos, variables, ejecución local, Docker Compose, pruebas y recorrido de demostración.
+5. Evidencias 1.2 a 1.5 organizadas; contenido de PPT e informe de empleabilidad preparados como material reconstruible.
+
+### Prueba de entrega limpia
+
+6. GitHub Actions validó las suites, schema/seed y arranque sobre el CODE FREEZE. El responsable informó además Docker Compose local operativo (`app` iniciada, `mysql` healthy, `npm test` 19/19, `npm run test:db` 4/4, `NOW()` y `CURDATE()` coherentes con Chile) y un recorrido manual general satisfactorio. Las capturas manuales, si existen, son evidencia externa y no se incorporaron al repositorio.
+
+### Pruebas y estado real
+
+- Validación final verificada en GitHub: workflow `Sprint 03 - Reportes y API MySQL`, run `36467694142`, rama `sprint/04-entrega`, SHA `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`, conclusión `success`.
+- En ese run: `npm test` 19/19 y `npm run test:db` 4/4, con 0 fallos y 0 omitidas en ambas suites. QA-001 a QA-008 quedaron cubiertas en las pruebas unitarias y de integración; el paso de schema/seed y el de arranque/conexión MySQL terminaron correctamente. La prueba HTTP de `/reportes` cubre fecha de Chile precargada sin resultados automáticos y fecha consultada conservada.
+- Validación Docker Compose local, informada por el responsable del proyecto: aplicación levantada, MySQL `healthy`, `npm test` 19/19, `npm run test:db` 4/4 y `NOW()`/`CURDATE()` coherentes con `America/Santiago`. No fue ejecutada por este agente.
+- Recorrido manual general satisfactorio, informado por el responsable del proyecto. No se recibieron capturas ni desglose de acciones manuales individuales para adjuntar en el repositorio.
+- Evidencia histórica separada: run `35686264057` (`success`) ejecutó `fb6d3965c5acddd94d461218bfa0c42bb6a0c127`; los runs `35058288461`, `35119603201`, `35300816939` y `35303900433` corresponden a fases anteriores. Ninguno sustituye el run final.
+
+### Defectos y correcciones
+
+Se corrigieron previamente los tres títulos visibles de reportes. En este cierre se fijó `TZ=America/Santiago` para app y MySQL en Compose; la conexión de la app obtiene cadenas de fecha/hora sin conversión implícita del driver, mientras `NOW()`, `CURDATE()` y la fecha generada operan sobre el día del servidor MySQL en Chile. Los reportes entregan fecha técnica `AAAA-MM-DD` y la vista la presenta como `dd-mm-aaaa`. Se agregó borrado físico protegido por la clave foránea existente, con confirmación separada de Desactivar. Se añadieron pruebas unitarias y una integración para los ocho casos QA.
+
+### Entregables preparados
+
+- plan final de pruebas;
+- trazabilidad de ocho requisitos;
+- README de ejecución y demostración;
+- índice de evidencias 1.2 a 1.5;
+- contenido para presentación;
+- borrador verificable del informe de empleabilidad;
+- referencia al script definitivo `database/schema.sql`.
+
+### Limitaciones y pendientes
+
+- El CODE FREEZE técnico de Sprint 04 está aprobado. La entrega académica completa aún requiere datos personales/institucionales, validación de experiencias reales del informe de empleabilidad y formatos finales ZIP, PPT y documentos del Aula Virtual.
+- El recorrido manual fue informado por el responsable; las capturas no están en este repositorio. El run automatizado no acredita por sí solo clics o cancelaciones de confirmaciones en un navegador.
+- Los registros históricos que se hubieran guardado con hora UTC requieren evaluación antes de interpretar sus fechas; este parche no los migra.
+- La inclusión de `Administrador demo` en RE-03 sigue como decisión de dominio pendiente, sin tratarla como fallo confirmado.
+
+En este cierre documental no se modificó funcionalidad, no se inició otra fase y no se hizo merge a `main`.

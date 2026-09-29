@@ -49,7 +49,7 @@ El MVP incluye:
 | CA-01 | Acceso con correo y contraseña; botones de entrada y salida; guardar identificador, acción, fecha y hora; confirmar el registro. | Un usuario existente inicia sesión, registra una entrada o salida válida y recibe confirmación; la marcación queda en MySQL. | Sprint 02 |
 | GU-01 | El administrador crea usuarios. | El administrador ingresa los datos mínimos, el sistema valida, guarda y confirma. | Sprint 02 |
 | GU-02 | El administrador modifica usuarios. | El administrador selecciona un usuario, cambia datos permitidos y el sistema valida, guarda y confirma. | Sprint 02 |
-| GU-03 | El administrador elimina usuarios. | El administrador selecciona y confirma; el usuario queda inactivo y no puede ingresar. | Sprint 02 |
+| GU-03 | El administrador elimina usuarios. | El administrador selecciona y confirma la eliminación definitiva. Si el usuario tiene marcaciones históricas, el borrado físico se rechaza y se informa que puede desactivarse para conservar el historial. | Sprint 02, corrección Sprint 04 |
 | RE-01 | Mostrar entradas posteriores a las 09:30, con identificador y días de atraso. | El administrador obtiene desde MySQL el listado correcto para el período o fecha consultada. | Sprint 03 |
 | RE-02 | Mostrar salidas anteriores a las 17:30, con identificador y días correspondientes. | El administrador obtiene desde MySQL el listado correcto para el período o fecha consultada. | Sprint 03 |
 | RE-03 | Mostrar usuarios y días sin entrada ni salida. | El administrador obtiene el listado de usuarios activos sin marcaciones en la fecha consultada. | Sprint 03 |
@@ -63,7 +63,11 @@ Estas decisiones hacen ejecutables las descripciones oficiales; no crean módulo
 
 - Se utilizan dos perfiles: administrador y empleado.
 - Los datos mínimos son identificador, nombre, correo único, contraseña protegida, perfil y estado.
-- GU-03 se implementa como desactivación lógica. Esto conserva los registros y permite cumplir el filtro Inactivo de AP-01.
+- **Docente:** GU-03 exige literalmente eliminar usuarios; la desactivación no sustituye este requisito.
+- **Decisión mínima:** se mantienen dos operaciones distintas:
+  - **Desactivar** realiza una baja lógica, cambia el estado a Inactivo, impide el ingreso y conserva el usuario y sus marcaciones. Antes de ejecutarla se debe confirmar que el usuario no podrá ingresar y que su historial se conservará.
+  - **Eliminar** realiza el borrado físico definitivo y debe advertir, antes de confirmarse, que la acción es irreversible.
+- Si el usuario tiene marcaciones históricas, **Eliminar** no puede borrar físicamente el registro. El sistema debe indicarlo y ofrecer **Desactivar** como alternativa para conservar el historial. Esta regla es coherente con la clave foránea actual `marcaciones.usuario_id`, definida con `ON DELETE RESTRICT`.
 - No se implementan permisos configurables, recuperación de contraseña ni verificación de correo.
 
 ### Asistencia
@@ -74,14 +78,22 @@ Estas decisiones hacen ejecutables las descripciones oficiales; no crean módulo
 - Atraso significa entrada posterior a las 09:30.
 - Salida anticipada significa salida anterior a las 17:30.
 - Inasistencia significa usuario activo sin entrada ni salida en la fecha consultada.
+- Las marcaciones, el día vigente y las comparaciones horarias se deben guardar e interpretar coherentemente en la zona `America/Santiago`. Una ejecución Docker en UTC no satisface esta decisión porque puede cambiar el día de la marcación y la clasificación de CA-01, RE-01, RE-02 y RE-03.
 - No se modelan turnos, feriados, calendarios avanzados ni edición de marcaciones.
 
 ### Reportes y API
 
 - Los reportes usan pantallas y tablas simples. Solo se añade un gráfico estadístico si el docente confirma que lo espera como parte de los “elementos gráficos apropiados”.
+- Las fechas visibles en los resultados se presentan en formato humano `dd-mm-aaaa`; no se muestra al usuario el objeto `Date` ni una representación GMT cruda.
 - No se construye un tablero analítico.
 - AP-01 tendrá un único endpoint de lectura con filtro Activo, Inactivo o Todos.
 - La ruta y los nombres exactos del JSON se fijan en el documento de Sprint 03 antes de programar ese endpoint.
+
+### Mejora UX posterior a Sprint 04
+
+- Como parche menor de bajo riesgo, el formulario de Reportes puede precargar la fecha actual calculada en `America/Santiago`.
+- La precarga no ejecuta automáticamente la consulta; el administrador debe presionar el botón correspondiente.
+- Esta mejora no es un requisito docente obligatorio y no condiciona el cumplimiento de RE-01, RE-02 ni RE-03.
 
 ## 6. Stack y diseño reducido
 
@@ -232,6 +244,7 @@ No se implementan ceremonias Scrum ni métricas para producir esta evidencia.
 - Incorporación desde Aula Virtual de `Orientaciones al Trabajo Colaborativo` y `Resolución de problemas`, si están disponibles.
 - Escala definitiva cuando exista diferencia entre la rúbrica completa y la captura de criterios.
 - Ruta y nombres exactos del JSON de AP-01, que deben fijarse antes de Sprint 03.
+- Definir si el usuario `Administrador demo` debe participar en el universo de RE-03. Su aparición en inasistencias es una decisión de dominio pendiente de revisión, no un defecto confirmado; no se modifica hasta resolverla.
 
 Estos pendientes no impiden preparar la base técnica, pero deben resolverse antes de la entrega que corresponda.
 

@@ -29,45 +29,93 @@ El objetivo es cumplir lo solicitado con POO sencilla y buenas prácticas básic
 - La clave foránea conserva la relación con el usuario. La restricción única `(usuario_id, fecha, accion)` admite como máximo una entrada y una salida por usuario y fecha.
 - Los valores permitidos son `administrador`/`empleado`, `Activo`/`Inactivo` y `entrada`/`salida`.
 
-## Ejecución con Node.js y MySQL
+## Requisitos previos
 
-Requisitos: Node.js 20 o superior y MySQL 8.4.
+- Opción local: Node.js 20 o superior y MySQL 8.4.
+- Opción recomendada para demostración: Docker Desktop con Docker Compose.
+- Puerto disponible: `3000`.
+
+## Variables de entorno
+
+Copia `.env.example` como `.env` solo para ejecución local. `.env` está excluido de Git.
+
+| Variable | Uso | Valor de demostración |
+| --- | --- | --- |
+| `PORT` | Puerto HTTP | `3000` |
+| `DB_HOST` | Host MySQL | `127.0.0.1` local / `mysql` en Compose |
+| `DB_PORT` | Puerto MySQL | `3306` |
+| `DB_NAME` | Base de datos | `control_asistencia` |
+| `DB_USER` | Usuario MySQL | `app` |
+| `DB_PASSWORD` | Contraseña MySQL de demostración | `app_local_password` |
+| `MYSQL_ROOT_PASSWORD` | Inicialización de MySQL en Compose | `root_local_password` |
+
+Los valores publicados son exclusivamente locales y ficticios; no deben reutilizarse como credenciales reales.
+
+## Ejecución local con Node.js y MySQL
 
 ```bash
 cp .env.example .env
-npm install
+npm ci
 mysql -u root -p < database/schema.sql
 mysql -u root -p < database/seed.sql
 npm start
 ```
 
-Antes de iniciar, ajusta en `.env` el usuario y la contraseña de una cuenta MySQL local. La aplicación comprueba la conexión y queda disponible en `http://localhost:3000/login`.
+Ajusta `.env` a tu instalación. La aplicación queda disponible en <http://localhost:3000/login>.
 
-Usuarios ficticios para la demostración:
+## Ejecución con Docker Compose
 
-- administrador: `admin@empresa.test` / `Admin1234`;
-- empleado: `empleado@empresa.test` / `Empleado1234`.
-
-## Ejecutar con Docker
-
-Prerequisito: Docker Desktop instalado y abierto.
-
-Arranque:
+Con Docker Desktop abierto, desde la raíz:
 
 ```bash
 docker compose up --build
 ```
 
-Acceso: <http://localhost:3000>
+Acceso: <http://localhost:3000>. Para detener: `Ctrl+C` y luego `docker compose down`.
 
-Detener: `Ctrl+C` o `docker compose down`.
-
-Solo si Docker informa contenedores huérfanos de una ejecución anterior:
+Solo ante contenedores huérfanos:
 
 ```bash
 docker compose down --remove-orphans
 ```
 
+## Datos de demostración
+
+- Administrador: `admin@empresa.test` / `Admin1234`.
+- Empleado: `empleado@empresa.test` / `Empleado1234`.
+
+## Pruebas
+
+```bash
+npm test
+npm run test:db
+```
+
+- `npm test`: pruebas unitarias y comprobaciones sin MySQL.
+- `npm run test:db`: integración; requiere schema aplicado y MySQL disponible.
+- Docker Compose local y recorrido manual son validaciones separadas de GitHub Actions.
+
+## Recorrido básico de demostración
+
+1. Iniciar la aplicación y abrir `/login`.
+2. Ingresar como administrador; listar, crear, modificar, desactivar y eliminar un usuario sin historial. Con historial, comprobar que Eliminar se rechaza y ofrece Desactivar.
+3. Ingresar como empleado; registrar entrada, comprobar repetición rechazada y registrar salida.
+4. Ingresar como administrador; consultar `/reportes` para una fecha preparada.
+5. Verificar RE-01, RE-02 y RE-03 en sus tablas.
+6. Consultar `/api/empleados?estado=activo`, `inactivo` y `todos`; comprobar JSON y filtro inválido.
+
+La demostración debe realizarse y registrarse manualmente en el equipo de entrega; las pruebas HTTP automatizadas no la sustituyen.
+
+## Entregables
+
+- Requerimientos: [`docs/academico/requerimientos.md`](docs/academico/requerimientos.md).
+- Plan final de pruebas: [`docs/academico/plan-pruebas.md`](docs/academico/plan-pruebas.md).
+- Trazabilidad: [`docs/academico/trazabilidad-entrega.md`](docs/academico/trazabilidad-entrega.md).
+- Evidencias 1.2 a 1.5: [`docs/academico/evidencias/README.md`](docs/academico/evidencias/README.md).
+- Contenido para PPT: [`docs/academico/contenido-presentacion.md`](docs/academico/contenido-presentacion.md).
+- Informe de empleabilidad: [`docs/academico/informe-empleabilidad.md`](docs/academico/informe-empleabilidad.md).
+- Script definitivo: [`database/schema.sql`](database/schema.sql).
+
 ## Estado
 
-Sprint 00, Sprint 01, Sprint 02 y Sprint 03 están integrados en `main`. Sprint 04 todavía no ha sido iniciado.
+Sprint 00 a Sprint 03 están integrados en `main`. El CODE FREEZE técnico de Sprint 04 está validado en `sprint/04-entrega` (GitHub Actions run `36467694142`, SHA `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`); sigue sin integrarse a `main`. La entrega académica externa aún requiere sus formatos y evidencias.
