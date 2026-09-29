@@ -76,7 +76,7 @@ Evidencia reproducible de Sprint 03: el workflow `Sprint 03 - Reportes y API MyS
 
 Validación final de Sprint 03: GitHub Actions run `35303900433`, ejecutado sobre el commit `f390f3d4b73211dbfd16bd7338d62b37dc30a350`, terminó con resultado `success`. `npm test` mantuvo 15/15 pruebas correctas y `npm run test:db` mantuvo 3/3 pruebas de integración correctas con MySQL 8.4. AP-01 con `estado=todos` comprobó explícitamente la presencia de usuarios activos e inactivos, además de conservar las validaciones de `activo`, `inactivo`, filtro inválido, contrato JSON y ausencia de modificación de datos.
 
-El 16 de septiembre de 2026 se intentó el recorrido visual manual con navegador. No pudo ejecutarse porque el navegador remoto no admitía acceso al servidor local del checkout y, en ese momento, el entorno local no disponía de MySQL ni Docker. Posteriormente, Docker fue estabilizado e integrado en `main`. Esta mejora no constituye evidencia de que el recorrido visual manual completo se haya ejecutado; dicha evidencia continúa pendiente. La cobertura registrada corresponde a la integración HTTP automatizada del workflow indicado.
+El 16 de septiembre de 2026 se intentó el recorrido visual manual con navegador. No pudo ejecutarse porque el navegador remoto no admitía acceso al servidor local del checkout y, en ese momento, el entorno local no disponía de MySQL ni Docker. Posteriormente, Docker fue estabilizado e integrado en `main`. El responsable informó un recorrido manual general satisfactorio de Sprint 04; no se recibieron capturas ni detalle por acción. La cobertura automatizada se documenta por separado.
 
 ## Casos de integración y requisitos
 
@@ -93,35 +93,37 @@ Los resultados siguientes corresponden a ejecuciones históricas verificadas en 
 | IT-007 | Reporte de inasistencias | RE-03 | Activo sin marcas e inactivo sin marcas | Incluir solo al activo sin marcaciones | Inclusión y exclusión comprobadas | Correcto | Run `35303900433` |
 | IT-008 | API de empleados por estado | AP-01 | `activo`, `inactivo`, `todos` e inválido | Retornar JSON filtrado, responder 400 al inválido y no modificar datos | Contrato, filtros y ausencia de modificación comprobados | Correcto | Run `35303900433` |
 
-## Casos QA pendientes para las correcciones autorizadas
+## Casos QA del cierre técnico de Sprint 04
 
-Las pruebas unitarias de este cierre se ejecutaron en el checkout temporal; la integración real con MySQL/Docker y el recorrido manual siguen pendientes. Una comprobación de código o HTML no equivale a una acción manual del navegador.
+La ejecución final de GitHub Actions run `36467694142` validó el SHA `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336` con `TZ=America/Santiago`: `npm test` 19/19 y `npm run test:db` 4/4, sin fallos ni omisiones. Los casos QA se comprueban dentro de esas suites; el recorrido manual general y Docker Compose local fueron informados por el responsable y no se atribuyen al workflow.
 
 | Caso N° | Nombre del caso | Requisito | Datos de entrada | Resultado esperado | Resultado obtenido | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
-| QA-001 | Registrar marcación en hora de Chile | CA-01 | Contenedores Node.js y MySQL ejecutándose; registrar una marca en un instante verificable de `America/Santiago` | `fecha_hora`, fecha generada, `CURDATE()` y “Marcaciones de hoy” representan el mismo día y hora de Chile | Vista unitaria correcta; prueba MySQL preparada, no ejecutada por `ECONNREFUSED` | Pendiente en Docker |
-| QA-002 | Mantener el día en el límite UTC/Chile | CA-01, RE-01, RE-02, RE-03 | Registrar cerca del cambio de día de `America/Santiago` | La marca pertenece al día chileno correcto y aparece solo en los reportes de esa fecha | Integración con hora simulada preparada; no ejecutada por falta de MySQL | Pendiente |
-| QA-003 | Clasificar límites horarios en Docker | RE-01, RE-02 | Entradas 09:30 y 09:31; salidas 17:29 y 17:30 interpretadas en `America/Santiago` | 09:31 es atraso, 09:30 no; 17:29 es salida anticipada, 17:30 no | Límites unitarios correctos; nueva integración preparada, sin ejecución MySQL | Pendiente en Docker |
-| QA-004 | Mostrar fecha humana en Reportes | RE-01, RE-02, RE-03 | Consultar una fecha con resultados | Todas las fechas visibles usan `dd-mm-aaaa` y no muestran un objeto `Date` ni texto GMT crudo | Vista unitaria correcta en tres tablas; HTTP con MySQL no ejecutado | Parcial |
-| QA-005 | Confirmar desactivación | Operación complementaria de GU-03 | Seleccionar **Desactivar** para un usuario activo | Se solicita confirmación indicando que no podrá ingresar y que se conservará su historial; solo al confirmar queda Inactivo | HTML con confirmación probado; efecto HTTP y navegador no ejecutados | Parcial |
-| QA-006 | Eliminar usuario sin historial | GU-03 | Usuario sin marcaciones históricas | Se solicita confirmación con advertencia de irreversibilidad; al confirmar se borra físicamente | SQL `DELETE` y confirmación probados unitariamente; MySQL no ejecutado | Parcial |
-| QA-007 | Proteger usuario con historial | GU-03 | Usuario con una o más marcaciones | La eliminación física se rechaza y el mensaje indica que puede desactivarse para conservar el historial | Error de FK simulado y mensaje probados; FK real no ejecutada | Parcial |
-| QA-008 | Cancelar acciones destructivas | GU-03 | Abrir la confirmación de **Desactivar** o **Eliminar** y cancelarla | No cambia el estado ni se borra el usuario | Ambos formularios usan `return confirm(...)`; cancelación manual no ejecutada | Pendiente manual |
+| QA-001 | Registrar marcación en hora de Chile | CA-01 | Node.js y MySQL bajo `America/Santiago` | `fecha_hora`, fecha generada, `CURDATE()` y “Marcaciones de hoy” representan día/hora de Chile | Integración MySQL/HTTP aprobada; reloj y día verificados, junto a validación Docker local informada | Correcto |
+| QA-002 | Mantener el día en el límite UTC/Chile | CA-01, RE-01, RE-02, RE-03 | Dos instantes a ambos lados de medianoche chilena | Cada marca pertenece al día chileno y solo aparece donde corresponde | Integración simuló 23:59/00:01 en MySQL y comprobó marcas, vista y reportes | Correcto |
+| QA-003 | Clasificar límites horarios | RE-01, RE-02 | Entradas 09:30/09:31 y salidas 17:29/17:30 | Clasificar únicamente 09:31 y 17:29 | Límites verificados por HTTP con MySQL | Correcto |
+| QA-004 | Mostrar fecha humana en Reportes | RE-01, RE-02, RE-03 | Consulta con resultados | Fechas `dd-mm-aaaa`, sin `Date`/GMT crudo | Vista unitaria y HTTP MySQL aprobados | Correcto |
+| QA-005 | Confirmar desactivación | Operación complementaria de GU-03 | Usuario activo | Formulario solicita confirmación; al enviar queda Inactivo | Confirmación presente en HTML y transición verificada con HTTP/MySQL | Correcto automatizado |
+| QA-006 | Eliminar usuario sin historial | GU-03 | Usuario sin marcaciones | Confirmación de irreversibilidad y borrado físico | Confirmación presente en HTML; `DELETE` y ausencia posterior verificados con MySQL | Correcto automatizado |
+| QA-007 | Proteger usuario con historial | GU-03 | Usuario con marcaciones | Rechazar eliminación y ofrecer Desactivar | FK real impidió el borrado; redirección mostró alternativa y usuario persistió | Correcto |
+| QA-008 | Cancelar acciones destructivas | GU-03 | Confirmaciones de Desactivar y Eliminar | Sin envío del formulario al cancelar | Ambas vistas usan `return confirm(...)`; la suite verifica la presencia de ambas confirmaciones. No existe registro individual de cancelación en navegador | Correcto en comprobación automatizada; cancelación manual sin registro individual |
 
-La posible inclusión de `Administrador demo` en RE-03 no genera todavía un caso de corrección: es una decisión de dominio pendiente y no un bug confirmado.
+La posible inclusión de `Administrador demo` en RE-03 sigue como decisión de dominio pendiente y no es un bug confirmado.
 
-Como comprobación opcional posterior a Sprint 04, la mejora UX de Reportes deberá verificar que la fecha actual se precargue según `America/Santiago` y que no se ejecute ninguna consulta hasta que el administrador presione **Consultar reportes**.
+El parche final de `/reportes` se verificó en la integración HTTP/MySQL: el GET sin `fecha` precarga el día de `America/Santiago` sin tablas, y el GET con `fecha=AAAA-MM-DD` conserva la fecha y presenta los reportes. Es mejora UX y no requisito docente.
 
 ## Verificación de entrega de Sprint 04
 
 | Verificación | Resultado real de esta fase | Estado |
 | --- | --- | --- |
-| Revisión estática de los ocho requisitos | Rutas, servicios y pruebas asociados quedaron localizados en la trazabilidad final | Completada |
-| Revisión de secretos y archivos accidentales | Árbol remoto revisado; `.env` está ignorado y solo existe `.env.example` con valores ficticios | Completada |
-| Suite `npm test` | Ejecutada en checkout temporal de las correcciones: 19/19 correctas | Correcto |
-| Integración `npm run test:db` | Ejecutada: 0/4, todas fallan con `ECONNREFUSED 127.0.0.1:3306` por ausencia de MySQL | Pendiente |
-| Docker Compose local | `docker compose config` y `docker compose up --build` intentados; `docker: command not found` | Pendiente |
-| Recorrido manual completo y capturas | No ejecutado; una prueba HTTP no equivale a demostración manual | Pendiente |
+| Revisión estática de los ocho requisitos | Implementación, rutas y pruebas localizadas en trazabilidad | Completada |
+| Revisión de secretos y archivos accidentales | Revisión previa de árbol remoto; `.env` ignorado, valores demo ficticios | Completada |
+| GitHub Actions, run `36467694142` | `success` sobre `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`; schema/seed y arranque MySQL correctos | Correcto |
+| Unitarias en GitHub Actions | `npm test`: 19/19, 0 fallos, 0 omitidas | Correcto |
+| Integración MySQL en GitHub Actions | `npm run test:db`: 4/4, 0 fallos, 0 omitidas | Correcto |
+| Docker Compose local | Responsable informó `app` levantada, `mysql` healthy, 19/19 unitarias, 4/4 integración y `NOW()`/`CURDATE()` de Chile | Correcto según responsable; sin log adjunto |
+| Recorrido manual general | Responsable informó ejecución satisfactoria; capturas y desglose individual no incorporados | Correcto según responsable; evidencia externa |
+
 ## Conclusión y observaciones
 
-Las ejecuciones históricas cubren clases, schema y flujos anteriores, pero no validan este nuevo HEAD. El run remoto `35686264057` terminó `success` sobre `fb6d3965c5acddd94d461218bfa0c42bb6a0c127`, antes de estas correcciones. La suite unitaria local pasó; la integración con MySQL y la demostración manual todavía no acreditan las correcciones QA. No se declara Sprint 04 cerrado para entrega docente.
+El CODE FREEZE técnico de Sprint 04 quedó validado por el run final `36467694142` sobre el SHA indicado. Los runs históricos prueban sus propios SHA y no sustituyen esta evidencia. El recorrido manual y Docker Compose local constan como resultados informados por el responsable, sin atribuirlos a este agente ni al workflow. No se declara entregado el proyecto académico: faltan formatos y evidencias externas.

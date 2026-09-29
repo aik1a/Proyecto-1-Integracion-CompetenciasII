@@ -98,7 +98,7 @@ npm run test:db
 ## Recorrido básico de demostración
 
 1. Iniciar la aplicación y abrir `/login`.
-2. Ingresar como administrador; listar, crear, modificar y desactivar un usuario.
+2. Ingresar como administrador; listar, crear, modificar, desactivar y eliminar un usuario sin historial. Con historial, comprobar que Eliminar se rechaza y ofrece Desactivar.
 3. Ingresar como empleado; registrar entrada, comprobar repetición rechazada y registrar salida.
 4. Ingresar como administrador; consultar `/reportes` para una fecha preparada.
 5. Verificar RE-01, RE-02 y RE-03 en sus tablas.
@@ -118,4 +118,4 @@ La demostración debe realizarse y registrarse manualmente en el equipo de entre
 
 ## Estado
 
-Sprint 00 a Sprint 03 están integrados en `main`. Sprint 04 se encuentra en `sprint/04-entrega`, preparado para revisión y todavía no integrado.
+Sprint 00 a Sprint 03 están integrados en `main`. El CODE FREEZE técnico de Sprint 04 está validado en `sprint/04-entrega` (GitHub Actions run `36467694142`, SHA `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`); sigue sin integrarse a `main`. La entrega académica externa aún requiere sus formatos y evidencias.

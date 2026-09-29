@@ -1,6 +1,6 @@
 # Sprint 04 — Entrega
 
-**Estado:** En curso — validaciones pendientes
+**Estado:** Cierre técnico aprobado — entrega académica externa pendiente
 **Rama:** `sprint/04-entrega`
 
 ## Objetivo
@@ -19,7 +19,7 @@ Congelar funcionalidad, corregir defectos relevantes y preparar exclusivamente l
 ## Precondiciones
 
 - Sprint 03 aprobado e integrado a `main`.
-- Existe una implementación previa declarada para los ocho requerimientos, sujeta a la verificación final de QA de este sprint.
+- Los ocho requerimientos fueron validados en la rama mediante el run final indicado en Resultado.
 - No existen nuevas funciones autorizadas para esta etapa.
 
 ## Regla de feature freeze
@@ -32,17 +32,17 @@ Desde el inicio de este sprint:
 - no se hace refactorización estética amplia;
 - solo se corrigen defectos, se completan pruebas, evidencias y documentación obligatoria.
 
-La incorporación de **Eliminar** como operación distinta de **Desactivar** se considera una corrección de cumplimiento de GU-03, no una ampliación funcional: el documento docente exige literalmente eliminar usuarios y la implementación actual solo realiza baja lógica.
+La incorporación de **Eliminar** como operación distinta de **Desactivar** fue una corrección de cumplimiento de GU-03, no una ampliación funcional: el documento docente exige literalmente eliminar usuarios y la implementación anterior solo realizaba baja lógica.
 
 ## Decisiones de QA autorizadas
 
 ### Correcciones obligatorias antes del cierre
 
-1. **Zona horaria bloqueante:** las marcaciones en Docker se están guardando o interpretando en UTC. La aplicación y MySQL deben trabajar coherentemente con `America/Santiago`, incluyendo `NOW()`, `CURDATE()`, el día generado de la marcación y las comparaciones horarias. El defecto afecta CA-01 y puede alterar RE-01, RE-02 y RE-03.
-2. **Presentación de fechas:** las fechas de los resultados de Reportes se muestran como objeto `Date` o texto GMT crudo. Deben mostrarse en formato humano `dd-mm-aaaa`, sin cambiar el formato técnico `AAAA-MM-DD` del control de búsqueda ni de las consultas internas.
+1. **Zona horaria bloqueante:** se detectó que las marcaciones en Docker se guardaban o interpretaban en UTC. La aplicación y MySQL deben trabajar coherentemente con `America/Santiago`, incluyendo `NOW()`, `CURDATE()`, el día generado de la marcación y las comparaciones horarias. El defecto afecta CA-01 y puede alterar RE-01, RE-02 y RE-03.
+2. **Presentación de fechas:** las fechas de los resultados de Reportes se mostraban como objeto `Date` o texto GMT crudo. Deben mostrarse en formato humano `dd-mm-aaaa`, sin cambiar el formato técnico `AAAA-MM-DD` del control de búsqueda ni de las consultas internas.
 3. **GU-03:** mantener **Desactivar** como baja lógica y agregar **Eliminar** como borrado físico real. Ambas acciones deben solicitar confirmación. **Eliminar** debe advertir que es irreversible y, si existen marcaciones históricas, debe rechazarse con un mensaje que indique que el usuario puede desactivarse para conservar el historial. La protección debe respetar la relación actual `marcaciones.usuario_id` con `ON DELETE RESTRICT`.
 
-Los tres defectos ya están corregidos en la rama: zona horaria, fechas visibles y eliminación GU-03. La suite unitaria local pasó 19/19; la integración MySQL y Docker aún no se ha validado sobre estas correcciones. El workflow remoto ajustado para `America/Santiago` debe ejecutarse sobre el nuevo HEAD y su resultado real registrarse después.
+Los tres defectos quedaron corregidos y validados en la rama. El CODE FREEZE técnico corresponde a `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`; GitHub Actions run `36467694142` terminó `success` sobre ese SHA con `TZ=America/Santiago`, `npm test` 19/19 y `npm run test:db` 4/4, sin fallos ni omisiones.
 
 ### Parche UX final antes del CODE FREEZE
 
@@ -164,25 +164,23 @@ Informar rama, último commit, fallos corregidos, pruebas ejecutadas, entregable
 
 ### Bloques completados
 
-1. QA documental de CA-01, GU-01, GU-02, GU-03, RE-01, RE-02, RE-03 y AP-01. Se corrigió el defecto de títulos descrito abajo sin cambiar funcionalidad y se registraron como pendientes los hallazgos posteriores de zona horaria, formato visible de fecha y cumplimiento literal de GU-03.
+1. QA de CA-01, GU-01, GU-02, GU-03, RE-01, RE-02, RE-03 y AP-01; los defectos de títulos, zona horaria, fecha visible y GU-03 quedaron corregidos y cubiertos por las pruebas finales.
 2. Plan de pruebas completado con casos de integración, evidencia histórica separada y estado real de las verificaciones de esta fase.
 3. Trazabilidad requisito → código → ruta → prueba creada en `docs/academico/trazabilidad-entrega.md`.
 4. README completado con requisitos previos, variables, ejecución local, Docker Compose, pruebas y recorrido de demostración.
 5. Evidencias 1.2 a 1.5 organizadas; contenido de PPT e informe de empleabilidad preparados como material reconstruible.
 
-### Bloque pendiente
+### Prueba de entrega limpia
 
-6. Prueba de entrega limpia: parcial. La revisión de archivos accidentales y secretos y la suite unitaria se completaron en un checkout temporal. MySQL, Docker Compose y recorrido manual completo siguen pendientes por falta de entorno.
+6. GitHub Actions validó las suites, schema/seed y arranque sobre el CODE FREEZE. El responsable informó además Docker Compose local operativo (`app` iniciada, `mysql` healthy, `npm test` 19/19, `npm run test:db` 4/4, `NOW()` y `CURDATE()` coherentes con Chile) y un recorrido manual general satisfactorio. Las capturas manuales, si existen, son evidencia externa y no se incorporaron al repositorio.
 
 ### Pruebas y estado real
 
-- Validación remota histórica de Sprint 03 mediante `workflow_dispatch`: run `35686264057`, rama `sprint/04-entrega`, SHA `fb6d3965c5acddd94d461218bfa0c42bb6a0c127`, conclusión `success`. Ese run no valida el nuevo HEAD de estas correcciones.
-- `npm test` en el checkout temporal de estas correcciones: 18/18 correctas en la primera ejecución; 19/19 tras añadir la comprobación de fecha y hora visible.
-- `npm run test:db`: ejecutado; 0/4. Los cuatro casos fallaron al conectar por `ECONNREFUSED 127.0.0.1:3306` porque no hay servidor MySQL en este entorno. No son fallos funcionales acreditados.
-- Arranque de la aplicación sobre este HEAD: no ejecutado.
-- `docker compose config` y `docker compose up --build`: intentados; ambos devolvieron `docker: command not found`.
-- Recorrido manual completo: no ejecutado; continúa pendiente junto con las capturas reales.
-- Evidencia histórica verificada en GitHub: runs `35058288461`, `35119603201`, `35300816939` y `35303900433`, todos con conclusión `success`. No se presentan como ejecuciones nuevas ni como validación de este HEAD.
+- Validación final verificada en GitHub: workflow `Sprint 03 - Reportes y API MySQL`, run `36467694142`, rama `sprint/04-entrega`, SHA `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`, conclusión `success`.
+- En ese run: `npm test` 19/19 y `npm run test:db` 4/4, con 0 fallos y 0 omitidas en ambas suites. QA-001 a QA-008 quedaron cubiertas en las pruebas unitarias y de integración; el paso de schema/seed y el de arranque/conexión MySQL terminaron correctamente. La prueba HTTP de `/reportes` cubre fecha de Chile precargada sin resultados automáticos y fecha consultada conservada.
+- Validación Docker Compose local, informada por el responsable del proyecto: aplicación levantada, MySQL `healthy`, `npm test` 19/19, `npm run test:db` 4/4 y `NOW()`/`CURDATE()` coherentes con `America/Santiago`. No fue ejecutada por este agente.
+- Recorrido manual general satisfactorio, informado por el responsable del proyecto. No se recibieron capturas ni desglose de acciones manuales individuales para adjuntar en el repositorio.
+- Evidencia histórica separada: run `35686264057` (`success`) ejecutó `fb6d3965c5acddd94d461218bfa0c42bb6a0c127`; los runs `35058288461`, `35119603201`, `35300816939` y `35303900433` corresponden a fases anteriores. Ninguno sustituye el run final.
 
 ### Defectos y correcciones
 
@@ -200,13 +198,9 @@ Se corrigieron previamente los tres títulos visibles de reportes. En este cierr
 
 ### Limitaciones y pendientes
 
-- Verificar `America/Santiago`, la fecha generada, el cambio de día y RE-01/RE-02/RE-03 con MySQL y Docker reales. Los registros históricos que se hubieran guardado antes con hora UTC requieren evaluación antes de interpretar sus fechas; este cambio no los migra.
-- Ejecutar `npm run test:db`, `docker compose config` y `docker compose up --build` en un entorno con MySQL y Docker. La integración QA-001/QA-002 comprueba Docker solo cuando `TZ=America/Santiago`; fuera de él informa que falta esa evidencia.
-- Ejecutar una validación remota sobre el nuevo HEAD; el run `35686264057` validó exclusivamente `fb6d3965c5acddd94d461218bfa0c42bb6a0c127`.
-- Completar demostración manual y capturas.
-- Completar datos personales/institucionales y validar experiencias reales del informe de empleabilidad.
-- Generar ZIP, PPT y formatos finales exigidos por Aula Virtual.
-- Revisar como decisión de dominio si `Administrador demo` debe incluirse en RE-03; no tratarlo como bug hasta resolverlo.
-- Validar el parche UX de precarga de fecha de Reportes en la próxima ejecución de la integración MySQL; no cierra por sí mismo Sprint 04.
+- El CODE FREEZE técnico de Sprint 04 está aprobado. La entrega académica completa aún requiere datos personales/institucionales, validación de experiencias reales del informe de empleabilidad y formatos finales ZIP, PPT y documentos del Aula Virtual.
+- El recorrido manual fue informado por el responsable; las capturas no están en este repositorio. El run automatizado no acredita por sí solo clics o cancelaciones de confirmaciones en un navegador.
+- Los registros históricos que se hubieran guardado con hora UTC requieren evaluación antes de interpretar sus fechas; este parche no los migra.
+- La inclusión de `Administrador demo` en RE-03 sigue como decisión de dominio pendiente, sin tratarla como fallo confirmado.
 
-No se agregó funcionalidad, no se inició una fase posterior y no se hizo merge a `main`.
+En este cierre documental no se modificó funcionalidad, no se inició otra fase y no se hizo merge a `main`.

@@ -11,17 +11,17 @@ Este índice organiza las actividades 1.2 a 1.5 sin alterar las fuentes instituc
 
 ## Evidencia de semana 6
 
-- MVP: código del repositorio.
+- MVP: código de `sprint/04-entrega`; CODE FREEZE técnico `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`, GitHub Actions run `36467694142` (`success`, 19/19 unitarias, 4/4 integración MySQL).
 - Requisitos identificables: `docs/academico/trazabilidad-entrega.md`.
 - Base de datos: `database/schema.sql`.
 - Plan de pruebas: `docs/academico/plan-pruebas.md`.
 - Contenido de presentación: `docs/academico/contenido-presentacion.md`.
 - Empleabilidad: `docs/academico/informe-empleabilidad.md`.
+- Docker Compose local y recorrido manual general: satisfactorios según el responsable; no hay logs ni capturas adjuntas en este índice.
 
 ## Pendientes antes de cargar en Aula Virtual
 
-- Ejecutar `docker compose up --build` desde un entorno limpio.
-- Realizar el recorrido manual completo y guardar capturas reales.
+- Incorporar las capturas manuales externas pertinentes a la entrega, sin inventarlas.
 - Completar datos institucionales y personales.
 - Incorporar retroalimentaciones docentes existentes.
 - Generar los formatos finales ZIP, PPT y documento solicitados por el Aula Virtual.
