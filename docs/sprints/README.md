@@ -10,8 +10,8 @@ Cada archivo define una fase académica y también funciona como contrato de eje
 | Sprint 01 | `sprint/01-base-datos` | Modelo relacional, `schema.sql`, datos ficticios mínimos y conexión MySQL. |
 | Sprint 02 | `sprint/02-nucleo-funcional` | Login, usuarios y entrada/salida con pruebas. |
 | Sprint 03 | `sprint/03-reportes-api` | RE-01, RE-02, RE-03 y AP-01 con pruebas de integración. |
-| Sprint 05 (correctivos posteriores al merge de Sprint04) | `sprint/05-correctivos-poo` | Sesiones, formulario y POO con regresiones; no amplía requisitos. |
 | Sprint 04 | `sprint/04-entrega` | Correcciones, evidencias, trazabilidad final, README, plan de pruebas completo y material de entrega. |
+| Sprint 05 (correctivos posteriores al merge de Sprint04) | `sprint/05-correctivos-poo` | Sesiones, formulario y POO con regresiones; no amplía requisitos. |
 
 No se crea la rama del sprint siguiente hasta que la fase actual haya sido revisada e integrada a `main`.
 

@@ -41,6 +41,7 @@ Copia `.env.example` como `.env` solo para ejecución local. `.env` está exclui
 
 | Variable | Uso | Valor de demostración |
 | --- | --- | --- |
+| `TZ` | Zona de Node en ejecución local | `America/Santiago` |
 | `PORT` | Puerto HTTP | `3000` |
 | `DB_HOST` | Host MySQL | `127.0.0.1` local / `mysql` en Compose |
 | `DB_PORT` | Puerto MySQL | `3306` |
@@ -61,7 +62,7 @@ mysql -u root -p < database/seed.sql
 npm start
 ```
 
-Ajusta `.env` a tu instalación. La aplicación queda disponible en <http://localhost:3000/login>.
+Ajusta `.env` a tu instalación. Node y el servidor MySQL deben usar `America/Santiago`: `.env.example` fija TZ para Node, pero no configura MySQL. Comprueba `SELECT NOW(), CURDATE(), @@session.time_zone;` y la configuración horaria del servidor. Compose ya fija TZ en ambos contenedores. La aplicación queda disponible en <http://localhost:3000/login>.
 
 ## Ejecución con Docker Compose
 
@@ -87,9 +88,11 @@ docker compose down --remove-orphans
 ## Pruebas
 
 ```bash
-npm test
-npm run test:db
+TZ=America/Santiago npm test
+TZ=America/Santiago npm run test:db
 ```
+
+En PowerShell, fija primero `$env:TZ='America/Santiago'` y ejecuta `npm test` y `npm run test:db`.
 
 - `npm test`: pruebas unitarias y comprobaciones sin MySQL.
 - `npm run test:db`: integración; requiere schema aplicado y MySQL disponible.
@@ -118,4 +121,6 @@ La demostración debe realizarse y registrarse manualmente en el equipo de entre
 
 ## Estado
 
-Sprint 00 a Sprint 03 están integrados en `main`. El CODE FREEZE técnico de Sprint 04 está validado en `sprint/04-entrega` (GitHub Actions run `36467694142`, SHA `b5baa96f6fa70fa68dc926f7ff90ceddb74a6336`); sigue sin integrarse a `main`. La entrega académica externa aún requiere sus formatos y evidencias.
+Sprint00 a Sprint04 integrados en main; merge Sprint04: `75e5e280695f4274d7b859b87326e78ba7e4e3f8`. Se conserva su evidencia histórica.
+
+Correctivos aprobados el 04-10-2026 preparados en `sprint/05-correctivos-poo`, sin merge. [Contrato, resultados y pendientes](docs/sprints/sprint-05-correctivos-poo.md). Código corregido d852d630: 35/35 unitarias, 4/4 MySQL y arranque en [run 37243366141](https://github.com/aik1a/Proyecto-1-Integracion-CompetenciasII/actions/runs/37243366141). Entrega académica externa y demostración manual de esta versión pendientes.

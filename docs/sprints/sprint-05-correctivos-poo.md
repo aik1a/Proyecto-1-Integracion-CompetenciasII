@@ -1,6 +1,6 @@
 # Sprint 05 — Correctivos POO
 
-**Estado:** En curso
+**Estado:** Listo para revisión de los bloques aprobados; sin merge
 **Rama:** `sprint/05-correctivos-poo`
 **Base estable:** `main` en `75e5e280695f4274d7b859b87326e78ba7e4e3f8`.
 **Autorización:** correctivos de auditoría aprobados por el responsable el 04-10-2026; implementación secuencial y documentada.
@@ -54,3 +54,76 @@ Cada bloque se prueba antes de su commit. Si falla una regresión, no se avanza 
 - obtenerSesionActiva usa Usuario.estaActivo; los pools de los tres servicios son privados. Se conservan firmas y getters consumidos por el flujo y las pruebas.
 - Pruebas locales finales del bloque: TZ=America/Santiago npm test35/35,0 fallos,0 omitidas. Incluye seis casos COR-11 a COR-16; no se añadió dependencia ni se alteró schema/seed.
 - Puerta del bloque anterior: run37243041395, SHA f99574cf6e29b612f31234e0eef26d829515d15a, success;29/29 unitarias,4/4 MySQL,0 omitidas y arranque correcto. Integración del bloque2 pendiente hasta su run.
+
+
+## Clases afectadas y visibilidad
+
+− representa campos #privados; + operaciones públicas. Los miembros get son accesores JavaScript de lectura, sin setters. La flecha punteada representa creación/uso, no herencia.
+
+```mermaid
+classDiagram
+  direction TB
+  class Usuario {
+    -String identificador
+    -String nombre
+    -String correo
+    -String perfil
+    -String estado
+    +constructor(datos)
+    +get identificador() String
+    +get nombre() String
+    +get correo() String
+    +get perfil() String
+    +get estado() String
+    +estaActivo() Boolean
+  }
+  class Marcacion {
+    -StringOrNumber usuarioIdentificador
+    -String accion
+    -Date fechaHora
+    +constructor(datos)
+    +get usuarioIdentificador() StringOrNumber
+    +get accion() String
+    +get fechaHora() Date
+  }
+  class UsuarioService {
+    -Object pool
+    +constructor(pool)
+    +autenticar(correo, password) Promise
+    +listar() Promise
+    +listarEmpleadosPorEstado(estado) Promise
+    +obtenerPorId(id) Promise
+    +obtenerSesionActiva(id) Promise
+    +crear(datos) Promise
+    +actualizar(id, datos) Promise
+    +desactivar(id) Promise
+    +eliminar(id) Promise
+  }
+  class AsistenciaService {
+    -Object pool
+    +constructor(pool)
+    +listarHoy(usuarioId) Promise
+    +registrar(usuarioId, accion) Promise
+  }
+  class SessionStore {
+    -Map sesiones
+    -Function ahora
+    -Number duracionMs
+    +constructor(opciones)
+    +crear(usuario) String
+    +obtener(token) ObjectOrUndefined
+    +eliminar(token)
+  }
+  UsuarioService ..> Usuario : valida
+  AsistenciaService ..> Marcacion : crea y usa
+```
+
+Diagrama parcial: ReporteService conserva pool privado y métodos asíncronos listarAtrasos, listarSalidasAnticipadas y listarInasistencias. validarCorreo se exporta como propiedad de Usuario y desde usuarioService por compatibilidad. En registrar, usuarioIdentificador recibe el ID interno; NOW de MySQL fija fecha persistida. El Date del modelo indica su construcción, no una lectura del registro guardado.
+
+## Resultado final de los bloques aprobados
+
+- Bloques0,1 y2 completados en commits separados; bloque3 documenta resultados, trazabilidad y clases.
+- GitHub Actions [run 37243366141](https://github.com/aik1a/Proyecto-1-Integracion-CompetenciasII/actions/runs/37243366141), SHA `d852d630406b21df9b8343533cccd474450b0715`, rama `sprint/05-correctivos-poo`: 35/35 unitarias, 4/4 integración MySQL 8.4, 0 fallos, 0 omitidas; schema/seed y arranque correctos en Node 20. Logs comprobados el 04-10-2026.
+- Main permanece en la base estable. Schema, seed, lockfile y Dockerfile/Compose conservados. Workflow existente: solo se añadió esta rama a push; sin pipeline nuevo ni despliegue.
+- Pendientes: Docker Compose y recorrido manual de esta versión; sincronizar el UML con SVG/DOCX externos antes de entregar. A05 (errores de otras rutas), A07 (medianoche), A09 (CSRF), configuración inválida y coste scrypt abiertos para otro bloque autorizado. No se declara corregida toda la matriz.
+- Comparar main con esta rama y revisar antes de merge. Si un bloque requiere reversión, preparar revert de su commit; nunca reset de main ni borrado de volumen/datos.
