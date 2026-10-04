@@ -17,6 +17,13 @@ function validarCorreo(correo) {
   }
 }
 
+function validarId(id) {
+  if (!/^[1-9]\d*$/.test(String(id)) || Number(id) > 4294967295) {
+    throw new Error('El ID debe ser un entero positivo válido');
+  }
+  return Number(id);
+}
+
 function normalizarFiltroEstado(estado) {
   const filtro = String(estado || '').trim().toLowerCase();
   if (!['activo', 'inactivo', 'todos'].includes(filtro)) {
@@ -69,6 +76,7 @@ class UsuarioService {
   }
 
   async obtenerPorId(id) {
+    id = validarId(id);
     const [filas] = await this.pool.execute(
       `SELECT id, identificador, nombre, correo, perfil, estado
          FROM usuarios WHERE id = ?`,
@@ -76,6 +84,14 @@ class UsuarioService {
     );
     if (!filas[0]) throw new Error('Usuario no encontrado');
     return filas[0];
+  }
+
+  async obtenerSesionActiva(id) {
+    const [filas] = await this.pool.execute(
+      'SELECT id, nombre, perfil, estado FROM usuarios WHERE id = ?', [validarId(id)]
+    );
+    const usuario = filas[0];
+    return usuario && usuario.estado === 'Activo' ? usuario : undefined;
   }
 
   async crear(datos) {
@@ -98,6 +114,7 @@ class UsuarioService {
   }
 
   async actualizar(id, datos) {
+    id = validarId(id);
     await this.obtenerPorId(id);
     const usuario = new Usuario(normalizarDatos(datos));
     validarCorreo(usuario.correo);
@@ -117,6 +134,7 @@ class UsuarioService {
   }
 
   async desactivar(id) {
+    id = validarId(id);
     const [resultado] = await this.pool.execute(
       `UPDATE usuarios SET estado = 'Inactivo' WHERE id = ? AND estado = 'Activo'`,
       [id]
@@ -125,6 +143,7 @@ class UsuarioService {
   }
 
   async eliminar(id) {
+    id = validarId(id);
     try {
       const [resultado] = await this.pool.execute('DELETE FROM usuarios WHERE id = ?', [id]);
       if (resultado.affectedRows === 0) throw new Error('Usuario no encontrado');
@@ -137,4 +156,4 @@ class UsuarioService {
   }
 }
 
-module.exports = { UsuarioService, normalizarDatos, validarCorreo, normalizarFiltroEstado };
+module.exports = { UsuarioService, normalizarDatos, validarCorreo, validarId, normalizarFiltroEstado };

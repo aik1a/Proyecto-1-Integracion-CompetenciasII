@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - sprint/03-reportes-api
+      - sprint/05-correctivos-poo
   workflow_dispatch:
 
 jobs:

@@ -40,4 +40,8 @@ Cada bloque se prueba antes de su commit. Si falla una regresión, no se avanza 
 
 ## Resultado
 
-Bloque0: contrato preparado. Pruebas de correctivos aún no ejecutadas.
+- Bloque0: contrato fijado en commit c1be33b58042fd02f7ff168f686c6aa390cd94dc.
+- Bloque1: sesiones con vencimiento de ocho horas, estado/perfil vigente por petición y eliminación del token inválido; Map privado y copia de sesión. ID validado y URL/atributo codificados; body.id descartado al recuperar formulario de creación.
+- Pruebas locales: npm ci correcto; TZ=America/Santiago npm test 29/29,0 fallos,0 omitidas. Tras completar la aserción HTTP de caducidad, suite de seguridad10/10. Node local24.19.0. COR-10 genera deliberadamente un error interno para comprobar500 genérico; no es un fallo de suite.
+- Integración: añadidas aserciones de cookie anterior tras desactivar, cambiar perfil y eliminar; ejecución MySQL pendiente en este punto.
+- Diff del bloque revisado: ocho archivos de código/configuración/pruebas; esquema y dependencias conservados.

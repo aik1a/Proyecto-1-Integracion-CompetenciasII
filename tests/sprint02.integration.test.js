@@ -90,4 +90,14 @@ test('Sprint 02 integra acceso, usuarios, roles y marcaciones con MySQL', async 
   assert.equal((await solicitud(baseUrl, `/usuarios/${empleadoId}/desactivar`, { method: 'POST', body: '' }, cookieAdmin)).status, 302);
   const loginInactivo = await solicitud(baseUrl, '/login', { method: 'POST', body: new URLSearchParams({ correo: correoEmpleado, password: 'Empleado123' }) });
   assert.equal(loginInactivo.status, 401);
+  const sesionAnterior = await solicitud(baseUrl, '/asistencia', {}, cookieEmpleado);
+  assert.equal(sesionAnterior.headers.get('location'), '/login');
+  assert.equal((await solicitud(baseUrl, '/asistencia/marcar', {
+    method: 'POST', body: new URLSearchParams({ accion: 'entrada' })
+  }, cookieEmpleado)).headers.get('location'), '/login');
+
+  await pool.execute("UPDATE usuarios SET perfil = 'empleado' WHERE id = ?", [admin.insertId]);
+  assert.equal((await solicitud(baseUrl, '/usuarios', {}, cookieAdmin)).status, 403);
+  await pool.execute('DELETE FROM usuarios WHERE id = ?', [admin.insertId]);
+  assert.equal((await solicitud(baseUrl, '/usuarios', {}, cookieAdmin)).headers.get('location'), '/login');
 });
