@@ -32,13 +32,15 @@ function validarFecha(fecha) {
 }
 
 class ReporteService {
+  #pool;
+
   constructor(pool) {
-    this.pool = pool;
+    this.#pool = pool;
   }
 
   async listarAtrasos(fecha) {
     const fechaValida = validarFecha(fecha);
-    const [filas] = await this.pool.execute(
+    const [filas] = await this.#pool.execute(
       `SELECT u.id, u.identificador, u.nombre, DATE_FORMAT(m.fecha, '%Y-%m-%d') AS fecha, TIME(m.fecha_hora) AS hora
          FROM marcaciones m
          JOIN usuarios u ON u.id = m.usuario_id
@@ -52,7 +54,7 @@ class ReporteService {
 
   async listarSalidasAnticipadas(fecha) {
     const fechaValida = validarFecha(fecha);
-    const [filas] = await this.pool.execute(
+    const [filas] = await this.#pool.execute(
       `SELECT u.id, u.identificador, u.nombre, DATE_FORMAT(m.fecha, '%Y-%m-%d') AS fecha, TIME(m.fecha_hora) AS hora
          FROM marcaciones m
          JOIN usuarios u ON u.id = m.usuario_id
@@ -66,7 +68,7 @@ class ReporteService {
 
   async listarInasistencias(fecha) {
     const fechaValida = validarFecha(fecha);
-    const [filas] = await this.pool.execute(
+    const [filas] = await this.#pool.execute(
       `SELECT u.id, u.identificador, u.nombre, ? AS fecha
          FROM usuarios u
         WHERE u.estado = 'Activo'

@@ -45,3 +45,12 @@ Cada bloque se prueba antes de su commit. Si falla una regresión, no se avanza 
 - Pruebas locales: npm ci correcto; TZ=America/Santiago npm test 29/29,0 fallos,0 omitidas. Tras completar la aserción HTTP de caducidad, suite de seguridad10/10. Node local24.19.0. COR-10 genera deliberadamente un error interno para comprobar500 genérico; no es un fallo de suite.
 - Integración: añadidas aserciones de cookie anterior tras desactivar, cambiar perfil y eliminar; ejecución MySQL pendiente en este punto.
 - Diff del bloque revisado: ocho archivos de código/configuración/pruebas; esquema y dependencias conservados.
+
+
+### Bloque2 — POO y contratos
+
+- Usuario tiene campos #privados y getters sin setters, normaliza texto y correo, rechaza campos obligatorios vacíos/tipos ajenos y longitudes superiores a VARCHAR. validarCorreo tiene una sola implementación en el módulo del modelo; el servicio conserva su exportación anterior por compatibilidad.
+- Marcacion protege identidad/acción/fecha; fechaHora entrega una copia y el constructor copia la fecha recibida. AsistenciaService.registrar crea y usa Marcacion para validar y persistir identidad/acción. MySQL sigue fijando la fecha guardada mediante NOW(); fechaHora del objeto representa el instante de construcción, no una lectura posterior del registro persistido.
+- obtenerSesionActiva usa Usuario.estaActivo; los pools de los tres servicios son privados. Se conservan firmas y getters consumidos por el flujo y las pruebas.
+- Pruebas locales finales del bloque: TZ=America/Santiago npm test35/35,0 fallos,0 omitidas. Incluye seis casos COR-11 a COR-16; no se añadió dependencia ni se alteró schema/seed.
+- Puerta del bloque anterior: run37243041395, SHA f99574cf6e29b612f31234e0eef26d829515d15a, success;29/29 unitarias,4/4 MySQL,0 omitidas y arranque correcto. Integración del bloque2 pendiente hasta su run.

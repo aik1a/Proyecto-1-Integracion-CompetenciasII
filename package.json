@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test tests/app.test.js tests/modelos.test.js tests/schema.test.js tests/sprint02.unit.test.js tests/sprint03.unit.test.js tests/sprint04.unit.test.js tests/sprint05.security.test.js",
+    "test": "node --test tests/app.test.js tests/modelos.test.js tests/schema.test.js tests/sprint02.unit.test.js tests/sprint03.unit.test.js tests/sprint04.unit.test.js tests/sprint05.security.test.js tests/sprint05.poo.test.js",
     "test:db": "node --test tests/database.integration.test.js tests/sprint02.integration.test.js tests/sprint03.integration.test.js tests/sprint04.integration.test.js"
   },
   "engines": {
