@@ -84,8 +84,10 @@ test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
   assert.match(html, /Reporte de inasistencias/);
   assert.match(html, new RegExp(`Incidencia S03 ${marca}`));
   assert.doesNotMatch(html, new RegExp(`Puntual S03 ${marca}.*09:31`, 's'));
-  assert.match(html, new RegExp(`Ausente S03 ${marca}`));
-  assert.doesNotMatch(html, new RegExp(`Inactivo S03 ${marca}`));
+  const inasistencias = html.match(/<h2>Reporte de inasistencias<\/h2>([\s\S]*?)<\/section>/)[1];
+  assert.match(inasistencias, new RegExp(`Ausente S03 ${marca}`));
+  assert.doesNotMatch(inasistencias, new RegExp(`Inactivo S03 ${marca}`));
+  assert.doesNotMatch(inasistencias, new RegExp(`Admin S03 ${marca}`));
 
   const [antes] = await pool.execute('SELECT COUNT(*) AS total FROM usuarios');
   for (const [filtro, nombreEsperado, nombreExcluido] of [

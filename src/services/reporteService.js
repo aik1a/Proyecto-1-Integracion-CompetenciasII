@@ -72,6 +72,7 @@ class ReporteService {
       `SELECT u.id, u.identificador, u.nombre, ? AS fecha
          FROM usuarios u
         WHERE u.estado = 'Activo'
+          AND u.perfil = 'empleado'
           AND NOT EXISTS (
             SELECT 1 FROM marcaciones m
              WHERE m.usuario_id = u.id AND m.fecha = ?
