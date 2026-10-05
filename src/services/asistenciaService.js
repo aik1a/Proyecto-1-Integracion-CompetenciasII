@@ -1,3 +1,5 @@
+const Marcacion = require('../models/Marcacion');
+
 function validarSecuencia(accionesDelDia, accion) {
   if (!['entrada', 'salida'].includes(accion)) throw new Error('La acción debe ser entrada o salida');
   if (accionesDelDia.includes(accion)) throw new Error(`La ${accion} ya fue registrada hoy`);
@@ -7,12 +9,14 @@ function validarSecuencia(accionesDelDia, accion) {
 }
 
 class AsistenciaService {
+  #pool;
+
   constructor(pool) {
-    this.pool = pool;
+    this.#pool = pool;
   }
 
   async listarHoy(usuarioId) {
-    const [filas] = await this.pool.execute(
+    const [filas] = await this.#pool.execute(
       `SELECT accion, fecha_hora FROM marcaciones
         WHERE usuario_id = ? AND fecha = CURDATE() ORDER BY fecha_hora`,
       [usuarioId]
@@ -21,12 +25,13 @@ class AsistenciaService {
   }
 
   async registrar(usuarioId, accion) {
-    const marcaciones = await this.listarHoy(usuarioId);
-    validarSecuencia(marcaciones.map((item) => item.accion), accion);
+    const marcacion = new Marcacion({ usuarioIdentificador: usuarioId, accion });
+    const marcaciones = await this.listarHoy(marcacion.usuarioIdentificador);
+    validarSecuencia(marcaciones.map((item) => item.accion), marcacion.accion);
     try {
-      const [resultado] = await this.pool.execute(
+      const [resultado] = await this.#pool.execute(
         'INSERT INTO marcaciones (usuario_id, accion, fecha_hora) VALUES (?, ?, NOW())',
-        [usuarioId, accion]
+        [marcacion.usuarioIdentificador, marcacion.accion]
       );
       return resultado.insertId;
     } catch (error) {

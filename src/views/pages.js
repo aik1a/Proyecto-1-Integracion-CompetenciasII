@@ -68,8 +68,9 @@ function listaUsuarios(usuario, usuarios, exito = '', error = '') {
 
 function formularioUsuario(usuarioSesion, usuario = {}, error = '') {
   const editando = Boolean(usuario.id);
+  const accion = editando ? `/usuarios/${encodeURIComponent(String(usuario.id))}` : '/usuarios';
   return pagina(editando ? 'Modificar usuario' : 'Crear usuario', `${mensaje(error, 'error')}
-    <form action="${editando ? `/usuarios/${usuario.id}` : '/usuarios'}" method="post" class="tarjeta">
+    <form action="${escapar(accion)}" method="post" class="tarjeta">
       <label>Identificador<input name="identificador" required value="${escapar(usuario.identificador)}"></label>
       <label>Nombre<input name="nombre" required value="${escapar(usuario.nombre)}"></label>
       <label>Correo<input name="correo" type="email" required value="${escapar(usuario.correo)}"></label>

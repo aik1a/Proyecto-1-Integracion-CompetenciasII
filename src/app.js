@@ -1,6 +1,6 @@
 const express = require('express');
 const { obtenerPool } = require('./db/connection');
-const { UsuarioService } = require('./services/usuarioService');
+const { UsuarioService, normalizarDatos, validarId } = require('./services/usuarioService');
 const { AsistenciaService } = require('./services/asistenciaService');
 const { ReporteService, validarFecha } = require('./services/reporteService');
 const SessionStore = require('./services/sessionStore');
@@ -28,10 +28,19 @@ function crearApp({ pool = obtenerPool(), sesiones = new SessionStore() } = {}) 
   const reportes = new ReporteService(pool);
   app.use(express.urlencoded({ extended: false }));
   app.use(express.static('src/public'));
-  app.use((req, res, next) => {
+  app.use(async (req, res, next) => {
     req.tokenSesion = leerCookies(req).sesion;
-    req.usuario = sesiones.obtener(req.tokenSesion);
+    const sesion = sesiones.obtener(req.tokenSesion);
+    if (sesion) {
+      req.usuario = await usuarios.obtenerSesionActiva(sesion.id);
+      if (!req.usuario) sesiones.eliminar(req.tokenSesion);
+    }
     next();
+  });
+
+  app.param('id', (req, res, next, id) => {
+    try { validarId(id); next(); }
+    catch (error) { res.status(400).send(error.message); }
   });
 
   function requiereSesion(req, res, next) {
@@ -119,7 +128,7 @@ function crearApp({ pool = obtenerPool(), sesiones = new SessionStore() } = {}) 
       await usuarios.crear(req.body);
       res.redirect('/usuarios?exito=Usuario%20creado%20correctamente');
     } catch (error) {
-      res.status(400).send(pages.formularioUsuario(req.usuario, req.body, error.message));
+      res.status(400).send(pages.formularioUsuario(req.usuario, normalizarDatos(req.body), error.message));
     }
   });
   app.get('/usuarios/:id/editar', requiereAdministrador, async (req, res, next) => {

@@ -127,3 +127,30 @@ El parche final de `/reportes` se verificó en la integración HTTP/MySQL: el GE
 ## Conclusión y observaciones
 
 El CODE FREEZE técnico de Sprint 04 quedó validado por el run final `36467694142` sobre el SHA indicado. Los runs históricos prueban sus propios SHA y no sustituyen esta evidencia. El recorrido manual y Docker Compose local constan como resultados informados por el responsable, sin atribuirlos a este agente ni al workflow. No se declara entregado el proyecto académico: faltan formatos y evidencias externas.
+
+## Correctivos posteriores al cierre — Sprint 05
+
+GitHub Actions [run 37243366141](https://github.com/aik1a/Proyecto-1-Integracion-CompetenciasII/actions/runs/37243366141), SHA `d852d630406b21df9b8343533cccd474450b0715`, rama `sprint/05-correctivos-poo`: 35/35 unitarias, 4/4 integración MySQL 8.4, 0 fallos, 0 omitidas; schema/seed y arranque correctos en Node 20. Logs comprobados el 04-10-2026.
+
+Local: npm ci correcto y `TZ=America/Santiago npm test` 35/35 en Node 24.19.0. COR-01 a COR-10: tests/sprint05.security.test.js; COR-11 a COR-16: tests/sprint05.poo.test.js. HTTP con dobles se ejecuta en npm test. Las cookies anteriores tras desactivar/cambiar perfil/eliminar también se comprueban con BD real en tests/sprint02.integration.test.js.
+
+| Caso | Módulo | Entrada | Esperado | Obtenido | Estado |
+| --- | --- | --- | --- | --- | --- |
+| COR-01 | SessionStore | Reloj antes/en 8h; logout | Vigente antes; inexistente al vencer/cerrar | Comprobado | Correcto |
+| COR-02 | SessionStore | Mutar entrada/objeto obtenido | Copias independientes; Map inaccesible | Comprobado | Correcto |
+| COR-03 | HTTP/GU-03 | Cookie previa a desactivar | Login y token invalidado; HTTP/doble y MySQL | Comprobado | Correcto |
+| COR-04 | HTTP/roles | Cambio de perfil; eliminar usuario | 403 tras cambio; login tras eliminar; también MySQL | Comprobado | Correcto |
+| COR-05 | HTTP/sesión | Cookies cerrada/vencida | Sin acceso al recurso | Comprobado | Correcto |
+| COR-06 | UsuarioService | ID0,negativo,decimal,mixto,fuera de rango | Rechazo antes de SQL | Comprobado | Correcto |
+| COR-07 | HTTP/GU-02 | ID img/onerror en POST | 400 sin marcado ejecutable | Comprobado | Correcto |
+| COR-08 | HTTP/GU-01 | body.id arbitrario y datos inválidos | Formulario seguro; ID ajeno descartado | Comprobado | Correcto |
+| COR-09 | Vista | ID/nombre con marcado | URL/atributo codificados y texto escapado | Comprobado | Correcto |
+| COR-10 | HTTP/sesión | BD falla al revalidar | 500 genérico; ningún permiso concedido | Comprobado | Correcto |
+| COR-11 | Usuario | Asignar campos públicos | Getters rechazan asignación; invariantes intactas | Comprobado | Correcto |
+| COR-12 | Usuario | Vacíos/tipos/correo/enums inválidos | Rechazo; normalización de texto válido | Comprobado | Correcto |
+| COR-13 | Usuario/crear | Límites30/120/254 y excedidos | Límites admitidos; excedidos rechazados antes de SQL | Comprobado | Correcto |
+| COR-14 | Marcacion | Modificar Date recibida/devuelta y acción | Copias independientes y acción protegida | Comprobado | Correcto |
+| COR-15 | Marcacion | Identidad/acción/fecha inválidas | Construcción rechazada | Comprobado | Correcto |
+| COR-16 | AsistenciaService | Identidad/acción inválidas y entrada válida | Modelo valida antes de consultar; INSERT usa identidad/acción del objeto | Comprobado | Correcto |
+
+COR-10 genera deliberadamente un error interno en log para comprobar la respuesta 500 genérica. El bloque de seguridad se validó antes de POO mediante run 37243041395, SHA f99574cf6e29b612f31234e0eef26d829515d15a: 29/29 unitarias y 4/4 MySQL. Resultados Sprint 04 conservados como históricos. Docker Compose y recorrido manual de la versión corregida pendientes. Cambio de día entre SELECT/INSERT, errores internos de otros catch y CSRF no se declaran resueltos.

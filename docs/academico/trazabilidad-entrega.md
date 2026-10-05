@@ -28,3 +28,15 @@ Esta tabla localiza cada requisito oficial sin duplicar el código en scripts se
 | GU-03 | **Desactivar** es baja lógica; **Eliminar** es borrado físico. Ambas acciones piden confirmación. La FK `ON DELETE RESTRICT` impide eliminar con marcaciones históricas y se indica Desactivar como alternativa | QA-005/006/007/008 automatizadas, run `36467694142`; cancelación manual sin evidencia individual |
 
 `Administrador demo` en RE-03 permanece como decisión de dominio pendiente, no como defecto confirmado.
+
+## Correctivos de Sprint 05
+
+GitHub Actions [run 37243366141](https://github.com/aik1a/Proyecto-1-Integracion-CompetenciasII/actions/runs/37243366141), SHA `d852d630406b21df9b8343533cccd474450b0715`, rama `sprint/05-correctivos-poo`: 35/35 unitarias, 4/4 integración MySQL 8.4, 0 fallos, 0 omitidas; schema/seed y arranque correctos en Node 20. Logs comprobados el 04-10-2026.
+
+| Alcance | Código | Regresión |
+| --- | --- | --- |
+| CA-01 y permisos de GU/RE | SessionStore con expiración/copia; app revalida Usuario activo/perfil vigente | COR-01 a COR-05, COR-10; Sprint02 con cookie previa y BD real |
+| GU-01/GU-02/GU-03 | validarId; formulario codifica URL/atributo y descarta body.id; Usuario valida longitud | COR-06 a COR-09, COR-12/13; CRUD real anterior |
+| POO de CA-01 y GU | Usuario/Marcacion privados con getters; registrar usa Marcacion; pools privados | COR-11 a COR-16; suites anteriores completas |
+
+Sin cambios en schema/seed, dependencias ni requisitos. AP-01 mantiene su contrato; RE-03 conserva la decisión pendiente. Detalle, clases y limitaciones: [Sprint05](../sprints/sprint-05-correctivos-poo.md).

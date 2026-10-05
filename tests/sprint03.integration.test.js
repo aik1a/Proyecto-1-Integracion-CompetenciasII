@@ -42,6 +42,7 @@ test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
   }
 
   const admin = await crearUsuario('admin', `Admin S03 ${marca}`, 'administrador');
+  const adminInactivo = await crearUsuario('admin-inactivo', `Admin inactivo S03 ${marca}`, 'administrador', 'Inactivo');
   const puntual = await crearUsuario('puntual', `Puntual S03 ${marca}`);
   const incidencia = await crearUsuario('incidencia', `Incidencia S03 ${marca}`);
   const ausente = await crearUsuario('ausente', `Ausente S03 ${marca}`);
@@ -84,8 +85,10 @@ test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
   assert.match(html, /Reporte de inasistencias/);
   assert.match(html, new RegExp(`Incidencia S03 ${marca}`));
   assert.doesNotMatch(html, new RegExp(`Puntual S03 ${marca}.*09:31`, 's'));
-  assert.match(html, new RegExp(`Ausente S03 ${marca}`));
-  assert.doesNotMatch(html, new RegExp(`Inactivo S03 ${marca}`));
+  const inasistencias = html.match(/<h2>Reporte de inasistencias<\/h2>([\s\S]*?)<\/section>/)[1];
+  assert.match(inasistencias, new RegExp(`Ausente S03 ${marca}`));
+  assert.doesNotMatch(inasistencias, new RegExp(`Inactivo S03 ${marca}`));
+  assert.doesNotMatch(inasistencias, new RegExp(`Admin S03 ${marca}`));
 
   const [antes] = await pool.execute('SELECT COUNT(*) AS total FROM usuarios');
   for (const [filtro, nombreEsperado, nombreExcluido] of [
@@ -97,6 +100,8 @@ test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
     assert.equal(respuesta.status, 200);
     assert.match(respuesta.headers.get('content-type'), /^application\/json/);
     const empleados = await respuesta.json();
+    assert.ok(!empleados.some((item) => item.id === admin.id || item.id === adminInactivo.id),
+      `AP-01 debe excluir administradores con estado=${filtro}`);
     assert.ok(empleados.some((item) => item.nombre === nombreEsperado));
     if (filtro === 'todos') {
       assert.ok(empleados.some((item) => item.nombre === `Inactivo S03 ${marca}`));

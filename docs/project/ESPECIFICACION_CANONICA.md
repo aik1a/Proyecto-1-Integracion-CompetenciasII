@@ -110,6 +110,14 @@ Estas decisiones hacen ejecutables las descripciones oficiales; no crean módulo
 
 Las versiones y dependencias exactas se fijan una vez al iniciar el código. No se instalan bibliotecas duplicadas para el mismo propósito.
 
+### Correctivos aprobados el 04-10-2026
+
+- Mantener sesiones en memoria, con vencimiento servidor de ocho horas igual al Max-Age actual de la cookie. Cada petición autenticada revalida existencia, estado Activo y perfil vigente; una sesión no concede permisos retirados.
+- Los IDs de usuarios deben ser enteros positivos y los formularios no deben interpretar datos externos como HTML.
+- Usuario y Marcacion protegen su estado y conservan getters de lectura. Marcacion participa en el registro real; las fechas y datos de sesión no exponen referencias internas mutables.
+- Las validaciones de texto obligatorio y longitud respetan las columnas existentes; no cambia schema ni stack.
+- Se ejecutan los bloques de Sprint05 secuencialmente en una rama desde main; no hay nuevas funciones ni merge automático.
+
 ### POO simple
 
 La pauta solicita clases y programación orientada a objetos. Se cumple con clases pequeñas para los conceptos principales, por ejemplo Usuario y Marcación, y servicios simples para las reglas de asistencia y reportes. No se fuerzan patrones ni jerarquías artificiales.

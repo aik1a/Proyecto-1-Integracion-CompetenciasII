@@ -1,20 +1,24 @@
 const Usuario = require('../models/Usuario');
+const { validarCorreo } = Usuario;
 const { crearHash, verificarPassword } = require('./passwordService');
 
 function normalizarDatos(datos) {
+  const texto = valor => typeof valor === 'string' ? valor.trim() : (valor ?? '');
+  const correo = texto(datos.correo);
   return {
-    identificador: String(datos.identificador || '').trim(),
-    nombre: String(datos.nombre || '').trim(),
-    correo: String(datos.correo || '').trim().toLowerCase(),
-    perfil: String(datos.perfil || ''),
-    estado: String(datos.estado || 'Activo')
+    identificador: texto(datos.identificador),
+    nombre: texto(datos.nombre),
+    correo: typeof correo === 'string' ? correo.toLowerCase() : correo,
+    perfil: texto(datos.perfil),
+    estado: datos.estado === undefined ? 'Activo' : texto(datos.estado)
   };
 }
 
-function validarCorreo(correo) {
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-    throw new Error('El correo no tiene un formato válido');
+function validarId(id) {
+  if (!/^[1-9]\d*$/.test(String(id)) || Number(id) > 4294967295) {
+    throw new Error('El ID debe ser un entero positivo válido');
   }
+  return Number(id);
 }
 
 function normalizarFiltroEstado(estado) {
@@ -26,13 +30,15 @@ function normalizarFiltroEstado(estado) {
 }
 
 class UsuarioService {
+  #pool;
+
   constructor(pool) {
-    this.pool = pool;
+    this.#pool = pool;
   }
 
   async autenticar(correo, password) {
     const correoNormalizado = String(correo || '').trim().toLowerCase();
-    const [filas] = await this.pool.execute(
+    const [filas] = await this.#pool.execute(
       `SELECT id, identificador, nombre, correo, password_hash, perfil, estado
          FROM usuarios WHERE correo = ?`,
       [correoNormalizado]
@@ -46,7 +52,7 @@ class UsuarioService {
   }
 
   async listar() {
-    const [filas] = await this.pool.execute(
+    const [filas] = await this.#pool.execute(
       `SELECT id, identificador, nombre, correo, perfil, estado
          FROM usuarios ORDER BY nombre, identificador`
     );
@@ -56,12 +62,12 @@ class UsuarioService {
   async listarEmpleadosPorEstado(estado) {
     const filtro = normalizarFiltroEstado(estado);
     const parametros = [];
-    let condicion = '';
+    let condicion = "WHERE perfil = 'empleado'";
     if (filtro !== 'todos') {
-      condicion = 'WHERE estado = ?';
+      condicion += ' AND estado = ?';
       parametros.push(filtro === 'activo' ? 'Activo' : 'Inactivo');
     }
-    const [filas] = await this.pool.execute(
+    const [filas] = await this.#pool.execute(
       `SELECT id, nombre, correo, estado FROM usuarios ${condicion} ORDER BY nombre, id`,
       parametros
     );
@@ -69,7 +75,8 @@ class UsuarioService {
   }
 
   async obtenerPorId(id) {
-    const [filas] = await this.pool.execute(
+    id = validarId(id);
+    const [filas] = await this.#pool.execute(
       `SELECT id, identificador, nombre, correo, perfil, estado
          FROM usuarios WHERE id = ?`,
       [id]
@@ -78,12 +85,19 @@ class UsuarioService {
     return filas[0];
   }
 
+  async obtenerSesionActiva(id) {
+    const [filas] = await this.#pool.execute(
+      'SELECT id, identificador, nombre, correo, perfil, estado FROM usuarios WHERE id = ?', [validarId(id)]
+    );
+    const usuario = filas[0];
+    return usuario && new Usuario(usuario).estaActivo() ? usuario : undefined;
+  }
+
   async crear(datos) {
     const usuario = new Usuario(normalizarDatos(datos));
-    validarCorreo(usuario.correo);
     const passwordHash = await crearHash(datos.password);
     try {
-      const [resultado] = await this.pool.execute(
+      const [resultado] = await this.#pool.execute(
         `INSERT INTO usuarios
           (identificador, nombre, correo, password_hash, perfil, estado)
          VALUES (?, ?, ?, ?, ?, ?)`,
@@ -98,9 +112,9 @@ class UsuarioService {
   }
 
   async actualizar(id, datos) {
+    id = validarId(id);
     await this.obtenerPorId(id);
     const usuario = new Usuario(normalizarDatos(datos));
-    validarCorreo(usuario.correo);
     const campos = ['identificador = ?', 'nombre = ?', 'correo = ?', 'perfil = ?', 'estado = ?'];
     const valores = [usuario.identificador, usuario.nombre, usuario.correo, usuario.perfil, usuario.estado];
     if (datos.password) {
@@ -109,7 +123,7 @@ class UsuarioService {
     }
     valores.push(id);
     try {
-      await this.pool.execute(`UPDATE usuarios SET ${campos.join(', ')} WHERE id = ?`, valores);
+      await this.#pool.execute(`UPDATE usuarios SET ${campos.join(', ')} WHERE id = ?`, valores);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') throw new Error('El identificador o correo ya está registrado');
       throw error;
@@ -117,7 +131,8 @@ class UsuarioService {
   }
 
   async desactivar(id) {
-    const [resultado] = await this.pool.execute(
+    id = validarId(id);
+    const [resultado] = await this.#pool.execute(
       `UPDATE usuarios SET estado = 'Inactivo' WHERE id = ? AND estado = 'Activo'`,
       [id]
     );
@@ -125,8 +140,9 @@ class UsuarioService {
   }
 
   async eliminar(id) {
+    id = validarId(id);
     try {
-      const [resultado] = await this.pool.execute('DELETE FROM usuarios WHERE id = ?', [id]);
+      const [resultado] = await this.#pool.execute('DELETE FROM usuarios WHERE id = ?', [id]);
       if (resultado.affectedRows === 0) throw new Error('Usuario no encontrado');
     } catch (error) {
       if (error.code === 'ER_ROW_IS_REFERENCED_2' || error.code === 'ER_ROW_IS_REFERENCED') {
@@ -137,4 +153,4 @@ class UsuarioService {
   }
 }
 
-module.exports = { UsuarioService, normalizarDatos, validarCorreo, normalizarFiltroEstado };
+module.exports = { UsuarioService, normalizarDatos, validarCorreo, validarId, normalizarFiltroEstado };

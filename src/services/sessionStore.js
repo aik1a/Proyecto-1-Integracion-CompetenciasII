@@ -1,22 +1,40 @@
 const { randomBytes } = require('node:crypto');
 
 class SessionStore {
-  constructor() {
-    this.sesiones = new Map();
+  #sesiones = new Map();
+  #ahora;
+  #duracionMs;
+
+  constructor({ ahora = Date.now, duracionMs = 8 * 60 * 60 * 1000 } = {}) {
+    this.#ahora = ahora;
+    this.#duracionMs = duracionMs;
   }
 
   crear(usuario) {
     const token = randomBytes(32).toString('hex');
-    this.sesiones.set(token, { id: usuario.id, nombre: usuario.nombre, perfil: usuario.perfil });
+    const ahora = this.#ahora();
+    for (const [clave, sesion] of this.#sesiones) {
+      if (sesion.vence <= ahora) this.#sesiones.delete(clave);
+    }
+    this.#sesiones.set(token, {
+      usuario: { id: usuario.id, nombre: usuario.nombre, perfil: usuario.perfil },
+      vence: ahora + this.#duracionMs
+    });
     return token;
   }
 
   obtener(token) {
-    return token ? this.sesiones.get(token) : undefined;
+    const sesion = this.#sesiones.get(token);
+    if (!sesion) return undefined;
+    if (sesion.vence <= this.#ahora()) {
+      this.#sesiones.delete(token);
+      return undefined;
+    }
+    return { ...sesion.usuario };
   }
 
   eliminar(token) {
-    if (token) this.sesiones.delete(token);
+    if (token) this.#sesiones.delete(token);
   }
 }
 
