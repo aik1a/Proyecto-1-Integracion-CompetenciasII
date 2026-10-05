@@ -62,9 +62,9 @@ class UsuarioService {
   async listarEmpleadosPorEstado(estado) {
     const filtro = normalizarFiltroEstado(estado);
     const parametros = [];
-    let condicion = '';
+    let condicion = "WHERE perfil = 'empleado'";
     if (filtro !== 'todos') {
-      condicion = 'WHERE estado = ?';
+      condicion += ' AND estado = ?';
       parametros.push(filtro === 'activo' ? 'Activo' : 'Inactivo');
     }
     const [filas] = await this.#pool.execute(

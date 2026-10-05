@@ -42,6 +42,7 @@ test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
   }
 
   const admin = await crearUsuario('admin', `Admin S03 ${marca}`, 'administrador');
+  const adminInactivo = await crearUsuario('admin-inactivo', `Admin inactivo S03 ${marca}`, 'administrador', 'Inactivo');
   const puntual = await crearUsuario('puntual', `Puntual S03 ${marca}`);
   const incidencia = await crearUsuario('incidencia', `Incidencia S03 ${marca}`);
   const ausente = await crearUsuario('ausente', `Ausente S03 ${marca}`);
@@ -99,6 +100,8 @@ test('Sprint 03 integra reportes y AP-01 contra MySQL real', async (t) => {
     assert.equal(respuesta.status, 200);
     assert.match(respuesta.headers.get('content-type'), /^application\/json/);
     const empleados = await respuesta.json();
+    assert.ok(!empleados.some((item) => item.id === admin.id || item.id === adminInactivo.id),
+      `AP-01 debe excluir administradores con estado=${filtro}`);
     assert.ok(empleados.some((item) => item.nombre === nombreEsperado));
     if (filtro === 'todos') {
       assert.ok(empleados.some((item) => item.nombre === `Inactivo S03 ${marca}`));
